@@ -1,14 +1,15 @@
-import i18n from "i18next"
-import { initReactI18next } from "react-i18next"
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
 
-import trEN from "./en/common.json"
-import trFR from "./fr/common.json"
-import trKO from "./ko/common.json"
-import trDE from "./de/common.json"
-import trES from "./es/common.json"
-import trAR from "./ar/common.json"
-import trJA from "./ja/common.json"
-import trZH from "./zh/common.json"
+import trEN from "./en/common.json";
+import trFR from "./fr/common.json";
+import trKO from "./ko/common.json";
+import trDE from "./de/common.json";
+import trES from "./es/common.json";
+import trAR from "./ar/common.json";
+import trJA from "./ja/common.json";
+import trZH from "./zh/common.json";
+import trBR from "./pt-br/common.json";
 
 const resources = {
   en: { common: trEN },
@@ -18,8 +19,9 @@ const resources = {
   es: { common: trES },
   ar: { common: trAR },
   ja: { common: trJA },
-  zh: { common: trZH }
-}
+  zh: { common: trZH },
+  br: { common: trBR },
+};
 
 i18n
   // pass the i18n instance to react-i18next.
@@ -28,7 +30,7 @@ i18n
   // for all options read: https://www.i18next.com/overview/configuration-options
   .init({
     resources,
-    lng: localStorage.getItem('i18nextLng'),
+    lng: localStorage.getItem("i18nextLng"),
     ns: ["common"],
     defaultNS: "common",
     fallbackNS: "common",
@@ -39,8 +41,8 @@ i18n
     },
     react: {
       wait: true,
-      useSuspense: false
+      useSuspense: false,
     },
-  })
+  });
 
-export default i18n
+export default i18n;

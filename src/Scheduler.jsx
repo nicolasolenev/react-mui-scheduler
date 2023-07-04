@@ -22,7 +22,7 @@ import WeekModeView from "./WeekModeView.jsx";
 import DayModeView from "./DayModeView.jsx";
 import TimeLineModeView from "./TimeLineModeView.jsx";
 import DateFnsLocaleContext from "../locales/dateFnsContext";
-import { ar, de, enUS, es, fr, ja, ko, ru, zhCN } from "date-fns/locale";
+import { ar, de, enUS, es, fr, ja, ko, ru, zhCN, ptBR } from "date-fns/locale";
 import { Mode, TransitionMode } from "./types";
 
 function Scheduler(props) {
@@ -75,30 +75,37 @@ function Scheduler(props) {
       options?.transitionMode === TransitionMode.FADE ? Fade : Slide
   );
 
-  let dateFnsLocale = enUS;
-  if (locale === "fr") {
-    dateFnsLocale = fr;
-  }
-  if (locale === "ko") {
-    dateFnsLocale = ko;
-  }
-  if (locale === "de") {
-    dateFnsLocale = de;
-  }
-  if (locale === "es") {
-    dateFnsLocale = es;
-  }
-  if (locale === "ar") {
-    dateFnsLocale = ar;
-  }
-  if (locale === "ja") {
-    dateFnsLocale = ja;
-  }
-  if (locale === "ru") {
-    dateFnsLocale = ru;
-  }
-  if (locale === "zh") {
-    dateFnsLocale = zhCN;
+  let dateFnsLocale;
+  switch (locale) {
+    case "fr":
+      dateFnsLocale = fr;
+      break;
+    case "ko":
+      dateFnsLocale = ko;
+      break;
+    case "de":
+      dateFnsLocale = de;
+      break;
+    case "es":
+      dateFnsLocale = es;
+      break;
+    case "ar":
+      dateFnsLocale = ar;
+      break;
+    case "ja":
+      dateFnsLocale = ja;
+      break;
+    case "ru":
+      dateFnsLocale = ru;
+      break;
+    case "zh":
+      dateFnsLocale = zhCN;
+      break;
+    case "br":
+      dateFnsLocale = ptBR;
+      break;
+    default:
+      dateFnsLocale = enUS;
   }
 
   /**
