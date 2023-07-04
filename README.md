@@ -18,43 +18,45 @@ React mui scheduler is a react component based on @mui v5 that allows you to man
 <p><a href="https://rouftom.github.io/react-mui-scheduler-demo/" target="_blank">Demo here</a></p>
 
 ## 🚀 Installation
+
 ```nodejs
   npm install react-mui-scheduler
 ```
 
 ## 💻 Usage
+
 ```javascript
-import React, {useState} from 'react'
-import ReactDOM from 'react-dom'
-import Scheduler from "react-mui-scheduler"
+import React, { useState } from "react";
+import ReactDOM from "react-dom";
+import Scheduler from "react-mui-scheduler";
 
 function App() {
   const [state] = useState({
     options: {
-      transitionMode: "zoom", // or fade
+      transitionMode: TransitionMode.ZOOM, // or TransitionMode.FADE
       startWeekOn: "mon",     // or sun
       defaultMode: "month",    // or week | day | timeline
       minWidth: 540,
       maxWidth: 540,
       minHeight: 540,
-      maxHeight: 540
+      maxHeight: 540,
     },
     alertProps: {
       open: true,
       color: "info",          // info | success | warning | error
       severity: "info",       // info | success | warning | error
-      message: "🚀 Let's start with awesome react-mui-scheduler 🔥 🔥 🔥" ,
+      message: "🚀 Let's start with awesome react-mui-scheduler 🔥 🔥 🔥",
       showActionButton: true,
       showNotification: true,
-      delay: 1500
+      delay: 1500,
     },
     toolbarProps: {
       showSearchBar: true,
       showSwitchModeButtons: true,
-      showDatePicker: true
-    }
-  })
-  
+      showDatePicker: true,
+    },
+  });
+
   const events = [
     {
       id: "event-1",
@@ -66,7 +68,7 @@ function App() {
       endHour: "05:00 AM",
       date: "2022-05-05",
       createdAt: new Date(),
-      createdBy: "Kristina Mayer"
+      createdBy: "Kristina Mayer",
     },
     {
       id: "event-2",
@@ -78,7 +80,7 @@ function App() {
       endHour: "10:00 AM",
       date: "2022-05-09",
       createdAt: new Date(),
-      createdBy: "Kristina Mayer"
+      createdBy: "Kristina Mayer",
     },
     {
       id: "event-3",
@@ -90,7 +92,7 @@ function App() {
       endHour: "14 PM",
       date: "2022-05-10",
       createdAt: new Date(),
-      createdBy: "Kristina Mayer"
+      createdBy: "Kristina Mayer",
     },
     {
       id: "event-4",
@@ -102,138 +104,126 @@ function App() {
       endHour: "09:00 AM",
       date: "2022-05-11",
       createdAt: new Date(),
-      createdBy: "Kristina Mayer"
-    }
-  ]
-  
+      createdBy: "Kristina Mayer",
+    },
+  ];
+
   const handleCellClick = (event, row, day) => {
     // Do something...
-  }
-  
+  };
+
   const handleEventClick = (event, item) => {
     // Do something...
-  }
-  
+  };
+
   const handleEventsChange = (item) => {
     // Do something...
-  }
-  
+  };
+
   const handleAlertCloseButtonClicked = (item) => {
     // Do something...
-  }
-  
+  };
+
   return (
     <Scheduler
       locale="en"
-      events={events}
-      legacyStyle={false}
-      options={state?.options}
-      alertProps={state?.alertProps}
-      toolbarProps={state?.toolbarProps}
-      onEventsChange={handleEventsChange}
-      onCellClick={handleCellClick}
-      onTaskClick={handleEventClick}
-      onAlertCloseButtonClicked={handleAlertCloseButtonClicked}
+      events={ events }
+      legacyStyle={ false }
+      options={ state?.options }
+      alertProps={ state?.alertProps }
+      toolbarProps={ state?.toolbarProps }
+      onEventsChange={ handleEventsChange }
+      onCellClick={ handleCellClick }
+      onTaskClick={ handleEventClick }
+      onAlertCloseButtonClicked={ handleAlertCloseButtonClicked }
     />
-  )
+  );
 }
 
-ReactDOM.render(<App />, document.querySelector('#yourComponentRootId'))
+ReactDOM.render(<App/>, document.querySelector("#yourComponentRootId"));
 
 ```
 
 ## Data structure
 
-| Name 	|  Type 	|   Required	|  Details 	|  
-|------	|---	|---	|---	|
-|    id  	|  `string` 	|  `true` 	|  unique id for every event 	|
-|    label  	|  `string` 	|  `true` 	|   	| 
-|    color  	|  `string` 	|  `true` 	|  If not set, the primary color of the theme will be applied 	| 
-|    groupLabel  	|  `string` 	|  `true` 	|   	|
-|    startHour  	|  `string` 	|  `true` 	|  Hour string format with `HH:mm aaa` 	|  
-|    endHour  	|  `string` 	|  `true` 	|  Hour string format with `HH:mm aaa` 	| 
-|    date  	|  `string` 	|  `true` 	|  Date string, must be formatted with `yyyy-MM-dd` date format 	| 
-
+| Name 	        | Type 	     | Required	 | Details 	                                                      |  
+|---------------|------------|-----------|----------------------------------------------------------------|
+| id  	         | `string` 	 | `true` 	  | unique id for every event 	                                    |
+| label  	      | `string` 	 | `true` 	  | 	                                                              | 
+| color  	      | `string` 	 | `true` 	  | If not set, the primary color of the theme will be applied 	   | 
+| groupLabel  	 | `string` 	 | `true` 	  | 	                                                              |
+| startHour  	  | `string` 	 | `true` 	  | Hour string format with `HH:mm aaa` 	                          |  
+| endHour  	    | `string` 	 | `true` 	  | Hour string format with `HH:mm aaa` 	                          | 
+| date  	       | `string` 	 | `true` 	  | Date string, must be formatted with `yyyy-MM-dd` date format 	 | 
 
 For more details about date formats, see [date-fns docs](https://date-fns.org/v2.24.0/docs/)
 
-
 ## Props
 
-| Name 	|  Type 	|   Default	|  Description 	|  Values 	|
-|------	|---	|---	|---	|---	|
-|    locale  	|  string 	|  `en` 	|  This prop is used to set the locale of the scheduler 	|  `ar`, `de`, `en`, `es`, `fr`, `ja`, `ko`, `zh` 	|
-|   events   	|   object	|   	|   This prop sets event data	|   	|
-|    legacyStyle  	|  boolean 	|  `false` 	|  This prop allows to use the old display style 	|  `false`, `true` 	|
-|    options  	|  object 	|   	|  This prop is used to set scheduler properties 	|   	|
-|    alertProps  	|  object 	|   	|  This prop is used to set scheduler properties 	|    	|
-|    toolbarProps  	|  object 	|   	|  This prop is used to set toolbar properties 	|   	|
-|    onEventsChange  	|  event 	|   	|  This event is fired when the event change occurs 	|   	|
-|    onCellClick  	|  event 	|   	|  This event is fired when a cell is clicked 	|   	|
-|    onTaskClick  	|  event 	|   	|  This event is fired when a task is clicked 	|   	|
-|    onAlertCloseButtonClicked  	|  event 	|   	|  This event is fired when the close button of the alert component 	|   	|
-
-
+| Name 	                       | Type 	    | Default	  | Description 	                                                      | Values 	                                           |
+|------------------------------|-----------|-----------|--------------------------------------------------------------------|----------------------------------------------------|
+| locale  	                    | string 	  | `enUS` 	  | This prop is used to set the locale of the scheduler 	             | `ar`, `de`, `enUS`, `es`, `fr`, `ja`, `ko`, `zh` 	 |
+| events   	                   | object	   | 	         | This prop sets event data	                                         | 	                                                  |
+| legacyStyle  	               | boolean 	 | `false` 	 | This prop allows to use the old display style 	                    | `false`, `true` 	                                  |
+| options  	                   | object 	  | 	         | This prop is used to set scheduler properties 	                    | 	                                                  |
+| alertProps  	                | object 	  | 	         | This prop is used to set scheduler properties 	                    | 	                                                  |
+| toolbarProps  	              | object 	  | 	         | This prop is used to set toolbar properties 	                      | 	                                                  |
+| onEventsChange  	            | event 	   | 	         | This event is fired when the event change occurs 	                 | 	                                                  |
+| onCellClick  	               | event 	   | 	         | This event is fired when a cell is clicked 	                       | 	                                                  |
+| onTaskClick  	               | event 	   | 	         | This event is fired when a task is clicked 	                       | 	                                                  |
+| onAlertCloseButtonClicked  	 | event 	   | 	         | This event is fired when the close button of the alert component 	 | 	                                                  |
 
 ## Options
 
-| Name 	|  Type 	|   Default	|  Description 	|  Values 	|
-|------	|---	|---	|---	|---	|
-|    transitionMode  	|  string 	|  `zoom` 	|  This option is used to define the type of scheduler transition 	|  `zoom`, `fade`, `slide` 	|
-|   startWeekOn   	|   string	|  `mon` 	|   This option is used to set the start of the calendar week to Monday or Sunday	|  `mon`, `sun` 	|
-|    defaultMode  	|  string 	|  `week` 	|  This option allows you to define the type of view to display 	|  `month`, `week`, `day`, `timeline` 	|
-|    minWidth  	|  number 	|  `540` 	|  This option allows you to define the minimum width of the container 	|  `number` 	|
-|    maxWidth  	|  number 	|  `540` 	|  This option allows you to define the maximum width of the container 	|  `number` 	|
-|    minHeight  	|  number 	|  `540` 	|  This option allows you to define the minimum height of the container 	|  `number` 	|
-|    maxHeigh  	|  number 	|  `540` 	|  This option allows you to define the maximum height of the container 	|  `number` 	|
-
-
+| Name              | Type     | Default               | Description                                                                    | Values                                                                 |
+|-------------------|----------|-----------------------|--------------------------------------------------------------------------------|------------------------------------------------------------------------|
+| transitionMode  	 | string 	 | `TransitionMode.ZOOM` | This option is used to define the type of scheduler transition 	               | `TransitionMode.ZOOM`, `TransitionMode.FADE`, `TransitionMode.SLIDE` 	 |
+| startWeekOn   	   | string	  | `mon`                 | This option is used to set the start of the calendar week to Monday or Sunday	 | `mon`, `sun` 	                                                         |
+| defaultMode  	    | string 	 | `Mode.WEEK`           | This option allows you to define the type of view to display 	                 | `Mode.MONTH`, `Mode.WEEK`, `Mode.DAY`, `Mode.TIMELINE` 	               |
+| minWidth  	       | number 	 | `540`                 | This option allows you to define the minimum width of the container 	          | `number` 	                                                             |
+| maxWidth  	       | number 	 | `540`                 | This option allows you to define the maximum width of the container 	          | `number` 	                                                             |
+| minHeight  	      | number 	 | `540`                 | This option allows you to define the minimum height of the container 	         | `number` 	                                                             |
+| maxHeigh  	       | number 	 | `540`                 | This option allows you to define the maximum height of the container 	         | `number` 	                                                             |
 
 ## alertProps
 
-| Name 	|  Type 	|   Default	|  Description 	|  Values 	|
-|------	|---	|---	|---	|---	|
-|    open  	|  boolean 	|  `true` 	|  This option opens the notification Alert component 	|  `true`, `false` 	|
-|   color   	|   string	|  `info` 	|   Alert notification color	|  `info`, `success`, `warning`, `error` 	|
-|    severity  	|  string 	|  `info` 	|  Alert notification severity 	|  `info`, `success`, `warning`, `error` 	|
-|    message  	|  string 	|  `🚀 Let's start with awesome react-mui-scheduler 🔥 🔥 🔥` 	|  Alert notification message to display 	|  `string` 	|
-|    showActionButton  	|  boolean 	|  `true` 	|  This option displays or not the action button on the Alert 	|  `boolean` 	|
-|    showNotification  	|  boolean 	|  `true` 	|  This option allows to display or not a notification when data change 	|  `boolean` 	|
-|    delay  	|  number 	|  `1500` 	|  This option allows you to define the display delay in milliseconds of the Alert	|  `number` 	|
-
+| Name 	              | Type 	    | Default	                                                     | Description 	                                                                    | Values 	                                |
+|---------------------|-----------|--------------------------------------------------------------|----------------------------------------------------------------------------------|-----------------------------------------|
+| open  	             | boolean 	 | `true` 	                                                     | This option opens the notification Alert component 	                             | `true`, `false` 	                       |
+| color   	           | string	   | `info` 	                                                     | Alert notification color	                                                        | `info`, `success`, `warning`, `error` 	 |
+| severity  	         | string 	  | `info` 	                                                     | Alert notification severity 	                                                    | `info`, `success`, `warning`, `error` 	 |
+| message  	          | string 	  | `🚀 Let's start with awesome react-mui-scheduler 🔥 🔥 🔥` 	 | Alert notification message to display 	                                          | `string` 	                              |
+| showActionButton  	 | boolean 	 | `true` 	                                                     | This option displays or not the action button on the Alert 	                     | `boolean` 	                             |
+| showNotification  	 | boolean 	 | `true` 	                                                     | This option allows to display or not a notification when data change 	           | `boolean` 	                             |
+| delay  	            | number 	  | `1500` 	                                                     | This option allows you to define the display delay in milliseconds of the Alert	 | `number` 	                              |
 
 ## toolbarProps
 
-| Name 	|  Type 	|   Default	|  Description 	|  Values 	|
-|------	|---	|---	|---	|---	|
-|    showSearchBar  	|  boolean 	|  `true` 	|  Show or hide the search bar 	|  `true`, `false` 	|
-|    showSwitchModeButtons  	|  boolean 	|  `true` 	|   Show or hide the view mode button group switcher	|  `true`, `false` 	|
-|    showDatePicker  	|  boolean 	|  `true` 	|  Show or hide the date picker buttons 	|  `true`, `false` 	|
-
+| Name 	                   | Type 	    | Default	 | Description 	                                     | Values 	          |
+|--------------------------|-----------|----------|---------------------------------------------------|-------------------|
+| showSearchBar  	         | boolean 	 | `true` 	 | Show or hide the search bar 	                     | `true`, `false` 	 |
+| showSwitchModeButtons  	 | boolean 	 | `true` 	 | Show or hide the view mode button group switcher	 | `true`, `false` 	 |
+| showDatePicker  	        | boolean 	 | `true` 	 | Show or hide the date picker buttons 	            | `true`, `false` 	 |
 
 ## Methods
 
-| Method 	|  Params 	|  Type 	|  Description 	|  
-|------	|---	|---	|---	|
-|  `handleCellClick(event: Event, row: object, day: object)`    	|  `event: Event`, `row: object`, `day: object` 	|  Event 	|  Triggered when you click on a cell 	|
-|  `handleEventClick(event: Event, item: object)`    	|  `event: Event`, `item: object` 	|  Event 	|  Triggered when you click on an event 	|
-|  `handleEventsChange(item: object)`    	|  `item: object` 	|  Event 	|  Triggers when a data update occurs 	|
-|  `handleAlertCloseButtonClicked(item: object)`    	|  `item: object` 	|  Event 	|  Triggers when clicking on the close button of the notification alert 	|
-
-
+| Method 	                                                       | Params 	                                       | Type 	  | Description 	                                                          |  
+|----------------------------------------------------------------|------------------------------------------------|---------|------------------------------------------------------------------------|
+| `handleCellClick(event: Event, row: object, day: object)`    	 | `event: Event`, `row: object`, `day: object` 	 | Event 	 | Triggered when you click on a cell 	                                   |
+| `handleEventClick(event: Event, item: object)`    	            | `event: Event`, `item: object` 	               | Event 	 | Triggered when you click on an event 	                                 |
+| `handleEventsChange(item: object)`    	                        | `item: object` 	                               | Event 	 | Triggers when a data update occurs 	                                   |
+| `handleAlertCloseButtonClicked(item: object)`    	             | `item: object` 	                               | Event 	 | Triggers when clicking on the close button of the notification alert 	 |
 
 ## 😁 Authors
 
 - Muller Roufaou ([rouftom](http://github.com/rouftom))
 
-
-
 ## 🤔 FAQ
 
 * __Where can I find more documentation?__
 
-  This library is a marriage of [@mui](http://mui.com/getting-started/usage/) and a React setup created with [React](https://fr.reactjs.org/). Either one would be a great place to start!
-
+  This library is a marriage of [@mui](http://mui.com/getting-started/usage/) and a React setup created
+  with [React](https://reactjs.org/). Either one would be a great place to start!
 
 ## 🙇‍♂️ Extra
 
@@ -244,7 +234,6 @@ For more details about date formats, see [date-fns docs](https://date-fns.org/v2
 * Btc address: `bc1qettgagenn9nc8ks7ghntjfme96yvvkfhntk774`
 
 * Eth address: `0xB0413d8D0336E263e289A915c383e152155881E0`
-
 
 ## 🔥 Some features to add in next releases
 
@@ -259,7 +248,6 @@ For more details about date formats, see [date-fns docs](https://date-fns.org/v2
 - 👉 Typescript support
 
 - ✅ Display style customization
-
 
 ## License
 

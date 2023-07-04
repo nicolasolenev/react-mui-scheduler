@@ -1,3 +1,4 @@
-import Scheduler from "./Scheduler.jsx"
-export default Scheduler
+import Scheduler from "./Scheduler.jsx";
+
+export default Scheduler;
 

@@ -1,15 +1,16 @@
-import babel from '@rollup/plugin-babel'
-import styles from "rollup-plugin-styles"
-import json from '@rollup/plugin-json'
-const autoprefixer = require('autoprefixer')
+import babel from "@rollup/plugin-babel";
+import styles from "rollup-plugin-styles";
+import json from "@rollup/plugin-json";
+
+const autoprefixer = require("autoprefixer");
 
 // the entry point for the library
-const input = 'src/index.js'
+const input = "src/index.js";
 
 //
-let MODE = [{ fomart: 'esm' }, { fomart: 'umd' }]
+let MODE = [{ format: "esm" }, { format: "umd" }];
 
-let config = []
+let config = [];
 
 MODE.map((m) => {
   let conf = {
@@ -17,11 +18,11 @@ MODE.map((m) => {
     output: {
       // then name of your package
       name: "react-material-scheduler",
-      file: `dist/index.${m.fomart}.js`,
-      format: m.fomart,
-      exports: "auto"
+      file: `dist/index.${ m.format }.js`,
+      format: m.format,
+      exports: "auto",
     },
-    // this externelizes react to prevent rollup from compiling it
+    // this externalizes react to prevent rollup from compiling it
     external: [
       "react",
       "@mui/icons-material",
@@ -30,31 +31,30 @@ MODE.map((m) => {
       "@mui/system",
       "date-fns",
       "prop-types",
-      /@babel\/runtime/
+      /@babel\/runtime/,
     ],
     plugins: [
       json(),
-      // these are babel comfigurations
+      // these are babel configurations
       babel({
-        exclude: 'node_modules/**',
-        plugins: ['@babel/transform-runtime', "@babel/plugin-proposal-optional-chaining"],
-        babelHelpers: 'runtime'
+        exclude: "node_modules/**",
+        plugins: ["@babel/transform-runtime", "@babel/plugin-proposal-optional-chaining"],
+        babelHelpers: "runtime",
       }),
       // this adds sourcemaps
-      //sourcemaps(),
       // this adds support for styles
       styles({
         postcss: {
           plugins: [
-            autoprefixer()
-          ]
-        }
-      })
-    ]
-  }
-  config.push(conf)
-})
+            autoprefixer(),
+          ],
+        },
+      }),
+    ],
+  };
+  config.push(conf);
+});
 
 export default [
   ...config,
-]
+];
