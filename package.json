@@ -31,6 +31,7 @@
     "@mui/lab": "^5.0.0-alpha.134",
     "@mui/material": "^5.13.6",
     "@mui/system": "^5.13.6",
+    "@mui/x-date-pickers": "^6.9.1",
     "date-fns": "^2.30.0",
     "i18next": "^23.2.6",
     "prop-types": "^15.8.1",

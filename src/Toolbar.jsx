@@ -2,14 +2,15 @@ import React, { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
 import { format, add, sub, getDaysInMonth, parse } from "date-fns";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+
 import {
   Typography, Toolbar, IconButton, Button, ToggleButton,
   TextField, Hidden, Alert, Collapse, ToggleButtonGroup,
   Divider, ListItemIcon, Menu, MenuItem, Grid, Stack,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import StaticDatePicker from "@mui/lab/StaticDatePicker";
 import CloseIcon from "@mui/icons-material/Close";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
