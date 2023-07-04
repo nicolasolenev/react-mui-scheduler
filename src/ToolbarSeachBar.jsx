@@ -42,23 +42,6 @@ function ToolbarSearchbar(props) {
       onChange={ handleOnChange }
       options={ events?.sort((a, b) => -b.groupLabel.localeCompare(a.groupLabel)) }
       groupBy={ (option) => option ? option?.groupLabel : null }
-      /*
-      (
-          <Box sx={{display: "flex", alignItems: "center"}}>
-            <Box
-              component="span"
-              sx={{
-                width: 16,
-                height: 16,
-                mr: 1,
-                borderRadius: "50%",
-                backgroundColor: option?.color || theme.palette.secondary.main
-              }}
-            />
-            {option?.groupLabel}
-          </Box>
-        )
-       */
       getOptionLabel={ (option) => (
         option ?
           `${ option.groupLabel || "" } | (${ option.startHour || "" } - ${ option.endHour || "" })` : ""

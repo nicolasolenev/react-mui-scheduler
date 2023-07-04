@@ -72,85 +72,55 @@ function DayModeView(props) {
   const theme = useTheme();
   const [state, setState] = useState({ columns, rows });
 
-  /**
-   * @name onCellDragOver
-   * @param e
-   * @return void
-   */
   const onCellDragOver = (e) => {
     e.preventDefault();
   };
 
-  /**
-   * @name onCellDragStart
-   * @description
-   * @param e
-   * @param item
-   * @param rowLabel
-   * @param rowIndex
-   * @param dayIndex
-   * @return void
-   */
   const onCellDragStart = (e, item, rowLabel, rowIndex, dayIndex) => {
     setState({
         ...state,
-        itemTransfert: { item, rowLabel, rowIndex, dayIndex },
+        itemTransfer: { item, rowLabel, rowIndex, dayIndex },
       },
     );
   };
 
-  /**
-   * @name onCellDragEnter
-   * @description
-   * @param e
-   * @param rowLabel
-   * @param rowIndex
-   * @param dayIndex
-   * @return void
-   */
   const onCellDragEnter = (e, rowLabel, rowIndex, dayIndex) => {
     e.preventDefault();
-    setState({ ...state, transfertTarget: { rowLabel, rowIndex, dayIndex } });
+    setState({ ...state, transferTarget: { rowLabel, rowIndex, dayIndex } });
   };
 
-  /**
-   * @name onCellDragEnd
-   * @description
-   * @param e
-   * @return void
-   */
   const onCellDragEnd = (e) => {
     e.preventDefault();
     if (!state.itemTransfert || !state.transfertTarget) {
       return;
     }
-    let transfert = state.itemTransfert;
-    let transfertTarget = state.transfertTarget;
+    let transfer = state.itemTransfert;
+    let transferTarget = state.transfertTarget;
     let rowsData = Array.from(rows);
-    let day = rowsData[transfertTarget.rowIndex]?.days[transfertTarget.dayIndex];
+    let day = rowsData[transferTarget.rowIndex]?.days[transferTarget.dayIndex];
 
     if (day) {
       let hourRegExp = /[0-9]{2}:[0-9]{2}/;
       let foundEventIndex = day.data.findIndex(e =>
-        e.id === transfert.item.id &&
-        e.startHour === transfert.item.startHour &&
-        e.endHour === transfert.item.endHour,
+        e.id === transfer.item.id &&
+        e.startHour === transfer.item.startHour &&
+        e.endHour === transfer.item.endHour,
       );
       // Task already exists in the data array of the chosen cell
       if (foundEventIndex !== -1) {
         return;
       }
 
-      // Event cell item to transfert
-      let prevEventCell = rowsData[transfert.rowIndex].days[transfert.dayIndex];
+      // Event cell item to transfer
+      let prevEventCell = rowsData[transfer.rowIndex].days[transfer.dayIndex];
       // Timeline label (00:00 am, 01:00 am, etc.)
-      let label = transfertTarget.rowLabel?.toUpperCase();
+      let label = transferTarget.rowLabel?.toUpperCase();
       let hourLabel = hourRegExp.exec(label)[0];
       // Event's end hour
-      let endHour = hourRegExp.exec(transfert.item.endHour)[0];
+      let endHour = hourRegExp.exec(transfer.item.endHour)[0];
       let endHourDate = parse(endHour, "HH:mm", day.date);
       // Event start hour
-      let startHour = hourRegExp.exec(transfert.item.startHour)[0];
+      let startHour = hourRegExp.exec(transfer.item.startHour)[0];
       let startHourDate = parse(startHour, "HH:mm", day.date);
       // Minutes difference between end and start event hours
       let minutesDiff = differenceInMinutes(endHourDate, startHourDate);
@@ -167,24 +137,16 @@ function DayModeView(props) {
         );
       }
 
-      prevEventCell?.data?.splice(transfert?.item?.itemIndex, 1);
-      transfert.item.startHour = label;
-      transfert.item.endHour = format(newEndHour, "HH:mm aaa");
-      transfert.item.date = format(day.date, "yyyy-MM-dd");
-      day.data.push(transfert.item);
+      prevEventCell?.data?.splice(transfer?.item?.itemIndex, 1);
+      transfer.item.startHour = label;
+      transfer.item.endHour = format(newEndHour, "HH:mm aaa");
+      transfer.item.date = format(day.date, "yyyy-MM-dd");
+      day.data.push(transfer.item);
       setState({ ...state, rows: rowsData });
-      onEventsChange && onEventsChange(transfert.item);
+      onEventsChange && onEventsChange(transfer.item);
     }
   };
 
-  /**
-   * @name handleCellClick
-   * @description
-   * @param event
-   * @param row
-   * @param day
-   * @return void
-   */
   const handleCellClick = (event, row, day) => {
     event.preventDefault();
     event.stopPropagation();
@@ -192,15 +154,6 @@ function DayModeView(props) {
     onCellClick && onCellClick(event, row, day);
   };
 
-  /**
-   * @name renderTask
-   * @description
-   * @param tasks
-   * @param rowLabel
-   * @param rowIndex
-   * @param dayIndex
-   * @return {unknown[] | undefined}
-   */
   const renderTask = (tasks, rowLabel, rowIndex, dayIndex) => {
     return tasks?.map((task, itemIndex) => {
       let condition = (
@@ -231,13 +184,6 @@ function DayModeView(props) {
     });
   };
 
-  /**
-   * @name handleTaskClick
-   * @description
-   * @param event
-   * @param task
-   * @return void
-   */
   const handleTaskClick = (event, task) => {
     event.preventDefault();
     event.stopPropagation();

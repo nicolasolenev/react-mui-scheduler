@@ -91,12 +91,6 @@ function SchedulerToolbar(props) {
     setAnchorDateEl(null);
   };
 
-  /**
-   * @name handleChangeDate
-   * @description
-   * @param method
-   * @return void
-   */
   const handleChangeDate = (method) => {
     if (typeof method !== "function") {
       return;

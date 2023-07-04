@@ -80,7 +80,7 @@ function MonthModeView(props) {
   const onCellDragStart = (e, item, rowIndex) => {
     setState({
       ...state,
-      itemTransfert: { item, rowIndex },
+      itemTransfer: { item, rowIndex },
     });
   };
 
@@ -88,54 +88,54 @@ function MonthModeView(props) {
     e.preventDefault();
     setState({
       ...state,
-      transfertTarget: { elementId, rowIndex },
+      transferTarget: { elementId, rowIndex },
     });
   };
 
   const onCellDragEnd = (e) => {
     e.preventDefault();
     if (!state.itemTransfert && !state.transfertTarget) return;
-    let transfert = state.itemTransfert;
-    let transfertTarget = state.transfertTarget;
+    let transfer = state.itemTransfert;
+    let transferTarget = state.transfertTarget;
     let rowsCopy = Array.from(rows);
-    let rowInd = rowsCopy.findIndex(d => d.id === transfertTarget.rowIndex);
+    let rowInd = rowsCopy.findIndex(d => d.id === transferTarget.rowIndex);
 
     if (rowInd !== -1) {
       let dayInd = rowsCopy[rowInd]
         ?.days
-        ?.findIndex(d => d.id === transfertTarget.elementId);
+        ?.findIndex(d => d.id === transferTarget.elementId);
       if (dayInd !== -1) {
         let day = rowsCopy[rowInd]?.days[dayInd];
-        let splittedDate = transfert?.item?.date?.split("-");
-        if (!transfert?.item?.day) {
+        let splittedDate = transfer?.item?.date?.split("-");
+        if (!transfer?.item?.day) {
           // Get day of the date (DD)
-          transfert.item.day = parseInt(splittedDate[2]);
+          transfer.item.day = parseInt(splittedDate[2]);
         }
-        if (transfert.item.day !== day?.day) {
+        if (transfer.item.day !== day?.day) {
           let itemCheck = day.data.findIndex(item => (
-            item.day === transfert.item.day && item.label === transfert.item.label
+            item.day === transfer.item.day && item.label === transfer.item.label
           ));
           if (itemCheck === -1) {
-            let prevDayEvents = rowsCopy[transfert.rowIndex]
+            let prevDayEvents = rowsCopy[transfer.rowIndex]
               .days
-              .find(d => d.day === transfert.item.day);
+              .find(d => d.day === transfer.item.day);
             let itemIndexToRemove = prevDayEvents
               ?.data
-              ?.findIndex(i => i.id === transfert.item.id);
+              ?.findIndex(i => i.id === transfer.item.id);
             if (itemIndexToRemove === undefined || itemIndexToRemove === -1) {
               return;
             }
             prevDayEvents?.data?.splice(itemIndexToRemove, 1);
-            transfert.item.day = day?.day;
-            transfert.item.date = format(day?.date, "yyyy-MM-dd");
-            day.data.push(transfert.item);
+            transfer.item.day = day?.day;
+            transfer.item.date = format(day?.date, "yyyy-MM-dd");
+            day.data.push(transfer.item);
             setState({
               ...state,
               rows: rowsCopy,
-              itemTransfert: null,
-              transfertTarget: null,
+              itemTransfer: null,
+              transferTarget: null,
             });
-            onEventsChange && onEventsChange(transfert.item);
+            onEventsChange && onEventsChange(transfer.item);
           }
         }
       }
@@ -190,13 +190,6 @@ function MonthModeView(props) {
     });
   };
 
-  /**
-   * @name handleTaskClick
-   * @description
-   * @param event
-   * @param task
-   * @return void
-   */
   const handleTaskClick = (event, task) => {
     event.preventDefault();
     event.stopPropagation();

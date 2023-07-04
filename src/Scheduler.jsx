@@ -25,12 +25,6 @@ import DateFnsLocaleContext from "../locales/dateFnsContext";
 import { ar, de, enUS, es, fr, ja, ko, ru, zhCN } from "date-fns/locale";
 import { Mode, TransitionMode } from "./types";
 
-/**
- * @name Scheduler
- * @description
- * @param props
- * @constructor
- */
 function Scheduler(props) {
   const {
     events,
@@ -130,11 +124,6 @@ function Scheduler(props) {
     }));
   };
 
-  /**
-   * @name getMonthRows
-   * @description
-   * @return {[id: string,  day: number, date: date, data: array]}
-   */
   const getMonthRows = () => {
     let rows = [], daysBefore = [];
     let iteration = getWeeksInMonth(selectedDay);
@@ -235,13 +224,13 @@ function Scheduler(props) {
 
     // Check if last row is not fully filled
     let lastRow = rows[iteration - 1];
-    let lastRowDaysdiff = 7 - lastRow?.days?.length;
+    let lastRowDaysDiff = 7 - lastRow?.days?.length;
     let lastDaysData = [];
 
-    if (lastRowDaysdiff > 0) {
+    if (lastRowDaysDiff > 0) {
       let day = lastRow.days[lastRow?.days?.length - 1];
       let addDate = day.date;
-      for (let i = dateDay; i < (dateDay + lastRowDaysdiff); i++) {
+      for (let i = dateDay; i < (dateDay + lastRowDaysDiff); i++) {
         addDate = add(addDate, { days: 1 });
         let d = format(addDate, "dd");
         // eslint-disable-next-line
@@ -264,11 +253,6 @@ function Scheduler(props) {
     return rows;
   };
 
-  /**
-   * @name getWeekHeader
-   * @description
-   * @return {{headerClassName: string, headerAlign: string, headerName: string, field: string, flex: number, editable: boolean, id: string, sortable: boolean, align: string}[]}
-   */
   const getWeekHeader = () => {
     let data = [];
     let weekStart = startOfWeek(
@@ -395,35 +379,16 @@ function Scheduler(props) {
     events
   );
 
-  /**
-   * @name handleDateChange
-   * @description
-   * @param day
-   * @param date
-   * @return void
-   */
   const handleDateChange = (day, date) => {
     setDaysInMonth(day);
     setSelectedDay(date);
     setSelectedDate(format(date, "MMMM-yyyy"));
   };
 
-  /**
-   * @name handleModeChange
-   * @description
-   * @param newMode
-   * @return void
-   */
   const handleModeChange = (newMode) => {
     setMode(newMode);
   };
 
-  /**
-   * @name onSearchResult
-   * @description
-   * @param item
-   * @return void
-   */
   const onSearchResult = (item) => {
     setSearchResult(item);
   };
