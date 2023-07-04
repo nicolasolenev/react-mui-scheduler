@@ -28,7 +28,7 @@ React mui scheduler is a react component based on @mui v5 that allows you to man
 ```javascript
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
-import Scheduler from "react-mui-scheduler";
+import Scheduler, { Mode, TransitionMode } from "react-mui-scheduler";
 
 function App() {
   const [state] = useState({
@@ -150,7 +150,7 @@ ReactDOM.render(<App/>, document.querySelector("#yourComponentRootId"));
 |------------|----------|----------|--------------------------------------------------------------|
 | id         | `string` | `true`   | unique id for every event                                    |
 | label      | `string` | `true`   |                                                              | 
-| color      | `string` | `true`   | If not set, the primary color of the theme will be applied   | 
+| color      | `string` | `false`  | If not set, the primary color of the theme will be applied   | 
 | groupLabel | `string` | `true`   |                                                              |
 | startHour  | `string` | `true`   | Hour string format with `HH:mm aaa`                          |  
 | endHour    | `string` | `true`   | Hour string format with `HH:mm aaa`                          | 
@@ -175,15 +175,15 @@ For more details about date formats, see [date-fns docs](https://date-fns.org/v2
 
 ## Options
 
-| Name           | Type   | Default               | Description                                                                   | Values                                                               |
-|----------------|--------|-----------------------|-------------------------------------------------------------------------------|----------------------------------------------------------------------|
-| transitionMode | string | `TransitionMode.ZOOM` | This option is used to define the type of scheduler transition                | `TransitionMode.ZOOM`, `TransitionMode.FADE`, `TransitionMode.SLIDE` |
-| startWeekOn    | string | `mon`                 | This option is used to set the start of the calendar week to Monday or Sunday | `mon`, `sun`                                                         |
-| defaultMode    | string | `Mode.WEEK`           | This option allows you to define the type of view to display                  | `Mode.MONTH`, `Mode.WEEK`, `Mode.DAY`, `Mode.TIMELINE`               |
-| minWidth       | number | `540`                 | This option allows you to define the minimum width of the container           | `number`                                                             |
-| maxWidth       | number | `540`                 | This option allows you to define the maximum width of the container           | `number`                                                             |
-| minHeight      | number | `540`                 | This option allows you to define the minimum height of the container          | `number`                                                             |
-| maxHeigh       | number | `540`                 | This option allows you to define the maximum height of the container          | `number`                                                             |
+| Name           | Type           | Default               | Description                                                                   | Values                                                               |
+|----------------|----------------|-----------------------|-------------------------------------------------------------------------------|----------------------------------------------------------------------|
+| transitionMode | TransitionMode | `TransitionMode.ZOOM` | This option is used to define the type of scheduler transition                | `TransitionMode.ZOOM`, `TransitionMode.FADE`, `TransitionMode.SLIDE` |
+| startWeekOn    | string         | `mon`                 | This option is used to set the start of the calendar week to Monday or Sunday | `mon`, `sun`                                                         |
+| defaultMode    | Mode           | `Mode.WEEK`           | This option allows you to define the type of view to display                  | `Mode.MONTH`, `Mode.WEEK`, `Mode.DAY`, `Mode.TIMELINE`               |
+| minWidth       | number         | `540`                 | This option allows you to define the minimum width of the container           | `number`                                                             |
+| maxWidth       | number         | `540`                 | This option allows you to define the maximum width of the container           | `number`                                                             |
+| minHeight      | number         | `540`                 | This option allows you to define the minimum height of the container          | `number`                                                             |
+| maxHeight      | number         | `540`                 | This option allows you to define the maximum height of the container          | `number`                                                             |
 
 ## alertProps
 

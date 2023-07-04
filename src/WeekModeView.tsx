@@ -11,6 +11,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { add, differenceInMinutes, format, isValid, parse } from "date-fns";
 import EventItem from "./EventItem";
+import { Option } from "./types";
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${ tableCellClasses.head }`]: {
@@ -65,7 +66,7 @@ const StyledTableContainer = styled(TableContainer)(() => ({
 })) as typeof TableContainer;
 
 interface WeekModeViewProps {
-  options: any;
+  options: Option;
   columns: any[];
   rows: any[];
   searchResult: any;

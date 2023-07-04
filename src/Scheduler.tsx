@@ -1,7 +1,7 @@
 import React, { FC, JSX, useEffect, useReducer, useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
-import { Mode, TransitionMode } from "./types";
+import { AlertProps, Event, Mode, Option, ToolbarProps, TransitionMode } from "./types";
 import {
   add,
   format,
@@ -28,16 +28,16 @@ import DayModeView from "./DayModeView";
 import TimeLineModeView from "./TimeLineModeView";
 
 interface SchedulerProps {
-  events: any[];
+  events: Event[];
   locale?: string;
-  options: any;
-  alertProps?: any;
+  options: Option;
+  alertProps?: AlertProps;
   legacyStyle?: boolean;
-  toolbarProps: any;
-  onCellClick?: () => void;
-  onTaskClick?: () => void;
-  onEventsChange?: (item: any) => void;
-  onAlertCloseButtonClicked?: () => void;
+  toolbarProps: ToolbarProps;
+  onCellClick?: (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, row: any, day: any) => void;
+  onTaskClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: any) => void;
+  onEventsChange?: (item: Event) => void;
+  onAlertCloseButtonClicked?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const Scheduler: FC<SchedulerProps> = ({
@@ -63,7 +63,7 @@ const Scheduler: FC<SchedulerProps> = ({
   const [state, setState] = useState<any>({});
   const [searchResult, setSearchResult] = useState();
   const [selectedDay, setSelectedDay] = useState<number | Date>(today);
-  const [alertState, setAlertState] = useState(alertProps);
+  const [alertState, setAlertState] = useState<AlertProps | undefined>(alertProps);
   const [mode, setMode] = useState(options?.defaultMode || Mode.MONTH);
   const [daysInMonth, setDaysInMonth] = useState(getDaysInMonth(today));
   const [startWeekOn, setStartWeekOn] = useState(options?.startWeekOn || "mon");
@@ -462,7 +462,7 @@ const Scheduler: FC<SchedulerProps> = ({
   ]);
 
   useEffect(() => {
-    if (locale !== i18n.language) { //localStorage.getItem('i18nextLng')
+    if (locale !== i18n.language) {
       localStorage.setItem("i18nextLng", locale.toLowerCase());
       i18n.changeLanguage(locale.toLowerCase());
       updateWeekDays();
@@ -471,13 +471,13 @@ const Scheduler: FC<SchedulerProps> = ({
 
   useEffect(() => {
     if (options?.defaultMode !== mode) {
-      setMode(options?.defaultMode);
+      setMode(options?.defaultMode as Mode);
     }
   }, [options?.defaultMode]);
 
   useEffect(() => {
     if (options?.startWeekOn !== startWeekOn) {
-      setStartWeekOn(options?.startWeekOn);
+      setStartWeekOn(options?.startWeekOn as string);
     }
     updateWeekDays();
   }, [options?.startWeekOn]);

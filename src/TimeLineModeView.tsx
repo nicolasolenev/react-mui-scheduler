@@ -11,6 +11,7 @@ import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineDot from "@mui/lab/TimelineDot";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import TimelineContent from "@mui/lab/TimelineContent";
+import { Option } from "./types";
 
 const StyledContainer = styled(Typography)(() => ({
   ["&::-webkit-scrollbar"]: {
@@ -32,7 +33,7 @@ const StyledContainer = styled(Typography)(() => ({
 })) as typeof Typography;
 
 interface TimeLineModeViewProps {
-  options: any;
+  options: Option;
   rows: any[];
   searchResult: any;
   onTaskClick?: (event: React.MouseEvent<HTMLDivElement>, task: any) => void;
@@ -59,7 +60,7 @@ const TimeLineModeView: FC<TimeLineModeViewProps> = ({ options, rows, searchResu
       component="div"
       sx={ {
         overflowY: "auto",
-        height: options?.height || 540,
+        minHeight: options?.minHeight || 540,
         maxHeight: options?.maxHeight || 540,
       } }
     >

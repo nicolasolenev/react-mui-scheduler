@@ -12,6 +12,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { format, parse, add, differenceInMinutes, isValid } from "date-fns";
 import EventItem from "./EventItem";
+import { Option } from "./types";
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${ tableCellClasses.head }`]: {
@@ -64,7 +65,7 @@ const StyledTableContainer = styled(TableContainer)(() => ({
 })) as typeof TableContainer;
 
 interface DayModeViewProps {
-  options?: any;
+  options?: Option;
   columns?: any[];
   rows?: any[];
   date?: string;
@@ -211,7 +212,7 @@ const DayModeView: FC<DayModeViewProps> = ({
       <Table
         size="small"
         aria-label="simple table"
-        stickyHeader sx={ { minWidth: options.minWidth || 540 } }
+        stickyHeader sx={ { minWidth: options?.minWidth || 540 } }
       >
         <TableHead sx={ { height: 24 } }>
           <StyledTableRow>

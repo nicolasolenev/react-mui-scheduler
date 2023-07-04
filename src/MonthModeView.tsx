@@ -12,6 +12,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import EventNoteRoundedIcon from "@mui/icons-material/EventNoteRounded";
 import { SxProps } from "@mui/system";
+import { Option } from "./types";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${ tableCellClasses.head }`]: {
@@ -50,7 +51,7 @@ const StyledTableRow = styled(TableRow)(() => ({
 
 interface MonthModeViewProps {
   rows: any[];
-  options: any;
+  options: Option;
   columns: any[];
   legacyStyle?: boolean;
   searchResult: any;

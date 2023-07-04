@@ -3,7 +3,7 @@ import { useTheme } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 import { add, format, getDaysInMonth, parse, sub } from "date-fns";
 import DateFnsLocaleContext from "./locales/dateFnsContext";
-import { Mode } from "./types";
+import { AlertProps, Mode, ToolbarProps as SchedulerToolbarProps } from "./types";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import ArchiveIcon from "@mui/icons-material/Archive";
@@ -41,8 +41,8 @@ interface ToolbarProps {
   events: any[];
   today: number | Date;
   switchMode: Mode;
-  alertProps: any;
-  toolbarProps: any;
+  alertProps?: AlertProps;
+  toolbarProps: SchedulerToolbarProps;
   onModeChange: (mode: Mode) => void;
   onDateChange: (daysInMonth: number, selectedDate: number | Date) => void;
   onSearchResult: (searchResult: any) => void;
@@ -59,13 +59,13 @@ const Toolbar: FC<ToolbarProps> = ({
     color: "info",
     severity: "info",
     showActionButton: true,
-  },
+  } as AlertProps,
   toolbarProps = {
     showSearchBar: true,
     showSwitchModeButtons: true,
     showDatePicker: true,
     showOptions: false,
-  },
+  } as SchedulerToolbarProps,
   onModeChange,
   onDateChange,
   onSearchResult,
