@@ -1441,6 +1441,11 @@
   };
   TimeLineModeView.defaultProps = {};
 
+  var TransitionMode = {
+    FADE: "fade",
+    SLIDE: "slide",
+    ZOOM: "zoom"
+  };
   var Mode = {
     DAY: "day",
     MONTH: "month",
@@ -1513,7 +1518,7 @@
     var isWeekMode = mode.toLowerCase() === Mode.WEEK;
     var isMonthMode = mode.toLowerCase() === Mode.MONTH;
     var isTimelineMode = mode.toLowerCase() === Mode.TIMELINE;
-    var TransitionMode = (options === null || options === void 0 ? void 0 : options.transitionMode) === TransitionMode.ZOOM ? material.Zoom : (options === null || options === void 0 ? void 0 : options.transitionMode) === TransitionMode.FADE ? material.Fade : material.Slide;
+    var TransitionModeComponent = (options === null || options === void 0 ? void 0 : options.transitionMode) === TransitionMode.ZOOM ? material.Zoom : (options === null || options === void 0 ? void 0 : options.transitionMode) === TransitionMode.FADE ? material.Fade : material.Slide;
     var dateFnsLocale;
     switch (locale$1) {
       case "fr":
@@ -1946,7 +1951,7 @@
       spacing: 0,
       alignItems: "center",
       justifyContent: "start"
-    }, isMonthMode && /*#__PURE__*/React__default["default"].createElement(TransitionMode, {
+    }, isMonthMode && /*#__PURE__*/React__default["default"].createElement(TransitionModeComponent, {
       "in": true
     }, /*#__PURE__*/React__default["default"].createElement(material.Grid, {
       item: true,
@@ -1963,7 +1968,7 @@
       searchResult: searchResult,
       onDateChange: handleDateChange,
       onEventsChange: handleEventsChange
-    }))), isWeekMode && /*#__PURE__*/React__default["default"].createElement(TransitionMode, {
+    }))), isWeekMode && /*#__PURE__*/React__default["default"].createElement(TransitionModeComponent, {
       "in": true
     }, /*#__PURE__*/React__default["default"].createElement(material.Grid, {
       item: true,
@@ -1980,7 +1985,7 @@
       searchResult: searchResult,
       onDateChange: handleDateChange,
       onEventsChange: handleEventsChange
-    }))), isDayMode && /*#__PURE__*/React__default["default"].createElement(TransitionMode, {
+    }))), isDayMode && /*#__PURE__*/React__default["default"].createElement(TransitionModeComponent, {
       "in": true
     }, /*#__PURE__*/React__default["default"].createElement(material.Grid, {
       item: true,
@@ -1997,7 +2002,7 @@
       searchResult: searchResult,
       onDateChange: handleDateChange,
       onEventsChange: handleEventsChange
-    })))), isTimelineMode && /*#__PURE__*/React__default["default"].createElement(TransitionMode, {
+    })))), isTimelineMode && /*#__PURE__*/React__default["default"].createElement(TransitionModeComponent, {
       "in": true
     }, /*#__PURE__*/React__default["default"].createElement(material.Grid, {
       container: true,

@@ -70,7 +70,7 @@ function Scheduler(props) {
   const isWeekMode = mode.toLowerCase() === Mode.WEEK;
   const isMonthMode = mode.toLowerCase() === Mode.MONTH;
   const isTimelineMode = mode.toLowerCase() === Mode.TIMELINE;
-  const TransitionMode = (
+  const TransitionModeComponent = (
     options?.transitionMode === TransitionMode.ZOOM ? Zoom :
       options?.transitionMode === TransitionMode.FADE ? Fade : Slide
   );
@@ -505,7 +505,7 @@ function Scheduler(props) {
           justifyContent="start"
         >
           { isMonthMode &&
-            <TransitionMode in>
+            <TransitionModeComponent in>
               <Grid item xs={ 12 }>
                 <MonthModeView
                   locale={ locale }
@@ -521,9 +521,9 @@ function Scheduler(props) {
                   onEventsChange={ handleEventsChange }
                 />
               </Grid>
-            </TransitionMode> }
+            </TransitionModeComponent> }
           { isWeekMode &&
-            <TransitionMode in>
+            <TransitionModeComponent in>
               <Grid item xs={ 12 }>
                 <WeekModeView
                   locale={ locale }
@@ -539,9 +539,9 @@ function Scheduler(props) {
                   onEventsChange={ handleEventsChange }
                 />
               </Grid>
-            </TransitionMode> }
+            </TransitionModeComponent> }
           { isDayMode &&
-            <TransitionMode in>
+            <TransitionModeComponent in>
               <Grid item xs={ 12 }>
                 <DayModeView
                   locale={ locale }
@@ -557,10 +557,10 @@ function Scheduler(props) {
                   onEventsChange={ handleEventsChange }
                 />
               </Grid>
-            </TransitionMode> }
+            </TransitionModeComponent> }
         </Grid>
         { isTimelineMode &&
-          <TransitionMode in>
+          <TransitionModeComponent in>
             <Grid container spacing={ 2 } alignItems="start">
               <Grid item xs={ 12 }>
                 <TimeLineModeView
@@ -578,7 +578,7 @@ function Scheduler(props) {
                 />
               </Grid>
             </Grid>
-          </TransitionMode> }
+          </TransitionModeComponent> }
       </DateFnsLocaleContext.Provider>
     </Paper>
   );
