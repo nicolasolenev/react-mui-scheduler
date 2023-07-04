@@ -2,7 +2,7 @@ import React, { FC, JSX, useContext, useEffect, useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 import { add, format, getDaysInMonth, parse, sub } from "date-fns";
-import DateFnsLocaleContext from "../locales/dateFnsContext";
+import DateFnsLocaleContext from "./locales/dateFnsContext";
 import { Mode } from "./types";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import AutorenewIcon from "@mui/icons-material/Autorenew";

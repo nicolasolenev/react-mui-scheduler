@@ -15,11 +15,11 @@
     "moduleResolution": "Node",
     "lib": ["ES5", "ES6", "ES2015", "ES2017", "ES2021", "DOM"],
     "jsx": "react",
-    "rootDir": ".",
+    "rootDir": "src",
     "outDir": "dist",
     "skipLibCheck": true,
     "resolveJsonModule": true
   },
-  "include": ["src/*.ts", "src/*.tsx", "locales/**/.json", "locales/*.ts"],
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/.json"],
   "exclude": ["node_modules"]
 }

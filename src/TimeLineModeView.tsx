@@ -1,7 +1,7 @@
 import React, { FC, JSX, useContext } from "react";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import DateFnsLocaleContext from "../locales/dateFnsContext";
+import DateFnsLocaleContext from "./locales/dateFnsContext";
 import Timeline from "@mui/lab/Timeline";
 import TimelineItem from "@mui/lab/TimelineItem";
 import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";

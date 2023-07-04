@@ -19,7 +19,7 @@ import Fade from "@mui/material/Fade";
 import Slide from "@mui/material/Slide";
 import { ar, de, enUS, es, fr, ja, ko, ptBR, ru, zhCN } from "date-fns/locale";
 import Paper from "@mui/material/Paper";
-import DateFnsLocaleContext from "../locales/dateFnsContext";
+import DateFnsLocaleContext from "./locales/dateFnsContext";
 import SchedulerToolbar from "./Toolbar";
 import Grid from "@mui/material/Grid";
 import MonthModeView from "./MonthModeView";
