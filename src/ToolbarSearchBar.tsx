@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import { format, parse } from "date-fns";
-import { useTranslation } from "react-i18next";
+import React, { FC, JSX, useState } from "react";
 import { styled } from "@mui/material/styles";
-import { TextField, Autocomplete, Box } from "@mui/material";
+import { Autocomplete, Box, TextField } from "@mui/material";
+import { useTranslation } from "react-i18next";
+import { format, parse } from "date-fns";
 
 const StyledAutoComplete = styled(Autocomplete)(({ theme }) => ({
   color: "inherit",
@@ -20,15 +19,19 @@ const StyledAutoComplete = styled(Autocomplete)(({ theme }) => ({
   [theme.breakpoints.up("lg")]: {
     width: "27ch",
   },
-}));
+})) as typeof Autocomplete;
 
-function ToolbarSearchbar(props) {
-  const { events, onInputChange } = props;
+interface ToolbarSearchBarProps {
+  events: any[];
+  onInputChange: (value: any) => void;
+}
+
+const ToolbarSearchBar: FC<ToolbarSearchBarProps> = ({ events, onInputChange }): JSX.Element => {
   const { t } = useTranslation(["common"]);
   const [value, setValue] = useState("");
   const [inputValue, setInputValue] = useState("");
 
-  const handleOnChange = (event, newValue) => {
+  const handleOnChange = (event: React.SyntheticEvent, newValue: any): void => {
     setValue(newValue);
     if (onInputChange) onInputChange(newValue);
   };
@@ -41,7 +44,7 @@ function ToolbarSearchbar(props) {
       sx={ { mb: 0, display: "inline-flex" } }
       onChange={ handleOnChange }
       options={ events?.sort((a, b) => -b.groupLabel.localeCompare(a.groupLabel)) }
-      groupBy={ (option) => option ? option?.groupLabel : null }
+      groupBy={ (option: any) => option ? option?.groupLabel : null }
       getOptionLabel={ (option) => (
         option ?
           `${ option.groupLabel || "" } | (${ option.startHour || "" } - ${ option.endHour || "" })` : ""
@@ -70,13 +73,6 @@ function ToolbarSearchbar(props) {
       ) }
     />
   );
-}
-
-ToolbarSearchbar.propTypes = {
-  events: PropTypes.array,
-  onInputChange: PropTypes.func,
 };
 
-ToolbarSearchbar.defaultProps = {};
-
-export default ToolbarSearchbar;
+export default ToolbarSearchBar;

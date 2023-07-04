@@ -1,10 +1,11 @@
 {
   "name": "react-mui-scheduler",
-  "version": "2.0.4",
+  "version": "3.0.0",
   "description": "📅 React mui scheduler is a react component based on @mui v5 that allows you to manage data in a calendar",
-  "main": "dist/index.esm.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "build": "rollup -c"
+    "build": "tsc"
   },
   "keywords": [
     "react",
@@ -46,11 +47,16 @@
     "@babel/preset-react": "^7.22.5",
     "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-json": "^6.0.0",
+    "@tsconfig/node12": "^1.0.11",
+    "@types/node": "^18.2.0",
+    "@types/react": "^18.0.21",
+    "@types/react-dom": "^18.0.6",
     "autoprefixer": "^10.4.14",
     "react": "^18.2.0",
     "rollup": "^2.70.1",
     "rollup-plugin-sourcemaps": "^0.6.3",
     "rollup-plugin-styles": "^4.0.0",
-    "rollup-plugin-terser": "^7.0.2"
+    "rollup-plugin-terser": "^7.0.2",
+    "typescript": "^4.8.4"
   }
 }

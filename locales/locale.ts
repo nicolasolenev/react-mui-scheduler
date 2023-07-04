@@ -1,4 +1,4 @@
-import i18n from "i18next";
+import i18n, { Resource } from "i18next";
 import { initReactI18next } from "react-i18next";
 
 import trEN from "./en/common.json";
@@ -21,7 +21,7 @@ const resources = {
   ja: { common: trJA },
   zh: { common: trZH },
   br: { common: trBR },
-};
+} as Resource;
 
 i18n
   // pass the i18n instance to react-i18next.
@@ -30,7 +30,7 @@ i18n
   // for all options read: https://www.i18next.com/overview/configuration-options
   .init({
     resources,
-    lng: localStorage.getItem("i18nextLng"),
+    lng: localStorage.getItem("i18nextLng") as string,
     ns: ["common"],
     defaultNS: "common",
     fallbackNS: "common",
@@ -40,7 +40,6 @@ i18n
       escapeValue: false, // not needed for react as it escapes by default
     },
     react: {
-      wait: true,
       useSuspense: false,
     },
   });

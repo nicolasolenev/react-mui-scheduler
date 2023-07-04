@@ -1,6 +1,5 @@
-import Scheduler from "./Scheduler.jsx";
+import Scheduler from "./Scheduler";
 
 export * from "./types";
 
 export default Scheduler;
-

@@ -1,17 +1,16 @@
-import React, { useContext } from "react";
-import PropTypes from "prop-types";
+import React, { FC, JSX, useContext } from "react";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
+import DateFnsLocaleContext from "../locales/dateFnsContext";
 import Timeline from "@mui/lab/Timeline";
 import TimelineItem from "@mui/lab/TimelineItem";
+import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
+import { format, parse } from "date-fns";
 import TimelineSeparator from "@mui/lab/TimelineSeparator";
 import TimelineConnector from "@mui/lab/TimelineConnector";
-import TimelineContent from "@mui/lab/TimelineContent";
-import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
 import TimelineDot from "@mui/lab/TimelineDot";
 import ScheduleIcon from "@mui/icons-material/Schedule";
-import { format, parse } from "date-fns";
-import DateFnsLocaleContext from "../locales/dateFnsContext";
+import TimelineContent from "@mui/lab/TimelineContent";
 
 const StyledContainer = styled(Typography)(() => ({
   ["&::-webkit-scrollbar"]: {
@@ -30,21 +29,27 @@ const StyledContainer = styled(Typography)(() => ({
   ["&::-webkit-scrollbar-thumb:window-inactive"]: {
     background: "rgba(125, 161, 196, 0.5)",
   },
-}));
+})) as typeof Typography;
 
-function TimeLineModeView(props) {
-  const { options, rows, searchResult, onTaskClick } = props;
+interface TimeLineModeViewProps {
+  options: any;
+  rows: any[];
+  searchResult: any;
+  onTaskClick: (event: React.MouseEvent<HTMLDivElement>, task: any) => void;
+}
+
+const TimeLineModeView: FC<TimeLineModeViewProps> = ({ options, rows, searchResult, onTaskClick }): JSX.Element => {
   const dateFnsLocale = useContext(DateFnsLocaleContext);
 
-  const handleTaskClick = (event, task) => {
+  const handleTaskClick = (event: React.MouseEvent<HTMLDivElement>, task: any) => {
     event.preventDefault();
     event.stopPropagation();
     onTaskClick && onTaskClick(event, task);
   };
 
-  let fileredEvents = rows?.sort((a, b) => -b?.startHour?.localeCompare(a?.startHour));
+  let filteredEvents = rows?.sort((a, b) => -b?.startHour?.localeCompare(a?.startHour));
   if (searchResult) {
-    fileredEvents = fileredEvents?.filter(
+    filteredEvents = filteredEvents?.filter(
       event => event?.groupLabel === searchResult?.groupLabel,
     );
   }
@@ -59,7 +64,7 @@ function TimeLineModeView(props) {
       } }
     >
       <Timeline position="alternate">
-        { fileredEvents?.map((task, index) => {
+        { filteredEvents?.map((task, index) => {
           return (
             <TimelineItem
               key={ `timeline-${ index }` }
@@ -106,21 +111,6 @@ function TimeLineModeView(props) {
       </Timeline>
     </StyledContainer>
   );
-}
-
-TimeLineModeView.propTypes = {
-  events: PropTypes.array,
-  columns: PropTypes.array,
-  rows: PropTypes.array,
-  date: PropTypes.string,
-  options: PropTypes.object,
-  searchResult: PropTypes.object,
-  onDateChange: PropTypes.func.isRequired,
-  onTaskClick: PropTypes.func.isRequired,
-  onCellClick: PropTypes.func.isRequired,
-  onEventsChange: PropTypes.func.isRequired,
 };
-
-TimeLineModeView.defaultProps = {};
 
 export default TimeLineModeView;

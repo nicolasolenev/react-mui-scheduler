@@ -1,61 +1,74 @@
-import React, { useState, useEffect, useReducer } from "react";
-import PropTypes from "prop-types";
-import { useTranslation } from "react-i18next";
+import React, { FC, JSX, useEffect, useReducer, useState } from "react";
 import { useTheme } from "@mui/material/styles";
-import { Grid, Paper, Fade, Zoom, Slide } from "@mui/material";
+import { useTranslation } from "react-i18next";
+import { Mode, TransitionMode } from "./types";
 import {
-  format,
-  getDaysInMonth,
-  getDay,
-  sub,
-  startOfMonth,
-  parse,
   add,
-  startOfDay,
-  startOfWeek,
+  format,
+  getDay,
+  getDaysInMonth,
   getWeeksInMonth,
   isSameDay,
+  parse, startOfDay,
+  startOfMonth,
+  startOfWeek,
+  sub,
 } from "date-fns";
-import SchedulerToolbar from "./Toolbar.jsx";
-import MonthModeView from "./MonthModeView.jsx";
-import WeekModeView from "./WeekModeView.jsx";
-import DayModeView from "./DayModeView.jsx";
-import TimeLineModeView from "./TimeLineModeView.jsx";
+import Zoom from "@mui/material/Zoom";
+import Fade from "@mui/material/Fade";
+import Slide from "@mui/material/Slide";
+import { ar, de, enUS, es, fr, ja, ko, ptBR, ru, zhCN } from "date-fns/locale";
+import Paper from "@mui/material/Paper";
 import DateFnsLocaleContext from "../locales/dateFnsContext";
-import { ar, de, enUS, es, fr, ja, ko, ru, zhCN, ptBR } from "date-fns/locale";
-import { Mode, TransitionMode } from "./types";
+import SchedulerToolbar from "./Toolbar";
+import Grid from "@mui/material/Grid";
+import MonthModeView from "./MonthModeView";
+import WeekModeView from "./WeekModeView";
+import DayModeView from "./DayModeView";
+import TimeLineModeView from "./TimeLineModeView";
 
-function Scheduler(props) {
-  const {
-    events,
-    locale,
-    options,
-    alertProps,
-    onCellClick,
-    legacyStyle,
-    onTaskClick,
-    toolbarProps,
-    onEventsChange,
-    onAlertCloseButtonClicked,
-  } = props;
+interface SchedulerProps {
+  events: any[];
+  locale: string;
+  options: any;
+  alertProps: any;
+  legacyStyle: boolean;
+  toolbarProps: any;
+  onCellClick: () => void;
+  onTaskClick: () => void;
+  onEventsChange: (item: any) => void;
+  onAlertCloseButtonClicked: () => void;
+}
+
+const Scheduler: FC<SchedulerProps> = ({
+  events,
+  locale = "en",
+  options,
+  alertProps,
+  onCellClick,
+  legacyStyle = false,
+  onTaskClick,
+  toolbarProps,
+  onEventsChange,
+  onAlertCloseButtonClicked,
+}): JSX.Element => {
   const today = new Date();
-  const theme = useTheme();
+  useTheme();
   const { t, i18n } = useTranslation(["common"]);
   const weeks = [
     t("mon"), t("tue"), t("wed"),
     t("thu"), t("fri"), t("sat"),
     t("sun"),
   ];
-
-  const [state, setState] = useState({});
+  const [state, setState] = useState<any>({});
   const [searchResult, setSearchResult] = useState();
-  const [selectedDay, setSelectedDay] = useState(today);
+  const [selectedDay, setSelectedDay] = useState<number | Date>(today);
   const [alertState, setAlertState] = useState(alertProps);
   const [mode, setMode] = useState(options?.defaultMode || Mode.MONTH);
   const [daysInMonth, setDaysInMonth] = useState(getDaysInMonth(today));
   const [startWeekOn, setStartWeekOn] = useState(options?.startWeekOn || "mon");
   const [selectedDate, setSelectedDate] = useState(format(today, "MMMM-yyyy"));
-  const [weekDays, updateWeekDays] = useReducer((state) => {
+  const [weekDays, updateWeekDays] = useReducer(() => {
     if (options?.startWeekOn?.toUpperCase() === "SUN") {
       return [
         t("sun"), t("mon"), t("tue"),
@@ -75,7 +88,7 @@ function Scheduler(props) {
       options?.transitionMode === TransitionMode.FADE ? Fade : Slide
   );
 
-  let dateFnsLocale;
+  let dateFnsLocale: any;
   switch (locale) {
     case "fr":
       dateFnsLocale = fr;
@@ -108,16 +121,7 @@ function Scheduler(props) {
       dateFnsLocale = enUS;
   }
 
-  /**
-   * @name getMonthHeader
-   * @description
-   * @return {{headerClassName: string, headerAlign: string, headerName: string, field: string, flex: number, editable: boolean, id: string, sortable: boolean, align: string}[]}
-   */
   const getMonthHeader = () => {
-    //if (startWeekOn?.toUpperCase() === 'SUN') {
-    //weekDays[0] = t('sun')
-    //weekDays[1] = t('mon')
-    //}
     return weekDays.map((day, i) => ({
       id: `row-day-header-${ i + 1 }`,
       flex: 1,
@@ -142,7 +146,7 @@ function Scheduler(props) {
     let monthStartDay = getDay(monthStartDate);            // Index of the day in week
     let dateDay = parseInt(format(monthStartDate, "dd"));  // Month start day
     // Condition check helper
-    const checkCondition = (v) => (
+    const checkCondition = (v: any) => (
       startOnSunday ? v <= monthStartDay : v < monthStartDay
     );
     if (monthStartDay >= 1) {
@@ -254,7 +258,7 @@ function Scheduler(props) {
           data,
         });
       }
-      rows[iteration - 1].days = rows[iteration - 1].days.concat(lastDaysData);
+      rows[iteration - 1].days = rows[iteration - 1].days.concat(lastDaysData as any);
     }
 
     return rows;
@@ -308,7 +312,7 @@ function Scheduler(props) {
 
       if (i > 0) {
         //Start processing bloc
-        let obj = { id: id, label: label, days: [] };
+        let obj: any = { id: id, label: label, days: [] };
         let columns = getWeekHeader();
         // eslint-disable-next-line
         columns.map((column, index) => {
@@ -355,7 +359,7 @@ function Scheduler(props) {
       let label = format(dayStartHour, "HH:mm aaa");
 
       if (i > 0) {
-        let obj = { id: id, label: label, days: [] };
+        let obj: any = { id: id, label: label, days: [] };
         let columns = getDayHeader();
         let column = columns[0];
         let matchedEvents = events.filter((event) => {
@@ -379,28 +383,24 @@ function Scheduler(props) {
   };
 
   const getTimeLineRows = () => (
-    //events.filter((event) => {
-    //let eventDate = parse(event?.date, 'yyyy-MM-dd', new Date())
-    //return isSameDay(selectedDay, eventDate)
-    //})
     events
   );
 
-  const handleDateChange = (day, date) => {
+  const handleDateChange = (day: number, date: number | Date): void => {
     setDaysInMonth(day);
     setSelectedDay(date);
     setSelectedDate(format(date, "MMMM-yyyy"));
   };
 
-  const handleModeChange = (newMode) => {
+  const handleModeChange = (newMode: Mode): void => {
     setMode(newMode);
   };
 
-  const onSearchResult = (item) => {
+  const onSearchResult = (item: any): void => {
     setSearchResult(item);
   };
 
-  const handleEventsChange = async (item) => {
+  const handleEventsChange = async (item: any): Promise<void> => {
     onEventsChange(item);
     let eventIndex = events.findIndex(e => e.id === item?.id);
     if (eventIndex !== -1) {
@@ -450,7 +450,6 @@ function Scheduler(props) {
         rows: getTimeLineRows(),
       });
     }
-    // eslint-disable-next-line
   }, [
     mode,
     weekDays,
@@ -489,7 +488,6 @@ function Scheduler(props) {
         <SchedulerToolbar
           today={ today }
           events={ events }
-          locale={ locale }
           switchMode={ mode }
           alertProps={ alertState }
           toolbarProps={ toolbarProps }
@@ -508,16 +506,13 @@ function Scheduler(props) {
             <TransitionModeComponent in>
               <Grid item xs={ 12 }>
                 <MonthModeView
-                  locale={ locale }
                   options={ options }
-                  date={ selectedDate }
                   rows={ state?.rows }
                   columns={ state?.columns }
                   legacyStyle={ legacyStyle }
                   onTaskClick={ onTaskClick }
                   onCellClick={ onCellClick }
                   searchResult={ searchResult }
-                  onDateChange={ handleDateChange }
                   onEventsChange={ handleEventsChange }
                 />
               </Grid>
@@ -526,16 +521,12 @@ function Scheduler(props) {
             <TransitionModeComponent in>
               <Grid item xs={ 12 }>
                 <WeekModeView
-                  locale={ locale }
-                  events={ events }
                   options={ options }
-                  date={ selectedDate }
                   rows={ state?.rows }
                   columns={ state?.columns }
                   onTaskClick={ onTaskClick }
                   onCellClick={ onCellClick }
                   searchResult={ searchResult }
-                  onDateChange={ handleDateChange }
                   onEventsChange={ handleEventsChange }
                 />
               </Grid>
@@ -544,8 +535,6 @@ function Scheduler(props) {
             <TransitionModeComponent in>
               <Grid item xs={ 12 }>
                 <DayModeView
-                  locale={ locale }
-                  events={ events }
                   options={ options }
                   date={ selectedDate }
                   rows={ state?.rows }
@@ -553,7 +542,6 @@ function Scheduler(props) {
                   onTaskClick={ onTaskClick }
                   onCellClick={ onCellClick }
                   searchResult={ searchResult }
-                  onDateChange={ handleDateChange }
                   onEventsChange={ handleEventsChange }
                 />
               </Grid>
@@ -564,17 +552,10 @@ function Scheduler(props) {
             <Grid container spacing={ 2 } alignItems="start">
               <Grid item xs={ 12 }>
                 <TimeLineModeView
-                  events={ events }
-                  locale={ locale }
                   options={ options }
-                  date={ selectedDate }
                   rows={ state?.rows }
-                  columns={ state?.columns }
                   onTaskClick={ onTaskClick }
-                  onCellClick={ onCellClick }
                   searchResult={ searchResult }
-                  onDateChange={ handleDateChange }
-                  onEventsChange={ onEventsChange }
                 />
               </Grid>
             </Grid>
@@ -582,22 +563,6 @@ function Scheduler(props) {
       </DateFnsLocaleContext.Provider>
     </Paper>
   );
-}
-
-Scheduler.propTypes = {
-  events: PropTypes.array,
-  options: PropTypes.object,
-  alertProps: PropTypes.object,
-  toolbarProps: PropTypes.object,
-  onEventsChange: PropTypes.func,
-  onCellClick: PropTypes.func,
-  onTaskClick: PropTypes.func,
-  onAlertCloseButtonClicked: PropTypes.func,
-};
-
-Scheduler.defaultProps = {
-  locale: "en",
-  legacyStyle: false,
 };
 
 export default Scheduler;
