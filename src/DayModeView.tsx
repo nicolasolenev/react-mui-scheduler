@@ -69,8 +69,8 @@ interface DayModeViewProps {
   rows?: any[];
   date?: string;
   searchResult?: any;
-  onTaskClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: any) => void;
-  onCellClick: (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, row: any, day?: any) => void;
+  onTaskClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: any) => void;
+  onCellClick?: (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, row: any, day?: any) => void;
   onEventsChange: (item: any) => void;
 }
 

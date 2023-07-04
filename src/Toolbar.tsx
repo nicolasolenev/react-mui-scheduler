@@ -46,7 +46,7 @@ interface ToolbarProps {
   onModeChange: (mode: Mode) => void;
   onDateChange: (daysInMonth: number, selectedDate: number | Date) => void;
   onSearchResult: (searchResult: any) => void;
-  onAlertCloseButtonClicked: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onAlertCloseButtonClicked?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const Toolbar: FC<ToolbarProps> = ({

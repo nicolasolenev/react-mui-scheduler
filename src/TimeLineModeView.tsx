@@ -35,7 +35,7 @@ interface TimeLineModeViewProps {
   options: any;
   rows: any[];
   searchResult: any;
-  onTaskClick: (event: React.MouseEvent<HTMLDivElement>, task: any) => void;
+  onTaskClick?: (event: React.MouseEvent<HTMLDivElement>, task: any) => void;
 }
 
 const TimeLineModeView: FC<TimeLineModeViewProps> = ({ options, rows, searchResult, onTaskClick }): JSX.Element => {

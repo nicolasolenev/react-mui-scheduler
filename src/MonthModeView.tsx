@@ -54,8 +54,8 @@ interface MonthModeViewProps {
   columns: any[];
   legacyStyle?: boolean;
   searchResult: any;
-  onTaskClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: any) => void;
-  onCellClick: (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, row: any, day: any) => void;
+  onTaskClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: any) => void;
+  onCellClick?: (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, row: any, day: any) => void;
   onEventsChange: (item: any) => void;
 }
 

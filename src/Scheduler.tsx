@@ -29,15 +29,15 @@ import TimeLineModeView from "./TimeLineModeView";
 
 interface SchedulerProps {
   events: any[];
-  locale: string;
+  locale?: string;
   options: any;
-  alertProps: any;
-  legacyStyle: boolean;
+  alertProps?: any;
+  legacyStyle?: boolean;
   toolbarProps: any;
-  onCellClick: () => void;
-  onTaskClick: () => void;
-  onEventsChange: (item: any) => void;
-  onAlertCloseButtonClicked: () => void;
+  onCellClick?: () => void;
+  onTaskClick?: () => void;
+  onEventsChange?: (item: any) => void;
+  onAlertCloseButtonClicked?: () => void;
 }
 
 const Scheduler: FC<SchedulerProps> = ({
@@ -401,7 +401,7 @@ const Scheduler: FC<SchedulerProps> = ({
   };
 
   const handleEventsChange = async (item: any): Promise<void> => {
-    onEventsChange(item);
+    onEventsChange && onEventsChange(item);
     let eventIndex = events.findIndex(e => e.id === item?.id);
     if (eventIndex !== -1) {
       let oldObject = Object.assign({}, events[eventIndex]);
