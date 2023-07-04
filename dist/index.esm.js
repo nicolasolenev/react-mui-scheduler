@@ -2040,4 +2040,4 @@ Scheduler.defaultProps = {
   legacyStyle: false
 };
 
-export { Scheduler as default };
+export { Mode, TransitionMode, Scheduler as default };
