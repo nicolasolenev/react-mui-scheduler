@@ -52,8 +52,14 @@ function App() {
     },
     toolbarProps: {
       showSearchBar: true,
-      showSwitchModeButtons: true,
+      showSwitchModeButtons: {
+        showMonthButton: true,
+        showWeekButton: true,
+        showDayButton: true,
+        showTimelineButton: true,
+      },
       showDatePicker: true,
+      showOptions: true,
     },
   });
 
@@ -187,23 +193,28 @@ For more details about date formats, see [date-fns docs](https://date-fns.org/v2
 
 ## alertProps
 
-| Name             | Type    | Default                                                    | Description                                                                     | Values                                |
-|------------------|---------|------------------------------------------------------------|---------------------------------------------------------------------------------|---------------------------------------|
-| open             | boolean | `true`                                                     | This option opens the notification Alert component                              | `true`, `false`                       |
-| color            | string  | `info`                                                     | Alert notification color                                                        | `info`, `success`, `warning`, `error` |
-| severity         | string  | `info`                                                     | Alert notification severity                                                     | `info`, `success`, `warning`, `error` |
-| message          | string  | `🚀 Let's start with awesome react-mui-scheduler 🔥 🔥 🔥` | Alert notification message to display                                           | `string`                              |
-| showActionButton | boolean | `true`                                                     | This option displays or not the action button on the Alert                      | `boolean`                             |
-| showNotification | boolean | `true`                                                     | This option allows to display or not a notification when data change            | `boolean`                             |
-| delay            | number  | `1500`                                                     | This option allows you to define the display delay in milliseconds of the Alert | `number`                              |
+| Name             | Type       | Default                                                    | Description                                                                     | Values                                |
+|------------------|------------|------------------------------------------------------------|---------------------------------------------------------------------------------|---------------------------------------|
+| open             | boolean    | `true`                                                     | This option opens the notification Alert component                              | `true`, `false`                       |
+| color            | AlertColor | `info`                                                     | Alert notification color                                                        | `info`, `success`, `warning`, `error` |
+| severity         | AlertColor | `info`                                                     | Alert notification severity                                                     | `info`, `success`, `warning`, `error` |
+| message          | string     | `🚀 Let's start with awesome react-mui-scheduler 🔥 🔥 🔥` | Alert notification message to display                                           | `string`                              |
+| showActionButton | boolean    | `true`                                                     | This option displays or not the action button on the Alert                      | `boolean`                             |
+| showNotification | boolean    | `true`                                                     | This option allows to display or not a notification when data change            | `boolean`                             |
+| delay            | number     | `1500`                                                     | This option allows you to define the display delay in milliseconds of the Alert | `number`                              |
 
 ## toolbarProps
 
-| Name                  | Type    | Default | Description                                      | Values          |
-|-----------------------|---------|---------|--------------------------------------------------|-----------------|
-| showSearchBar         | boolean | `true`  | Show or hide the search bar                      | `true`, `false` |
-| showSwitchModeButtons | boolean | `true`  | Show or hide the view mode button group switcher | `true`, `false` |
-| showDatePicker        | boolean | `true`  | Show or hide the date picker buttons             | `true`, `false` |
+| Name                                     | Type    | Default | Description                                | Values          |
+|------------------------------------------|---------|---------|--------------------------------------------|-----------------|
+| showSearchBar                            | boolean | `true`  | Show or hide the search bar                | `true`, `false` |
+| showSwitchModeButtons                    | object  |         |                                            |                 |
+| showSwitchModeButtons.showMonthButton    | boolean | `true`  | Show or hide the view mode button month    | `true`, `false` |
+| showSwitchModeButtons.showWeekButton     | boolean | `true`  | Show or hide the view mode button week     | `true`, `false` |
+| showSwitchModeButtons.showDayButton      | boolean | `true`  | Show or hide the view mode button day      | `true`, `false` |
+| showSwitchModeButtons.showTimelineButton | boolean | `true`  | Show or hide the view mode button timeline | `true`, `false` |
+| showDatePicker                           | boolean | `true`  | Show or hide the date picker buttons       | `true`, `false` |
+| showOptions                              | boolean | `false` |                                            | `true`, `false` |
 
 ## Methods
 

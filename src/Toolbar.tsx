@@ -36,6 +36,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import MuiToolbar from "@mui/material/Toolbar";
 import { IconButtonProps } from "@mui/material/IconButton/IconButton";
 import { TextFieldProps } from "@mui/material/TextField/TextField";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 interface ToolbarProps {
   events: any[];
@@ -62,7 +63,12 @@ const Toolbar: FC<ToolbarProps> = ({
   } as AlertProps,
   toolbarProps = {
     showSearchBar: true,
-    showSwitchModeButtons: true,
+    showSwitchModeButtons: {
+      showDayButton: true,
+      showMonthButton: true,
+      showTimelineButton: true,
+      showWeekButton: true,
+    },
     showDatePicker: true,
     showOptions: false,
   } as SchedulerToolbarProps,
@@ -165,6 +171,9 @@ const Toolbar: FC<ToolbarProps> = ({
     }
   }, [switchMode]);
 
+  const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>): void => {
+    setAnchorDateEl(event.currentTarget);
+  };
   return (
     <MuiToolbar
       variant="dense"
@@ -282,7 +291,7 @@ const Toolbar: FC<ToolbarProps> = ({
               </IconButton>
             </Hidden>
             <Hidden mdDown>
-              { toolbarProps?.showSwitchModeButtons &&
+              { Object.values(toolbarProps.showSwitchModeButtons).some(val => val) &&
                 <ToggleButtonGroup
                   exclusive
                   value={ mode }
@@ -295,17 +304,26 @@ const Toolbar: FC<ToolbarProps> = ({
                   } }
                 >
                   { [
-                    { label: t("month"), value: "month" },
-                    { label: t("week"), value: "week" },
-                    { label: t("day"), value: "day" },
-                    { label: t("timeline"), value: "timeline" },
-                  ].map(tb => (
-                    <ToggleButton sx={ { mt: .5 } } key={ tb.value } value={ tb.value }>
-                      { tb.label }
+                    toolbarProps.showSwitchModeButtons.showMonthButton ?
+                      { label: t("month"), value: Mode.MONTH } : null,
+                    toolbarProps.showSwitchModeButtons.showWeekButton ?
+                      { label: t("week"), value: Mode.WEEK } : null,
+                    toolbarProps.showSwitchModeButtons.showDayButton ?
+                      { label: t("day"), value: Mode.DAY } : null,
+                    toolbarProps.showSwitchModeButtons.showTimelineButton ?
+                      { label: t("timeline"), value: Mode.TIMELINE } : null,
+                  ].filter(Boolean).map(tb => (
+                    <ToggleButton sx={ { mt: .5 } } key={ tb?.value } value={ tb?.value as string }>
+                      { tb?.label }
                     </ToggleButton>
                   )) }
                 </ToggleButtonGroup> }
             </Hidden>
+            { toolbarProps?.showOptions &&
+              <IconButton sx={ { ml: 1 } } onClick={ handleOpenMenu }{ ...commonIconButtonProps }>
+                <MoreVertIcon/>
+              </IconButton>
+            }
           </Stack>
         </Grid>
         <Grid item xs={ 12 } sx={ {} }>

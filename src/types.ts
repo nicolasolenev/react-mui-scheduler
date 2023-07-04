@@ -45,7 +45,12 @@ export interface AlertProps {
 
 export interface ToolbarProps {
   showSearchBar: boolean;
-  showSwitchModeButtons: boolean;
+  showSwitchModeButtons: {
+    showMonthButton: boolean;
+    showWeekButton: boolean;
+    showDayButton: boolean;
+    showTimelineButton: boolean;
+  };
   showDatePicker: boolean;
   showOptions: boolean;
 }
