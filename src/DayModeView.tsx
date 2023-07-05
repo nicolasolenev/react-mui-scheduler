@@ -171,7 +171,7 @@ const DayModeView: FC<DayModeViewProps> = ({
   };
 
   const renderTask = (tasks: Event[], rowLabel: string, rowIndex?: number, dayIndex?: number) =>
-    tasks?.map((task, itemIndex) => {
+    tasks?.map((task: Event, itemIndex: number) => {
       let condition = (
         searchResult ?
           (
@@ -239,8 +239,10 @@ const DayModeView: FC<DayModeViewProps> = ({
                 title={ t("eventDayTimelineCount", { count: row.days?.reduce((prev: any, curr: any) => prev + curr?.data?.length, 0) }) }
               >
                 <StyledTableCell
-                  scope="row" align="center"
-                  component="th" sx={ { px: 1 } }
+                  scope="row"
+                  align="center"
+                  component="th"
+                  sx={ { px: 1 } }
                   onClick={ (event) => handleCellClick(event, row) }
                 >
                   <Typography variant="body2">{ row?.label }</Typography>
