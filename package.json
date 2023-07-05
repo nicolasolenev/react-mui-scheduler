@@ -11,7 +11,8 @@
     "README.md",
     "CHANGELOG.md",
     "dist",
-    "src"
+    "src",
+    "src/locales/**/*.json"
   ],
   "keywords": [
     "react",
