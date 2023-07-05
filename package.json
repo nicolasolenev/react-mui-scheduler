@@ -10,7 +10,7 @@
   "files": [
     "README.md",
     "CHANGELOG.md",
-    "build",
+    "dist",
     "src",
     "src/locales/**/*.json"
   ],
