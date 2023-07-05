@@ -25,12 +25,12 @@ React mui scheduler is a react component based on @mui v5 that allows you to man
 
 ## 💻 Usage
 
-```javascript
+```typescript jsx
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import Scheduler, { Event, Mode, TransitionMode } from "react-mui-scheduler";
 
-function App() {
+const App = () => {
   const [state] = useState({
     options: {
       transitionMode: TransitionMode.ZOOM, // or TransitionMode.FADE
@@ -129,7 +129,7 @@ function App() {
   const handleAlertCloseButtonClicked = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     // Do something...
   };
-  
+
   const handleDateChange = (day: number, date: number | Date | null) => {
     // Do something...
   };
@@ -149,7 +149,7 @@ function App() {
       onDateChange={ handleDateChange }
     />
   );
-}
+};
 
 ReactDOM.render(<App/>, document.querySelector("#yourComponentRootId"));
 
