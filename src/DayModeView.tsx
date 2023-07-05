@@ -12,7 +12,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { format, parse, add, differenceInMinutes, isValid } from "date-fns";
 import EventItem from "./EventItem";
-import { Option } from "./types";
+import { Event, Option } from "./types";
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${ tableCellClasses.head }`]: {
@@ -70,7 +70,7 @@ interface DayModeViewProps {
   rows?: any[];
   date?: string;
   searchResult?: any;
-  onTaskClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: any) => void;
+  onTaskClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: Event) => void;
   onCellClick?: (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, row: any, day?: any) => void;
   onEventsChange: (item: any) => void;
 }
@@ -198,7 +198,7 @@ const DayModeView: FC<DayModeViewProps> = ({
     });
   };
 
-  const handleTaskClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: any): void => {
+  const handleTaskClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: Event): void => {
     event.preventDefault();
     event.stopPropagation();
     onTaskClick && onTaskClick(event, task);

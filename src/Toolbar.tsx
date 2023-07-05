@@ -19,7 +19,7 @@ import TodayIcon from "@mui/icons-material/Today";
 import Menu from "@mui/material/Menu";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import StaticDatePicker from "@mui/lab/StaticDatePicker";
+import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import ToolbarSearchbar from "./ToolbarSearchBar";
@@ -37,6 +37,8 @@ import MuiToolbar from "@mui/material/Toolbar";
 import { IconButtonProps } from "@mui/material/IconButton/IconButton";
 import { TextFieldProps } from "@mui/material/TextField/TextField";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { PickerChangeHandlerContext } from "@mui/x-date-pickers/internals/hooks/usePicker/usePickerValue.types";
+import { DateValidationError } from "@mui/x-date-pickers";
 
 interface ToolbarProps {
   events: any[];
@@ -45,7 +47,7 @@ interface ToolbarProps {
   alertProps?: AlertProps;
   toolbarProps: SchedulerToolbarProps;
   onModeChange: (mode: Mode) => void;
-  onDateChange: (daysInMonth: number, selectedDate: number | Date) => void;
+  onDateChange: (daysInMonth: number, selectedDate: number | Date | null) => void;
   onSearchResult: (searchResult: any) => void;
   onAlertCloseButtonClicked?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
@@ -83,8 +85,8 @@ const Toolbar: FC<ToolbarProps> = ({
   const [searchResult, setSearchResult] = useState<any>();
   const [anchorMenuEl, setAnchorMenuEl] = useState<any>(null);
   const [anchorDateEl, setAnchorDateEl] = useState<any>(null);
-  const [selectedDate, setSelectedDate] = useState(today || new Date());
-  const [daysInMonth, setDaysInMonth] = useState(getDaysInMonth(selectedDate));
+  const [selectedDate, setSelectedDate] = useState<number | Date | null>(today || new Date());
+  const [daysInMonth, setDaysInMonth] = useState(getDaysInMonth(selectedDate as number | Date));
 
   const openMenu = Boolean(anchorMenuEl);
   const openDateSelector = Boolean(anchorDateEl);
@@ -211,7 +213,7 @@ const Toolbar: FC<ToolbarProps> = ({
                   aria-expanded={ openDateSelector ? "true" : undefined }
                 >
                   { format(
-                    selectedDate,
+                    selectedDate as number | Date,
                     isMonthMode ? "MMMM-yyyy" : "PPP",
                     { locale: dateFnsLocale },
                   ) }
@@ -248,12 +250,11 @@ const Toolbar: FC<ToolbarProps> = ({
                   <StaticDatePicker
                     displayStaticWrapperAs="desktop"
                     value={ selectedDate }
-                    onChange={ (newValue: number | Date) => {
-                      setDaysInMonth(getDaysInMonth(newValue));
-                      setSelectedDate(newValue);
+                    onChange={ (value: number | Date | null, context: PickerChangeHandlerContext<DateValidationError>): void => {
+                      setDaysInMonth(getDaysInMonth(value as number | Date));
+                      setSelectedDate(value);
                       handleCloseDateSelector();
                     } }
-                    renderInput={ (params: TextFieldProps) => <TextField { ...params } /> }
                   />
                 </LocalizationProvider>
               </Menu>

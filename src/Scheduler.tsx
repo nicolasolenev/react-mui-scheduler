@@ -35,7 +35,7 @@ interface SchedulerProps {
   legacyStyle?: boolean;
   toolbarProps: ToolbarProps;
   onCellClick?: (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, row: any, day: any) => void;
-  onTaskClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: any) => void;
+  onTaskClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: Event) => void;
   onEventsChange?: (item: Event) => void;
   onAlertCloseButtonClicked?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
@@ -386,10 +386,10 @@ const Scheduler: FC<SchedulerProps> = ({
     events
   );
 
-  const handleDateChange = (day: number, date: number | Date): void => {
+  const handleDateChange = (day: number, date: number | Date | null): void => {
     setDaysInMonth(day);
-    setSelectedDay(date);
-    setSelectedDate(format(date, "MMMM-yyyy"));
+    setSelectedDay(date as number | Date);
+    setSelectedDate(format(date as number | Date, "MMMM-yyyy"));
   };
 
   const handleModeChange = (newMode: Mode): void => {

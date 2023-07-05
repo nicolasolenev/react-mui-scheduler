@@ -12,7 +12,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import EventNoteRoundedIcon from "@mui/icons-material/EventNoteRounded";
 import { SxProps } from "@mui/system";
-import { Option } from "./types";
+import { Event, Option } from "./types";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${ tableCellClasses.head }`]: {
@@ -55,7 +55,7 @@ interface MonthModeViewProps {
   columns: any[];
   legacyStyle?: boolean;
   searchResult: any;
-  onTaskClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: any) => void;
+  onTaskClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: Event) => void;
   onCellClick?: (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, row: any, day: any) => void;
   onEventsChange: (item: any) => void;
 }
@@ -192,7 +192,7 @@ const MonthModeView: FC<MonthModeViewProps> = ({
     });
   };
 
-  const handleTaskClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: any) => {
+  const handleTaskClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: Event) => {
     event.preventDefault();
     event.stopPropagation();
     onTaskClick && onTaskClick(event, task);

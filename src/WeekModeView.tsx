@@ -11,7 +11,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { add, differenceInMinutes, format, isValid, parse } from "date-fns";
 import EventItem from "./EventItem";
-import { Option } from "./types";
+import { Event, Option } from "./types";
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${ tableCellClasses.head }`]: {
@@ -70,7 +70,7 @@ interface WeekModeViewProps {
   columns: any[];
   rows: any[];
   searchResult: any;
-  onTaskClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: any) => void;
+  onTaskClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: Event) => void;
   onCellClick?: (event: React.MouseEvent<HTMLTableCellElement>, row: any, day: any) => void;
   onEventsChange: (item: any) => void;
 }
@@ -178,7 +178,7 @@ const WeekModeView: FC<WeekModeViewProps> = ({
   };
 
   const renderTask = (tasks: any, rowLabel: string, rowIndex?: number, dayIndex?: number) => {
-    return tasks?.map((task: any, itemIndex: number) => {
+    return tasks?.map((task: Event, itemIndex: number) => {
       let condition = (
         searchResult ?
           (
@@ -207,7 +207,7 @@ const WeekModeView: FC<WeekModeViewProps> = ({
     });
   };
 
-  const handleTaskClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: any): void => {
+  const handleTaskClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: Event): void => {
     event.preventDefault();
     event.stopPropagation();
     onTaskClick && onTaskClick(event, task);

@@ -21,6 +21,8 @@ export interface Event {
   endHour: string;
   date: string;
   color?: string;
+  user?: string;
+  [key: string]: any;
 }
 
 export interface Option {

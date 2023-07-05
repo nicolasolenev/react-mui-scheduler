@@ -11,7 +11,7 @@ import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineDot from "@mui/lab/TimelineDot";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import TimelineContent from "@mui/lab/TimelineContent";
-import { Option } from "./types";
+import { Event, Option } from "./types";
 
 const StyledContainer = styled(Typography)(() => ({
   ["&::-webkit-scrollbar"]: {
@@ -36,13 +36,13 @@ interface TimeLineModeViewProps {
   options: Option;
   rows: any[];
   searchResult: any;
-  onTaskClick?: (event: React.MouseEvent<HTMLDivElement>, task: any) => void;
+  onTaskClick?: (event: React.MouseEvent<HTMLDivElement>, task: Event) => void;
 }
 
 const TimeLineModeView: FC<TimeLineModeViewProps> = ({ options, rows, searchResult, onTaskClick }): JSX.Element => {
   const dateFnsLocale = useContext(DateFnsLocaleContext);
 
-  const handleTaskClick = (event: React.MouseEvent<HTMLDivElement>, task: any) => {
+  const handleTaskClick = (event: React.MouseEvent<HTMLDivElement>, task: Event) => {
     event.preventDefault();
     event.stopPropagation();
     onTaskClick && onTaskClick(event, task);
