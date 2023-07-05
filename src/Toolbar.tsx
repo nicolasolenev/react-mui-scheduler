@@ -248,6 +248,7 @@ const Toolbar: FC<ToolbarProps> = ({
                   <StaticDatePicker
                     displayStaticWrapperAs="desktop"
                     value={ selectedDate }
+                    views={ isMonthMode ? ["month", "year"] : ["day", "month", "year"] }
                     onChange={ (value: number | Date | null, context: PickerChangeHandlerContext<DateValidationError>): void => {
                       setDaysInMonth(getDaysInMonth(value as number | Date));
                       setSelectedDate(value);

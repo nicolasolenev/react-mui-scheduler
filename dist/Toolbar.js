@@ -194,7 +194,7 @@ var Toolbar = function (_a) {
                             react_1.default.createElement(Today_1.default, null))),
                     react_1.default.createElement(Menu_1.default, { id: "date-menu", anchorEl: anchorDateEl, open: openDateSelector, onClose: handleCloseDateSelector, MenuListProps: { "aria-labelledby": "basic-button" } },
                         react_1.default.createElement(LocalizationProvider_1.LocalizationProvider, { adapterLocale: dateFnsLocale, dateAdapter: AdapterDateFns_1.AdapterDateFns },
-                            react_1.default.createElement(StaticDatePicker_1.StaticDatePicker, { displayStaticWrapperAs: "desktop", value: selectedDate, onChange: function (value, context) {
+                            react_1.default.createElement(StaticDatePicker_1.StaticDatePicker, { displayStaticWrapperAs: "desktop", value: selectedDate, views: isMonthMode ? ["month", "year"] : ["day", "month", "year"], onChange: function (value, context) {
                                     setDaysInMonth((0, date_fns_1.getDaysInMonth)(value));
                                     setSelectedDate(value);
                                     handleCloseDateSelector();
