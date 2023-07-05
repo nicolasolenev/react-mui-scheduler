@@ -28,7 +28,7 @@ React mui scheduler is a react component based on @mui v5 that allows you to man
 ```javascript
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
-import Scheduler, { Mode, TransitionMode } from "react-mui-scheduler";
+import Scheduler, { Event, Mode, TransitionMode } from "react-mui-scheduler";
 
 function App() {
   const [state] = useState({
@@ -114,19 +114,23 @@ function App() {
     },
   ];
 
-  const handleCellClick = (event, row, day) => {
+  const handleCellClick = (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, row: any, day: any) => {
     // Do something...
   };
 
-  const handleEventClick = (event, item) => {
+  const handleEventClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: Event) => {
     // Do something...
   };
 
-  const handleEventsChange = (item) => {
+  const handleEventsChange = (item: Event) => {
     // Do something...
   };
 
-  const handleAlertCloseButtonClicked = (item) => {
+  const handleAlertCloseButtonClicked = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    // Do something...
+  };
+  
+  const handleDateChange = (day: number, date: number | Date | null) => {
     // Do something...
   };
 
@@ -142,6 +146,7 @@ function App() {
       onCellClick={ handleCellClick }
       onTaskClick={ handleEventClick }
       onAlertCloseButtonClicked={ handleAlertCloseButtonClicked }
+      onDateChange={ handleDateChange }
     />
   );
 }
@@ -214,16 +219,16 @@ For more details about date formats, see [date-fns docs](https://date-fns.org/v2
 | showSwitchModeButtons.showDayButton      | boolean | `true`  | Show or hide the view mode button day      | `true`, `false` |
 | showSwitchModeButtons.showTimelineButton | boolean | `true`  | Show or hide the view mode button timeline | `true`, `false` |
 | showDatePicker                           | boolean | `true`  | Show or hide the date picker buttons       | `true`, `false` |
-| showOptions                              | boolean | `false` |                                            | `true`, `false` |
 
 ## Methods
 
-| Method                                                    | Params                                       | Type  | Description                                                          |  
-|-----------------------------------------------------------|----------------------------------------------|-------|----------------------------------------------------------------------|
-| `handleCellClick(event: Event, row: object, day: object)` | `event: Event`, `row: object`, `day: object` | Event | Triggered when you click on a cell                                   |
-| `handleEventClick(event: Event, item: object)`            | `event: Event`, `item: object`               | Event | Triggered when you click on an event                                 |
-| `handleEventsChange(item: object)`                        | `item: object`                               | Event | Triggers when a data update occurs                                   |
-| `handleAlertCloseButtonClicked(item: object)`             | `item: object`                               | Event | Triggers when clicking on the close button of the notification alert |
+| Method                      | Params                                                                          | Type  | Description                                                          |  
+|-----------------------------|---------------------------------------------------------------------------------|-------|----------------------------------------------------------------------|
+| `onCellClick`               | `event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, row: any, day: any` | Event | Triggered when clicking on a cell                                    |
+| `onEventsChange`            | `item: Event`                                                                   | Event | Triggered when clicking on an event                                  |
+| `onAlertCloseButtonClicked` | `event: React.MouseEvent<HTMLButtonElement>`                                    | Event | Triggers when clicking on the close button of the notification alert |
+| `onTaskClick`               | `event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: Event`              | Event | Triggers when clicking on a task event                               |
+| `onDateChange`              | `day: number, date: number \| Date \| null`                                     | Event | Triggers when clicking on a date from the DatePicker                 |
 
 ## 😁 Authors
 

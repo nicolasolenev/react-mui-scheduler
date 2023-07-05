@@ -20,7 +20,6 @@ import Menu from "@mui/material/Menu";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
-import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import ToolbarSearchbar from "./ToolbarSearchBar";
 import GridViewIcon from "@mui/icons-material/GridView";
@@ -35,7 +34,6 @@ import Alert from "@mui/material/Alert";
 import CloseIcon from "@mui/icons-material/Close";
 import MuiToolbar from "@mui/material/Toolbar";
 import { IconButtonProps } from "@mui/material/IconButton/IconButton";
-import { TextFieldProps } from "@mui/material/TextField/TextField";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { PickerChangeHandlerContext } from "@mui/x-date-pickers/internals/hooks/usePicker/usePickerValue.types";
 import { DateValidationError } from "@mui/x-date-pickers";
@@ -83,8 +81,8 @@ const Toolbar: FC<ToolbarProps> = ({
   const { t } = useTranslation(["common"]);
   const [mode, setMode] = useState<Mode>(switchMode);
   const [searchResult, setSearchResult] = useState<any>();
-  const [anchorMenuEl, setAnchorMenuEl] = useState<any>(null);
-  const [anchorDateEl, setAnchorDateEl] = useState<any>(null);
+  const [anchorMenuEl, setAnchorMenuEl] = useState<EventTarget & HTMLButtonElement | null>(null);
+  const [anchorDateEl, setAnchorDateEl] = useState<EventTarget & HTMLButtonElement | null>(null);
   const [selectedDate, setSelectedDate] = useState<number | Date | null>(today || new Date());
   const [daysInMonth, setDaysInMonth] = useState(getDaysInMonth(selectedDate as number | Date));
 
@@ -174,7 +172,7 @@ const Toolbar: FC<ToolbarProps> = ({
   }, [switchMode]);
 
   const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>): void => {
-    setAnchorDateEl(event.currentTarget);
+    setAnchorMenuEl(event.currentTarget);
   };
   return (
     <MuiToolbar
@@ -271,14 +269,14 @@ const Toolbar: FC<ToolbarProps> = ({
             { toolbarProps?.showSearchBar &&
               <ToolbarSearchbar
                 events={ events }
-                onInputChange={ (newValue) => {
+                onInputChange={ (value: any) => {
                   let newDate = new Date();
-                  if (newValue?.date) {
-                    newDate = parse(newValue.date, "yyyy-MM-dd", today);
+                  if (value?.date) {
+                    newDate = parse(value.date, "yyyy-MM-dd", today);
                   }
                   setDaysInMonth(getDaysInMonth(newDate));
                   setSelectedDate(newDate);
-                  setSearchResult(newValue);
+                  setSearchResult(value);
                 } }
               /> }
             <Hidden mdUp>

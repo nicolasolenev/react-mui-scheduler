@@ -3,6 +3,7 @@ import { styled } from "@mui/material/styles";
 import { Autocomplete, Box, TextField } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { format, parse } from "date-fns";
+import { Event } from "./types";
 
 const StyledAutoComplete = styled(Autocomplete)(({ theme }) => ({
   color: "inherit",
@@ -23,17 +24,17 @@ const StyledAutoComplete = styled(Autocomplete)(({ theme }) => ({
 
 interface ToolbarSearchBarProps {
   events: any[];
-  onInputChange: (value: any) => void;
+  onInputChange: (value: string) => void;
 }
 
 const ToolbarSearchBar: FC<ToolbarSearchBarProps> = ({ events, onInputChange }): JSX.Element => {
   const { t } = useTranslation(["common"]);
-  const [value, setValue] = useState("");
-  const [inputValue, setInputValue] = useState("");
+  const [value, setValue] = useState<string>("");
+  const [inputValue, setInputValue] = useState<string>("");
 
-  const handleOnChange = (event: React.SyntheticEvent, newValue: any): void => {
-    setValue(newValue);
-    if (onInputChange) onInputChange(newValue);
+  const handleOnChange = (event: React.SyntheticEvent, value: string): void => {
+    setValue(value);
+    if (onInputChange) onInputChange(value);
   };
 
   return (

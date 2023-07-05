@@ -72,7 +72,7 @@ interface WeekModeViewProps {
   searchResult: any;
   onTaskClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: Event) => void;
   onCellClick?: (event: React.MouseEvent<HTMLTableCellElement>, row: any, day: any) => void;
-  onEventsChange: (item: any) => void;
+  onEventsChange: (item: Event) => void;
 }
 
 const WeekModeView: FC<WeekModeViewProps> = ({

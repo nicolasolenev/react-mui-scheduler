@@ -22,6 +22,7 @@ export interface Event {
   date: string;
   color?: string;
   user?: string;
+
   [key: string]: any;
 }
 

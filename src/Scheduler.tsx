@@ -38,6 +38,7 @@ interface SchedulerProps {
   onTaskClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: Event) => void;
   onEventsChange?: (item: Event) => void;
   onAlertCloseButtonClicked?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onDateChange?: (day: number, date: number | Date | null) => void;
 }
 
 const Scheduler: FC<SchedulerProps> = ({
@@ -51,6 +52,7 @@ const Scheduler: FC<SchedulerProps> = ({
   toolbarProps,
   onEventsChange,
   onAlertCloseButtonClicked,
+  onDateChange,
 }): JSX.Element => {
   const today = new Date();
   useTheme();
@@ -390,6 +392,7 @@ const Scheduler: FC<SchedulerProps> = ({
     setDaysInMonth(day);
     setSelectedDay(date as number | Date);
     setSelectedDate(format(date as number | Date, "MMMM-yyyy"));
+    onDateChange && onDateChange(day, date);
   };
 
   const handleModeChange = (newMode: Mode): void => {
@@ -400,7 +403,7 @@ const Scheduler: FC<SchedulerProps> = ({
     setSearchResult(item);
   };
 
-  const handleEventsChange = async (item: any): Promise<void> => {
+  const handleEventsChange = async (item: Event): Promise<void> => {
     onEventsChange && onEventsChange(item);
     let eventIndex = events.findIndex(e => e.id === item?.id);
     if (eventIndex !== -1) {
