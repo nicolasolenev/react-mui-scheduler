@@ -7,6 +7,12 @@
   "scripts": {
     "build": "tsc"
   },
+  "files": [
+    "README.md",
+    "CHANGELOG.md",
+    "dist",
+    "src"
+  ],
   "keywords": [
     "react",
     "material",
