@@ -186,7 +186,8 @@ var WeekModeView = function (_a) {
                     (task === null || task === void 0 ? void 0 : task.user) === (searchResult === null || searchResult === void 0 ? void 0 : searchResult.user)) : !searchResult);
             return (condition &&
                 react_1.default.createElement(EventItem_1.default, { rowId: rowIndex, event: task, elevation: 0, boxSx: { px: 0.3 }, onClick: function (e) { return handleTaskClick(e, task); }, key: "item_id-".concat(itemIndex, "_r-").concat(rowIndex, "_d-").concat(dayIndex), onDragStart: function (e) { return onCellDragStart(e, __assign(__assign({}, task), { itemIndex: itemIndex }), rowLabel, rowIndex, dayIndex); }, sx: {
-                        py: 0, mb: .5, color: "#fff",
+                        py: 0,
+                        color: "#fff",
                         backgroundColor: (task === null || task === void 0 ? void 0 : task.color) || theme.palette.primary.light,
                     } }));
         });
@@ -217,9 +218,7 @@ var WeekModeView = function (_a) {
                             ((_b = row === null || row === void 0 ? void 0 : row.data) === null || _b === void 0 ? void 0 : _b.length) > 0 && renderTask(row === null || row === void 0 ? void 0 : row.data, row.id))), (_c = row === null || row === void 0 ? void 0 : row.days) === null || _c === void 0 ? void 0 :
                     _c.map(function (day, dayIndex) {
                         var _a;
-                        return (react_1.default.createElement(StyledTableCell, { key: day === null || day === void 0 ? void 0 : day.id, scope: "row", align: "center", component: "th", sx: {
-                                px: .3, py: .5,
-                            }, onDragEnd: onCellDragEnd, onDragOver: onCellDragOver, onDragEnter: function (e) { return onCellDragEnter(e, row === null || row === void 0 ? void 0 : row.label, rowIndex, dayIndex); }, onClick: function (event) { return handleCellClick(event, __assign({ rowIndex: rowIndex }, row), __assign({ dayIndex: dayIndex }, day)); } }, ((_a = day === null || day === void 0 ? void 0 : day.data) === null || _a === void 0 ? void 0 : _a.length) > 0 &&
+                        return (react_1.default.createElement(StyledTableCell, { key: day === null || day === void 0 ? void 0 : day.id, scope: "row", align: "center", component: "th", sx: { px: .3, py: .5 }, onDragEnd: onCellDragEnd, onDragOver: onCellDragOver, onDragEnter: function (e) { return onCellDragEnter(e, row === null || row === void 0 ? void 0 : row.label, rowIndex, dayIndex); }, onClick: function (event) { return handleCellClick(event, __assign({ rowIndex: rowIndex }, row), __assign({ dayIndex: dayIndex }, day)); } }, ((_a = day === null || day === void 0 ? void 0 : day.data) === null || _a === void 0 ? void 0 : _a.length) > 0 &&
                             renderTask(day === null || day === void 0 ? void 0 : day.data, row === null || row === void 0 ? void 0 : row.label, rowIndex, dayIndex)));
                     })));
             })))));

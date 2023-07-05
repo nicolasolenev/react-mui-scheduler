@@ -54,7 +54,7 @@ interface MonthModeViewProps {
   options: Option;
   columns: any[];
   legacyStyle?: boolean;
-  searchResult: any;
+  searchResult: Event | undefined;
   onTaskClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: Event) => void;
   onCellClick?: (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, row: any, day: any) => void;
   onEventsChange: (item: Event) => void;
@@ -86,7 +86,7 @@ const MonthModeView: FC<MonthModeViewProps> = ({
     e.preventDefault();
   };
 
-  const onCellDragStart = (e: React.DragEvent<HTMLDivElement>, item: any, rowIndex: number) => {
+  const onCellDragStart = (e: React.DragEvent<HTMLDivElement>, item: Event, rowIndex: number) => {
     setState({
       ...state,
       itemTransfer: { item, rowIndex },
@@ -159,7 +159,7 @@ const MonthModeView: FC<MonthModeViewProps> = ({
     }
   };
 
-  const renderTask = (tasks: any[] = [], rowId: number) => {
+  const renderTask = (tasks: Event[] = [], rowId: number) => {
     return tasks?.map((task) => {
       let condition = (
         searchResult ?
@@ -184,8 +184,8 @@ const MonthModeView: FC<MonthModeViewProps> = ({
             py: 0,
             my: .3,
             color: "#fff",
-            display: "inline-flex",
             backgroundColor: task?.color || theme.palette.primary.light,
+            textAlign: "left",
           } }
         />
       );

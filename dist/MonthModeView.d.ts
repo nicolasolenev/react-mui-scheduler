@@ -5,7 +5,7 @@ interface MonthModeViewProps {
     options: Option;
     columns: any[];
     legacyStyle?: boolean;
-    searchResult: any;
+    searchResult: Event | undefined;
     onTaskClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: Event) => void;
     onCellClick?: (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, row: any, day: any) => void;
     onEventsChange: (item: Event) => void;

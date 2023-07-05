@@ -199,7 +199,8 @@ const WeekModeView: FC<WeekModeViewProps> = ({
             e, { ...task, itemIndex }, rowLabel, rowIndex, dayIndex,
           ) }
           sx={ {
-            py: 0, mb: .5, color: "#fff",
+            py: 0,
+            color: "#fff",
             backgroundColor: task?.color || theme.palette.primary.light,
           } }
         />
@@ -262,33 +263,29 @@ const WeekModeView: FC<WeekModeViewProps> = ({
                       { row?.data?.length > 0 && renderTask(row?.data, row.id) }
                     </StyledTableCell>
                   </Tooltip>
-                  { row?.days?.map((day: any, dayIndex: number) => {
-                    return (
-                      <StyledTableCell
-                        key={ day?.id }
-                        scope="row"
-                        align="center"
-                        component="th"
-                        sx={ {
-                          px: .3, py: .5,
-                        } }
-                        onDragEnd={ onCellDragEnd }
-                        onDragOver={ onCellDragOver }
-                        onDragEnter={ e => onCellDragEnter(e, row?.label, rowIndex, dayIndex) }
-                        onClick={ (event) => handleCellClick(
-                          event, { rowIndex, ...row }, { dayIndex, ...day },
+                  { row?.days?.map((day: any, dayIndex: number) => (
+                    <StyledTableCell
+                      key={ day?.id }
+                      scope="row"
+                      align="center"
+                      component="th"
+                      sx={ { px: .3, py: .5 } }
+                      onDragEnd={ onCellDragEnd }
+                      onDragOver={ onCellDragOver }
+                      onDragEnter={ e => onCellDragEnter(e, row?.label, rowIndex, dayIndex) }
+                      onClick={ (event) => handleCellClick(
+                        event, { rowIndex, ...row }, { dayIndex, ...day },
+                      ) }
+                    >
+                      { day?.data?.length > 0 &&
+                        renderTask(
+                          day?.data,
+                          row?.label,
+                          rowIndex,
+                          dayIndex,
                         ) }
-                      >
-                        { day?.data?.length > 0 &&
-                          renderTask(
-                            day?.data,
-                            row?.label,
-                            rowIndex,
-                            dayIndex,
-                          ) }
-                      </StyledTableCell>
-                    );
-                  }) }
+                    </StyledTableCell>
+                  )) }
                 </StyledTableRow>
               );
             })

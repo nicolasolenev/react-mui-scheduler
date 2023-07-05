@@ -63,7 +63,7 @@ const Scheduler: FC<SchedulerProps> = ({
     t("sun"),
   ];
   const [state, setState] = useState<any>({});
-  const [searchResult, setSearchResult] = useState();
+  const [searchResult, setSearchResult] = useState<Event>();
   const [selectedDay, setSelectedDay] = useState<number | Date>(today);
   const [alertState, setAlertState] = useState<AlertProps | undefined>(alertProps);
   const [mode, setMode] = useState(options?.defaultMode || Mode.MONTH);
@@ -90,7 +90,7 @@ const Scheduler: FC<SchedulerProps> = ({
       options?.transitionMode === TransitionMode.FADE ? Fade : Slide
   );
 
-  let dateFnsLocale: any;
+  let dateFnsLocale: Locale;
   switch (locale) {
     case "fr":
       dateFnsLocale = fr;
@@ -123,8 +123,8 @@ const Scheduler: FC<SchedulerProps> = ({
       dateFnsLocale = enUS;
   }
 
-  const getMonthHeader = () => {
-    return weekDays.map((day, i) => ({
+  const getMonthHeader = () =>
+    weekDays.map((day, i) => ({
       id: `row-day-header-${ i + 1 }`,
       flex: 1,
       sortable: false,
@@ -135,7 +135,6 @@ const Scheduler: FC<SchedulerProps> = ({
       field: `rowday${ i + 1 }`,
       headerClassName: "scheduler-theme--header",
     }));
-  };
 
   const getMonthRows = () => {
     let rows = [], daysBefore = [];
@@ -384,9 +383,7 @@ const Scheduler: FC<SchedulerProps> = ({
     return data;
   };
 
-  const getTimeLineRows = () => (
-    events
-  );
+  const getTimeLineRows = () => events;
 
   const handleDateChange = (day: number, date: number | Date | null): void => {
     setDaysInMonth(day);

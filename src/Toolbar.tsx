@@ -3,7 +3,7 @@ import { useTheme } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 import { add, format, getDaysInMonth, parse, sub } from "date-fns";
 import DateFnsLocaleContext from "./locales/dateFnsContext";
-import { AlertProps, Mode, ToolbarProps as SchedulerToolbarProps } from "./types";
+import { AlertProps, Event, Mode, ToolbarProps as SchedulerToolbarProps } from "./types";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import ArchiveIcon from "@mui/icons-material/Archive";
@@ -39,14 +39,14 @@ import { PickerChangeHandlerContext } from "@mui/x-date-pickers/internals/hooks/
 import { DateValidationError } from "@mui/x-date-pickers";
 
 interface ToolbarProps {
-  events: any[];
+  events: Event[];
   today: number | Date;
   switchMode: Mode;
   alertProps?: AlertProps;
   toolbarProps: SchedulerToolbarProps;
   onModeChange: (mode: Mode) => void;
   onDateChange: (daysInMonth: number, selectedDate: number | Date | null) => void;
-  onSearchResult: (searchResult: any) => void;
+  onSearchResult: (searchResult: Event) => void;
   onAlertCloseButtonClicked?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 

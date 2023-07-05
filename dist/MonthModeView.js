@@ -174,8 +174,8 @@ var MonthModeView = function (_a) {
                         py: 0,
                         my: .3,
                         color: "#fff",
-                        display: "inline-flex",
                         backgroundColor: (task === null || task === void 0 ? void 0 : task.color) || theme.palette.primary.light,
+                        textAlign: "left",
                     } }));
         });
     };

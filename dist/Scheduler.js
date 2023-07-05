@@ -365,7 +365,7 @@ var Scheduler = function (_a) {
         }
         return data;
     };
-    var getTimeLineRows = function () { return (events); };
+    var getTimeLineRows = function () { return events; };
     var handleDateChange = function (day, date) {
         setDaysInMonth(day);
         setSelectedDay(date);

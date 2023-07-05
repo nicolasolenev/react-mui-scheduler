@@ -35,7 +35,7 @@ const StyledContainer = styled(Typography)(() => ({
 interface TimeLineModeViewProps {
   options: Option;
   rows: any[];
-  searchResult: any;
+  searchResult: Event | undefined;
   onTaskClick?: (event: React.MouseEvent<HTMLDivElement>, task: Event) => void;
 }
 

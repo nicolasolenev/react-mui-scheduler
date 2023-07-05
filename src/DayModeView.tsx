@@ -91,7 +91,7 @@ const DayModeView: FC<DayModeViewProps> = ({
     e.preventDefault();
   };
 
-  const onCellDragStart = (e: React.DragEvent<HTMLDivElement>, item: any, rowLabel: string, rowIndex?: number, dayIndex?: number): void => {
+  const onCellDragStart = (e: React.DragEvent<HTMLDivElement>, item: Event, rowLabel: string, rowIndex?: number, dayIndex?: number): void => {
     setState({
         ...state,
         itemTransfer: { item, rowLabel, rowIndex, dayIndex },
@@ -116,7 +116,7 @@ const DayModeView: FC<DayModeViewProps> = ({
 
     if (day) {
       let hourRegExp = /[0-9]{2}:[0-9]{2}/;
-      let foundEventIndex = day.data.findIndex((e: any) =>
+      let foundEventIndex = day.data.findIndex((e: Event) =>
         e.id === transfer.item.id &&
         e.startHour === transfer.item.startHour &&
         e.endHour === transfer.item.endHour,
@@ -168,7 +168,7 @@ const DayModeView: FC<DayModeViewProps> = ({
     onCellClick && onCellClick(event, row, day);
   };
 
-  const renderTask = (tasks: any[], rowLabel: string, rowIndex?: number, dayIndex?: number) => {
+  const renderTask = (tasks: Event[], rowLabel: string, rowIndex?: number, dayIndex?: number) => {
     return tasks?.map((task, itemIndex) => {
       let condition = (
         searchResult ?
@@ -251,26 +251,24 @@ const DayModeView: FC<DayModeViewProps> = ({
                       { row?.data?.length > 0 && renderTask(row?.data, row.id) }
                     </StyledTableCell>
                   </Tooltip>
-                  { row?.days?.map((day: any, dayIndex: number) => {
-                    return (
-                      <StyledTableCell
-                        key={ day?.id }
-                        scope="row"
-                        align="center"
-                        component="th"
-                        colSpan={ 2 }
-                        sx={ { px: .3, py: .5 } }
-                        onDragEnd={ onCellDragEnd }
-                        onDragOver={ onCellDragOver }
-                        onDragEnter={ e => onCellDragEnter(e, row?.label, rowIndex, dayIndex) }
-                        onClick={ (event) => handleCellClick(
-                          event, { rowIndex, ...row }, { dayIndex, ...day },
-                        ) }
-                      >
-                        { day?.data?.length > 0 && renderTask(day?.data, row?.label, rowIndex, dayIndex) }
-                      </StyledTableCell>
-                    );
-                  }) }
+                  { row?.days?.map((day: any, dayIndex: number) => (
+                    <StyledTableCell
+                      key={ day?.id }
+                      scope="row"
+                      align="center"
+                      component="th"
+                      colSpan={ 2 }
+                      sx={ { px: .3, py: .5 } }
+                      onDragEnd={ onCellDragEnd }
+                      onDragOver={ onCellDragOver }
+                      onDragEnter={ e => onCellDragEnter(e, row?.label, rowIndex, dayIndex) }
+                      onClick={ (event) => handleCellClick(
+                        event, { rowIndex, ...row }, { dayIndex, ...day },
+                      ) }
+                    >
+                      { day?.data?.length > 0 && renderTask(day?.data, row?.label, rowIndex, dayIndex) }
+                    </StyledTableCell>
+                  )) }
                 </StyledTableRow>
               );
             })

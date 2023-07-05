@@ -3,7 +3,7 @@ import { Event, Option } from "./types";
 interface TimeLineModeViewProps {
     options: Option;
     rows: any[];
-    searchResult: any;
+    searchResult: Event | undefined;
     onTaskClick?: (event: React.MouseEvent<HTMLDivElement>, task: Event) => void;
 }
 declare const TimeLineModeView: FC<TimeLineModeViewProps>;
