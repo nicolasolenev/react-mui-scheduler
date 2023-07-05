@@ -10,5 +10,9 @@
   "fri": "Vie",
   "sat": "Sáb",
   "sun": "Dom",
-  "search": "Buscar..."
+  "search": "Buscar...",
+  "eventDayTimelineCount_one": "{{count}} evento en la línea de tiempo de este día",
+  "eventDayTimelineCount_other": "{{count}} eventos en la línea de tiempo de este día",
+  "eventWeekTimelineCount_one": "{{count}} evento en la línea de tiempo de esta semana",
+  "eventWeekTimelineCount_other": "{{count}} eventos en la línea de tiempo de esta semana"
 }

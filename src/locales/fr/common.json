@@ -10,5 +10,9 @@
   "fri": "Ven",
   "sat": "Sam",
   "sun": "Dim",
-  "search": "Chercher..."
+  "search": "Chercher...",
+  "eventDayTimelineCount_one": "{{count}} événement sur la chronologie de cette journée",
+  "eventDayTimelineCount_other": "{{count}} événements sur cette chronologie de la journée",
+  "eventWeekTimelineCount_one": "{{count}} événement sur la chronologie de cette semaine",
+  "eventWeekTimelineCount_other": "{{count}} événements sur cette chronologie de la semaine"
 }

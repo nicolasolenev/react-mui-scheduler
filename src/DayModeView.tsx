@@ -13,6 +13,7 @@ import Typography from "@mui/material/Typography";
 import { format, parse, add, differenceInMinutes, isValid } from "date-fns";
 import EventItem from "./EventItem";
 import { Event, Option } from "./types";
+import { useTranslation } from "react-i18next";
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${ tableCellClasses.head }`]: {
@@ -86,6 +87,7 @@ const DayModeView: FC<DayModeViewProps> = ({
 }): JSX.Element => {
   const theme = useTheme();
   const [state, setState] = useState<any>({ columns, rows });
+  const { t } = useTranslation(["common"]);
 
   const onCellDragOver = (e: React.DragEvent<HTMLTableCellElement>): void => {
     e.preventDefault();
@@ -168,8 +170,8 @@ const DayModeView: FC<DayModeViewProps> = ({
     onCellClick && onCellClick(event, row, day);
   };
 
-  const renderTask = (tasks: Event[], rowLabel: string, rowIndex?: number, dayIndex?: number) => {
-    return tasks?.map((task, itemIndex) => {
+  const renderTask = (tasks: Event[], rowLabel: string, rowIndex?: number, dayIndex?: number) =>
+    tasks?.map((task, itemIndex) => {
       let condition = (
         searchResult ?
           (
@@ -185,7 +187,7 @@ const DayModeView: FC<DayModeViewProps> = ({
           elevation={ 0 }
           boxSx={ { px: 0.3 } }
           onClick={ e => handleTaskClick(e, task) }
-          key={ `item_id-${ itemIndex }_r-${ rowIndex }_d-${ dayIndex }` }
+          key={ `iti18nem_id-${ itemIndex }_r-${ rowIndex }_d-${ dayIndex }` }
           onDragStart={ e => onCellDragStart(
             e, { ...task, itemIndex }, rowLabel, rowIndex, dayIndex,
           ) }
@@ -196,7 +198,6 @@ const DayModeView: FC<DayModeViewProps> = ({
         />
       );
     });
-  };
 
   const handleTaskClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: Event): void => {
     event.preventDefault();
@@ -217,62 +218,55 @@ const DayModeView: FC<DayModeViewProps> = ({
         <TableHead sx={ { height: 24 } }>
           <StyledTableRow>
             <StyledTableCell align="left"/>
-            {
-              columns?.map((column, index) => (
-                <StyledTableCell
-                  align="center" colSpan={ 2 }
-                  key={ `weekday-${ column?.day }-${ index }` }
-                >
-                  { column?.weekDay } { column?.month }/{ column?.day }
-                </StyledTableCell>
-              ))
-            }
+            { columns?.map((column, index) => (
+              <StyledTableCell
+                align="center" colSpan={ 2 }
+                key={ `weekday-${ column?.day }-${ index }` }
+              >
+                { column?.weekDay } { column?.month }/{ column?.day }
+              </StyledTableCell>
+            )) }
           </StyledTableRow>
         </TableHead>
         <TableBody>
-          {
-            rows?.map((row, rowIndex) => {
-              let lineTasks = row.days?.reduce((prev: any, curr: any) => prev + curr?.data?.length, 0);
-              return (
-                <StyledTableRow
-                  key={ `timeline-${ rowIndex }` }
-                  sx={ { "&:last-child td, &:last-child th": { border: 0 } } }
+          { rows?.map((row, rowIndex) => (
+            <StyledTableRow
+              key={ `timeline-${ rowIndex }` }
+              sx={ { "&:last-child td, &:last-child th": { border: 0 } } }
+            >
+              <Tooltip
+                placement="right"
+                title={ t("eventDayTimelineCount", { count: row.days?.reduce((prev: any, curr: any) => prev + curr?.data?.length, 0) }) }
+              >
+                <StyledTableCell
+                  scope="row" align="center"
+                  component="th" sx={ { px: 1 } }
+                  onClick={ (event) => handleCellClick(event, row) }
                 >
-                  <Tooltip
-                    placement="right"
-                    title={ `${ lineTasks } event${ lineTasks > 1 ? "s" : "" } on this week timeline` }
-                  >
-                    <StyledTableCell
-                      scope="row" align="center"
-                      component="th" sx={ { px: 1 } }
-                      onClick={ (event) => handleCellClick(event, row) }
-                    >
-                      <Typography variant="body2">{ row?.label }</Typography>
-                      { row?.data?.length > 0 && renderTask(row?.data, row.id) }
-                    </StyledTableCell>
-                  </Tooltip>
-                  { row?.days?.map((day: any, dayIndex: number) => (
-                    <StyledTableCell
-                      key={ day?.id }
-                      scope="row"
-                      align="center"
-                      component="th"
-                      colSpan={ 2 }
-                      sx={ { px: .3, py: .5 } }
-                      onDragEnd={ onCellDragEnd }
-                      onDragOver={ onCellDragOver }
-                      onDragEnter={ e => onCellDragEnter(e, row?.label, rowIndex, dayIndex) }
-                      onClick={ (event) => handleCellClick(
-                        event, { rowIndex, ...row }, { dayIndex, ...day },
-                      ) }
-                    >
-                      { day?.data?.length > 0 && renderTask(day?.data, row?.label, rowIndex, dayIndex) }
-                    </StyledTableCell>
-                  )) }
-                </StyledTableRow>
-              );
-            })
-          }
+                  <Typography variant="body2">{ row?.label }</Typography>
+                  { row?.data?.length > 0 && renderTask(row?.data, row.id) }
+                </StyledTableCell>
+              </Tooltip>
+              { row?.days?.map((day: any, dayIndex: number) => (
+                <StyledTableCell
+                  key={ day?.id }
+                  scope="row"
+                  align="center"
+                  component="th"
+                  colSpan={ 2 }
+                  sx={ { px: .3, py: .5 } }
+                  onDragEnd={ onCellDragEnd }
+                  onDragOver={ onCellDragOver }
+                  onDragEnter={ e => onCellDragEnter(e, row?.label, rowIndex, dayIndex) }
+                  onClick={ (event) => handleCellClick(
+                    event, { rowIndex, ...row }, { dayIndex, ...day },
+                  ) }
+                >
+                  { day?.data?.length > 0 && renderTask(day?.data, row?.label, rowIndex, dayIndex) }
+                </StyledTableCell>
+              )) }
+            </StyledTableRow>
+          )) }
         </TableBody>
       </Table>
     </StyledTableContainer>

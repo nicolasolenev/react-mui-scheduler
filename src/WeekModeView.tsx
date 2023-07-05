@@ -12,6 +12,7 @@ import Typography from "@mui/material/Typography";
 import { add, differenceInMinutes, format, isValid, parse } from "date-fns";
 import EventItem from "./EventItem";
 import { Event, Option } from "./types";
+import { useTranslation } from "react-i18next";
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${ tableCellClasses.head }`]: {
@@ -86,6 +87,7 @@ const WeekModeView: FC<WeekModeViewProps> = ({
 }): JSX.Element => {
   const theme = useTheme();
   const [state, setState] = useState<any>({ columns, rows });
+  const { t } = useTranslation(["common"]);
 
   const onCellDragOver = (e: React.DragEvent<HTMLTableCellElement>): void => {
     e.preventDefault();
@@ -238,58 +240,51 @@ const WeekModeView: FC<WeekModeViewProps> = ({
           </StyledTableRow>
         </TableHead>
         <TableBody>
-          {
-            rows?.map((row, rowIndex) => {
-              let lineTasks = row.days?.reduce(
-                (prev: any, curr: any) => prev + curr?.data?.length, 0,
-              );
-              return (
-                <StyledTableRow
-                  key={ `timeline-${ rowIndex }` }
-                  sx={ { "&:last-child td, &:last-child th": { border: 0 } } }
+          { rows?.map((row, rowIndex) => (
+            <StyledTableRow
+              key={ `timeline-${ rowIndex }` }
+              sx={ { "&:last-child td, &:last-child th": { border: 0 } } }
+            >
+              <Tooltip
+                placement="right"
+                title={ t("eventWeekTimelineCount", { count: row.days?.reduce((prev: any, curr: any) => prev + curr?.data?.length, 0) }) }
+              >
+                <StyledTableCell
+                  scope="row"
+                  align="center"
+                  component="th"
+                  sx={ { px: 1 } }
+                  onClick={ (event) => handleCellClick(event, row) }
                 >
-                  <Tooltip
-                    placement="right"
-                    title={ `${ lineTasks } event${ lineTasks > 1 ? "s" : "" } on this week timeline` }
-                  >
-                    <StyledTableCell
-                      scope="row"
-                      align="center"
-                      component="th"
-                      sx={ { px: 1 } }
-                      onClick={ (event) => handleCellClick(event, row) }
-                    >
-                      <Typography variant="body2">{ row?.label }</Typography>
-                      { row?.data?.length > 0 && renderTask(row?.data, row.id) }
-                    </StyledTableCell>
-                  </Tooltip>
-                  { row?.days?.map((day: any, dayIndex: number) => (
-                    <StyledTableCell
-                      key={ day?.id }
-                      scope="row"
-                      align="center"
-                      component="th"
-                      sx={ { px: .3, py: .5 } }
-                      onDragEnd={ onCellDragEnd }
-                      onDragOver={ onCellDragOver }
-                      onDragEnter={ e => onCellDragEnter(e, row?.label, rowIndex, dayIndex) }
-                      onClick={ (event) => handleCellClick(
-                        event, { rowIndex, ...row }, { dayIndex, ...day },
-                      ) }
-                    >
-                      { day?.data?.length > 0 &&
-                        renderTask(
-                          day?.data,
-                          row?.label,
-                          rowIndex,
-                          dayIndex,
-                        ) }
-                    </StyledTableCell>
-                  )) }
-                </StyledTableRow>
-              );
-            })
-          }
+                  <Typography variant="body2">{ row?.label }</Typography>
+                  { row?.data?.length > 0 && renderTask(row?.data, row.id) }
+                </StyledTableCell>
+              </Tooltip>
+              { row?.days?.map((day: any, dayIndex: number) => (
+                <StyledTableCell
+                  key={ day?.id }
+                  scope="row"
+                  align="center"
+                  component="th"
+                  sx={ { px: .3, py: .5 } }
+                  onDragEnd={ onCellDragEnd }
+                  onDragOver={ onCellDragOver }
+                  onDragEnter={ e => onCellDragEnter(e, row?.label, rowIndex, dayIndex) }
+                  onClick={ (event) => handleCellClick(
+                    event, { rowIndex, ...row }, { dayIndex, ...day },
+                  ) }
+                >
+                  { day?.data?.length > 0 &&
+                    renderTask(
+                      day?.data,
+                      row?.label,
+                      rowIndex,
+                      dayIndex,
+                    ) }
+                </StyledTableCell>
+              )) }
+            </StyledTableRow>
+          )) }
         </TableBody>
       </Table>
     </StyledTableContainer>
