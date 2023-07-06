@@ -38,21 +38,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = __importStar(require("react"));
-var system_1 = require("@mui/system");
-var TableCell_1 = __importStar(require("@mui/material/TableCell"));
-var TableRow_1 = __importDefault(require("@mui/material/TableRow"));
-var TableContainer_1 = __importDefault(require("@mui/material/TableContainer"));
 var styles_1 = require("@mui/material/styles");
 var Paper_1 = __importDefault(require("@mui/material/Paper"));
 var Table_1 = __importDefault(require("@mui/material/Table"));
-var TableHead_1 = __importDefault(require("@mui/material/TableHead"));
 var TableBody_1 = __importDefault(require("@mui/material/TableBody"));
+var TableCell_1 = __importStar(require("@mui/material/TableCell"));
+var TableContainer_1 = __importDefault(require("@mui/material/TableContainer"));
+var TableHead_1 = __importDefault(require("@mui/material/TableHead"));
+var TableRow_1 = __importDefault(require("@mui/material/TableRow"));
 var Tooltip_1 = __importDefault(require("@mui/material/Tooltip"));
 var Typography_1 = __importDefault(require("@mui/material/Typography"));
 var date_fns_1 = require("date-fns");
-var EventItem_1 = __importDefault(require("./EventItem"));
+var EventItem_1 = __importDefault(require("../EventItem"));
 var react_i18next_1 = require("react-i18next");
-var StyledTableCell = (0, system_1.styled)(TableCell_1.default)(function () {
+var StyledTableCell = (0, styles_1.styled)(TableCell_1.default)(function () {
     var _a, _b, _c;
     return (_a = {},
         _a["&.".concat(TableCell_1.tableCellClasses.head)] = (_b = {
@@ -62,9 +61,7 @@ var StyledTableCell = (0, system_1.styled)(TableCell_1.default)(function () {
                 borderBottom: "1px solid #ccc !important",
                 borderLeft: "1px solid #ccc !important"
             },
-            _b["&:nth-of-type(1)"] = {
-                borderLeft: "0px !important",
-            },
+            _b["&:nth-of-type(1)"] = { borderLeft: "0px !important" },
             _b),
         _a["&.".concat(TableCell_1.tableCellClasses.body)] = (_c = {
                 fontSize: 12,
@@ -74,14 +71,18 @@ var StyledTableCell = (0, system_1.styled)(TableCell_1.default)(function () {
                 cursor: "pointer",
                 borderLeft: "1px solid #ccc"
             },
-            _c["&:nth-of-type(1)"] = { borderLeft: 0 },
+            _c["&:nth-of-type(1)"] = {
+                width: 80,
+                maxWidth: 80,
+            },
+            _c["&:nth-of-type(8n+1)"] = { borderLeft: 0 },
             _c),
         _a["&.".concat(TableCell_1.tableCellClasses.body, ":hover")] = {
             backgroundColor: "#eee",
         },
         _a);
 });
-var StyledTableRow = (0, system_1.styled)(TableRow_1.default)(function () {
+var StyledTableRow = (0, styles_1.styled)(TableRow_1.default)(function () {
     var _a;
     return (_a = {},
         _a["&:last-child td, &:last-child th"] = {
@@ -89,7 +90,7 @@ var StyledTableRow = (0, system_1.styled)(TableRow_1.default)(function () {
         },
         _a);
 });
-var StyledTableContainer = (0, system_1.styled)(TableContainer_1.default)(function () {
+var StyledTableContainer = (0, styles_1.styled)(TableContainer_1.default)(function () {
     var _a;
     return (_a = {},
         _a["&::-webkit-scrollbar"] = {
@@ -110,7 +111,7 @@ var StyledTableContainer = (0, system_1.styled)(TableContainer_1.default)(functi
         },
         _a);
 });
-var DayModeView = function (_a) {
+var WeekModeView = function (_a) {
     var options = _a.options, columns = _a.columns, rows = _a.rows, searchResult = _a.searchResult, onTaskClick = _a.onTaskClick, onCellClick = _a.onCellClick, onEventsChange = _a.onEventsChange;
     var theme = (0, styles_1.useTheme)();
     var _b = (0, react_1.useState)({ columns: columns, rows: rows }), state = _b[0], setState = _b[1];
@@ -126,7 +127,7 @@ var DayModeView = function (_a) {
         setState(__assign(__assign({}, state), { transferTarget: { rowLabel: rowLabel, rowIndex: rowIndex, dayIndex: dayIndex } }));
     };
     var onCellDragEnd = function (e) {
-        var _a, _b, _c, _d, _e, _f, _g;
+        var _a, _b, _c, _d, _e, _f;
         e.preventDefault();
         if (!state.itemTransfert || !state.transfertTarget) {
             return;
@@ -166,7 +167,7 @@ var DayModeView = function (_a) {
                 minutesDiff = (0, date_fns_1.differenceInMinutes)(endHourDate, startHourDate);
                 newEndHour = (0, date_fns_1.add)((0, date_fns_1.parse)(hourLabel, "HH:mm", day.date), { minutes: minutesDiff });
             }
-            (_f = prevEventCell === null || prevEventCell === void 0 ? void 0 : prevEventCell.data) === null || _f === void 0 ? void 0 : _f.splice((_g = transfer === null || transfer === void 0 ? void 0 : transfer.item) === null || _g === void 0 ? void 0 : _g.itemIndex, 1);
+            (_f = prevEventCell === null || prevEventCell === void 0 ? void 0 : prevEventCell.data) === null || _f === void 0 ? void 0 : _f.splice(transfer.item.itemIndex, 1);
             transfer.item.startHour = label;
             transfer.item.endHour = (0, date_fns_1.format)(newEndHour, "HH:mm aaa");
             transfer.item.date = (0, date_fns_1.format)(day.date, "yyyy-MM-dd");
@@ -186,8 +187,9 @@ var DayModeView = function (_a) {
                 ((task === null || task === void 0 ? void 0 : task.groupLabel) === (searchResult === null || searchResult === void 0 ? void 0 : searchResult.groupLabel) ||
                     (task === null || task === void 0 ? void 0 : task.user) === (searchResult === null || searchResult === void 0 ? void 0 : searchResult.user)) : !searchResult);
             return (condition &&
-                react_1.default.createElement(EventItem_1.default, { rowId: itemIndex, event: task, elevation: 0, boxSx: { px: 0.3 }, onClick: function (e) { return handleTaskClick(e, task); }, key: "iti18nem_id-".concat(itemIndex, "_r-").concat(rowIndex, "_d-").concat(dayIndex), onDragStart: function (e) { return onCellDragStart(e, __assign(__assign({}, task), { itemIndex: itemIndex }), rowLabel, rowIndex, dayIndex); }, sx: {
-                        py: 0, mb: .5, color: theme.palette.common.white,
+                react_1.default.createElement(EventItem_1.default, { rowId: rowIndex, event: task, elevation: 0, boxSx: { px: 0.3 }, onClick: function (e) { return handleTaskClick(e, task); }, key: "item_id-".concat(itemIndex, "_r-").concat(rowIndex, "_d-").concat(dayIndex), onDragStart: function (e) { return onCellDragStart(e, __assign(__assign({}, task), { itemIndex: itemIndex }), rowLabel, rowIndex, dayIndex); }, sx: {
+                        py: 0,
+                        color: theme.palette.common.white,
                         backgroundColor: (task === null || task === void 0 ? void 0 : task.color) || theme.palette.primary.light,
                     } }));
         });
@@ -197,12 +199,12 @@ var DayModeView = function (_a) {
         event.stopPropagation();
         onTaskClick && onTaskClick(event, task);
     };
-    return (react_1.default.createElement(StyledTableContainer, { component: Paper_1.default, sx: { maxHeight: (options === null || options === void 0 ? void 0 : options.maxHeight) || 540 } },
-        react_1.default.createElement(Table_1.default, { size: "small", "aria-label": "simple table", stickyHeader: true, sx: { minWidth: (options === null || options === void 0 ? void 0 : options.minWidth) || 540 } },
+    return (react_1.default.createElement(StyledTableContainer, { component: Paper_1.default, sx: { maxHeight: options.maxHeight } },
+        react_1.default.createElement(Table_1.default, { size: "small", "aria-label": "simple table", stickyHeader: true, sx: { minWidth: options.minWidth } },
             react_1.default.createElement(TableHead_1.default, { sx: { height: 24 } },
                 react_1.default.createElement(StyledTableRow, null,
                     react_1.default.createElement(StyledTableCell, { align: "left" }), columns === null || columns === void 0 ? void 0 :
-                    columns.map(function (column, index) { return (react_1.default.createElement(StyledTableCell, { align: "center", colSpan: 2, key: "weekday-".concat(column === null || column === void 0 ? void 0 : column.day, "-").concat(index) }, column === null || column === void 0 ? void 0 :
+                    columns.map(function (column, index) { return (react_1.default.createElement(StyledTableCell, { align: "center", key: "weekday-".concat(column === null || column === void 0 ? void 0 : column.day, "-").concat(index) }, column === null || column === void 0 ? void 0 :
                         column.weekDay,
                         " ", column === null || column === void 0 ? void 0 :
                         column.month,
@@ -211,15 +213,16 @@ var DayModeView = function (_a) {
             react_1.default.createElement(TableBody_1.default, null, rows === null || rows === void 0 ? void 0 : rows.map(function (row, rowIndex) {
                 var _a, _b, _c;
                 return (react_1.default.createElement(StyledTableRow, { key: "timeline-".concat(rowIndex), sx: { "&:last-child td, &:last-child th": { border: 0 } } },
-                    react_1.default.createElement(Tooltip_1.default, { placement: "right", title: t("eventDayTimelineCount", { count: (_a = row.days) === null || _a === void 0 ? void 0 : _a.reduce(function (prev, curr) { var _a; return prev + ((_a = curr === null || curr === void 0 ? void 0 : curr.data) === null || _a === void 0 ? void 0 : _a.length); }, 0) }) },
+                    react_1.default.createElement(Tooltip_1.default, { placement: "right", title: t("eventWeekTimelineCount", { count: (_a = row.days) === null || _a === void 0 ? void 0 : _a.reduce(function (prev, curr) { var _a; return prev + ((_a = curr === null || curr === void 0 ? void 0 : curr.data) === null || _a === void 0 ? void 0 : _a.length); }, 0) }) },
                         react_1.default.createElement(StyledTableCell, { scope: "row", align: "center", component: "th", sx: { px: 1 }, onClick: function (event) { return handleCellClick(event, row); } },
                             react_1.default.createElement(Typography_1.default, { variant: "body2" }, row === null || row === void 0 ? void 0 : row.label),
                             ((_b = row === null || row === void 0 ? void 0 : row.data) === null || _b === void 0 ? void 0 : _b.length) > 0 && renderTask(row === null || row === void 0 ? void 0 : row.data, row.id))), (_c = row === null || row === void 0 ? void 0 : row.days) === null || _c === void 0 ? void 0 :
                     _c.map(function (day, dayIndex) {
                         var _a;
-                        return (react_1.default.createElement(StyledTableCell, { key: day === null || day === void 0 ? void 0 : day.id, scope: "row", align: "center", component: "th", colSpan: 2, sx: { px: .3, py: .5 }, onDragEnd: onCellDragEnd, onDragOver: onCellDragOver, onDragEnter: function (e) { return onCellDragEnter(e, row === null || row === void 0 ? void 0 : row.label, rowIndex, dayIndex); }, onClick: function (event) { return handleCellClick(event, __assign({ rowIndex: rowIndex }, row), __assign({ dayIndex: dayIndex }, day)); } }, ((_a = day === null || day === void 0 ? void 0 : day.data) === null || _a === void 0 ? void 0 : _a.length) > 0 && renderTask(day === null || day === void 0 ? void 0 : day.data, row === null || row === void 0 ? void 0 : row.label, rowIndex, dayIndex)));
+                        return (react_1.default.createElement(StyledTableCell, { key: day === null || day === void 0 ? void 0 : day.id, scope: "row", align: "center", component: "th", sx: { px: .3, py: .5 }, onDragEnd: onCellDragEnd, onDragOver: onCellDragOver, onDragEnter: function (e) { return onCellDragEnter(e, row === null || row === void 0 ? void 0 : row.label, rowIndex, dayIndex); }, onClick: function (event) { return handleCellClick(event, __assign({ rowIndex: rowIndex }, row), __assign({ dayIndex: dayIndex }, day)); } }, ((_a = day === null || day === void 0 ? void 0 : day.data) === null || _a === void 0 ? void 0 : _a.length) > 0 &&
+                            renderTask(day === null || day === void 0 ? void 0 : day.data, row === null || row === void 0 ? void 0 : row.label, rowIndex, dayIndex)));
                     })));
             })))));
 };
-exports.default = DayModeView;
-//# sourceMappingURL=DayModeView.js.map
+exports.default = WeekModeView;
+//# sourceMappingURL=Week.js.map

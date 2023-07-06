@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Event, Option } from "./types";
+import { Event, Option } from "../types";
 interface TimeLineModeViewProps {
     options: Option;
     rows: Event[];

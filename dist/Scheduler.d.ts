@@ -3,7 +3,7 @@ import { AlertProps, Event, Option, ToolbarProps } from "./types";
 interface SchedulerProps {
     events: Event[];
     locale?: string;
-    options: Option;
+    options?: Option;
     alertProps?: AlertProps;
     legacyStyle?: boolean;
     toolbarProps?: ToolbarProps;

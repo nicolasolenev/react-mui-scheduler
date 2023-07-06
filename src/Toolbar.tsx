@@ -3,7 +3,7 @@ import { useTheme } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 import { add, format, getDaysInMonth, parse, sub } from "date-fns";
 import DateFnsLocaleContext from "./locales/dateFnsContext";
-import { AlertProps, Event, Mode, OptionMenu, ToolbarProps as SchedulerToolbarProps } from "./types";
+import { AlertProps, Event, Mode, ToolbarProps as SchedulerToolbarProps } from "./types";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Hidden from "@mui/material/Hidden";

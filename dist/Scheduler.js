@@ -86,12 +86,21 @@ var Paper_1 = __importDefault(require("@mui/material/Paper"));
 var dateFnsContext_1 = __importDefault(require("./locales/dateFnsContext"));
 var Toolbar_1 = __importDefault(require("./Toolbar"));
 var Grid_1 = __importDefault(require("@mui/material/Grid"));
-var MonthModeView_1 = __importDefault(require("./MonthModeView"));
-var WeekModeView_1 = __importDefault(require("./WeekModeView"));
-var DayModeView_1 = __importDefault(require("./DayModeView"));
-var TimeLineModeView_1 = __importDefault(require("./TimeLineModeView"));
+var Month_1 = __importDefault(require("./ModeView/Month"));
+var Week_1 = __importDefault(require("./ModeView/Week"));
+var Day_1 = __importDefault(require("./ModeView/Day"));
+var TimeLine_1 = __importDefault(require("./ModeView/TimeLine"));
 var Scheduler = function (_a) {
-    var events = _a.events, _b = _a.locale, locale = _b === void 0 ? "en" : _b, options = _a.options, alertProps = _a.alertProps, onCellClick = _a.onCellClick, _c = _a.legacyStyle, legacyStyle = _c === void 0 ? false : _c, onTaskClick = _a.onTaskClick, _d = _a.toolbarProps, toolbarProps = _d === void 0 ? {
+    var events = _a.events, _b = _a.locale, locale = _b === void 0 ? "en" : _b, _c = _a.options, options = _c === void 0 ? {
+        transitionMode: types_1.TransitionMode.ZOOM,
+        startWeekOn: types_1.StartWeek.MON,
+        defaultMode: types_1.Mode.WEEK,
+        minWidth: 540,
+        maxWidth: 540,
+        minHeight: 540,
+        maxHeight: 540,
+        reverseTimelineOrder: false,
+    } : _c, alertProps = _a.alertProps, onCellClick = _a.onCellClick, _d = _a.legacyStyle, legacyStyle = _d === void 0 ? false : _d, onTaskClick = _a.onTaskClick, _e = _a.toolbarProps, toolbarProps = _e === void 0 ? {
         showSearchBar: true,
         showSwitchModeButtons: {
             showMonthButton: true,
@@ -102,37 +111,36 @@ var Scheduler = function (_a) {
         showDatePicker: true,
         showOptions: true,
         optionMenus: [],
-    } : _d, onEventsChange = _a.onEventsChange, onAlertCloseButtonClicked = _a.onAlertCloseButtonClicked, onDateChange = _a.onDateChange;
+    } : _e, onEventsChange = _a.onEventsChange, onAlertCloseButtonClicked = _a.onAlertCloseButtonClicked, onDateChange = _a.onDateChange;
     var today = new Date();
     (0, styles_1.useTheme)();
-    var _e = (0, react_i18next_1.useTranslation)(["common"]), t = _e.t, i18n = _e.i18n;
+    var _f = (0, react_i18next_1.useTranslation)(["common"]), t = _f.t, i18n = _f.i18n;
     var weeks = [
         t("mon"), t("tue"), t("wed"),
         t("thu"), t("fri"), t("sat"),
         t("sun"),
     ];
-    var _f = (0, react_1.useState)({}), state = _f[0], setState = _f[1];
-    var _g = (0, react_1.useState)(), searchResult = _g[0], setSearchResult = _g[1];
-    var _h = (0, react_1.useState)(today), selectedDay = _h[0], setSelectedDay = _h[1];
-    var _j = (0, react_1.useState)(alertProps), alertState = _j[0], setAlertState = _j[1];
-    var _k = (0, react_1.useState)((options === null || options === void 0 ? void 0 : options.defaultMode) || types_1.Mode.MONTH), mode = _k[0], setMode = _k[1];
-    var _l = (0, react_1.useState)((0, date_fns_1.getDaysInMonth)(today)), daysInMonth = _l[0], setDaysInMonth = _l[1];
-    var _m = (0, react_1.useState)((options === null || options === void 0 ? void 0 : options.startWeekOn) || types_1.StartWeek.MON), startWeekOn = _m[0], setStartWeekOn = _m[1];
-    var _o = (0, react_1.useState)((0, date_fns_1.format)(today, "MMMM-yyyy")), selectedDate = _o[0], setSelectedDate = _o[1];
-    var _p = (0, react_1.useReducer)(function () {
-        var _a;
-        return ((_a = options === null || options === void 0 ? void 0 : options.startWeekOn) === null || _a === void 0 ? void 0 : _a.toUpperCase()) === "SUN" ? [
+    var _g = (0, react_1.useState)({}), state = _g[0], setState = _g[1];
+    var _h = (0, react_1.useState)(), searchResult = _h[0], setSearchResult = _h[1];
+    var _j = (0, react_1.useState)(today), selectedDay = _j[0], setSelectedDay = _j[1];
+    var _k = (0, react_1.useState)(alertProps), alertState = _k[0], setAlertState = _k[1];
+    var _l = (0, react_1.useState)(options.defaultMode), mode = _l[0], setMode = _l[1];
+    var _m = (0, react_1.useState)((0, date_fns_1.getDaysInMonth)(today)), daysInMonth = _m[0], setDaysInMonth = _m[1];
+    var _o = (0, react_1.useState)(options.startWeekOn), startWeekOn = _o[0], setStartWeekOn = _o[1];
+    var _p = (0, react_1.useState)((0, date_fns_1.format)(today, "MMMM-yyyy")), selectedDate = _p[0], setSelectedDate = _p[1];
+    var _q = (0, react_1.useReducer)(function () {
+        return options.startWeekOn.toUpperCase() === "SUN" ? [
             t("sun"), t("mon"), t("tue"),
             t("wed"), t("thu"), t("fri"),
             t("sat"),
         ] : weeks;
-    }, weeks), weekDays = _p[0], updateWeekDays = _p[1];
+    }, weeks), weekDays = _q[0], updateWeekDays = _q[1];
     var isDayMode = mode.toLowerCase() === types_1.Mode.DAY;
     var isWeekMode = mode.toLowerCase() === types_1.Mode.WEEK;
     var isMonthMode = mode.toLowerCase() === types_1.Mode.MONTH;
     var isTimelineMode = mode.toLowerCase() === types_1.Mode.TIMELINE;
-    var TransitionModeComponent = ((options === null || options === void 0 ? void 0 : options.transitionMode) === types_1.TransitionMode.ZOOM ? Zoom_1.default :
-        (options === null || options === void 0 ? void 0 : options.transitionMode) === types_1.TransitionMode.FADE ? Fade_1.default : Slide_1.default);
+    var TransitionModeComponent = (options.transitionMode === types_1.TransitionMode.ZOOM ? Zoom_1.default :
+        options.transitionMode === types_1.TransitionMode.FADE ? Fade_1.default : Slide_1.default);
     var dateFnsLocale;
     switch (locale) {
         case "fr":
@@ -434,16 +442,16 @@ var Scheduler = function (_a) {
         }
     }, [locale]);
     (0, react_1.useEffect)(function () {
-        if ((options === null || options === void 0 ? void 0 : options.defaultMode) !== mode) {
-            setMode(options === null || options === void 0 ? void 0 : options.defaultMode);
+        if (options.defaultMode !== mode) {
+            setMode(options.defaultMode);
         }
-    }, [options === null || options === void 0 ? void 0 : options.defaultMode]);
+    }, [options.defaultMode]);
     (0, react_1.useEffect)(function () {
-        if ((options === null || options === void 0 ? void 0 : options.startWeekOn) !== undefined && options.startWeekOn !== startWeekOn) {
+        if (options.startWeekOn !== startWeekOn) {
             setStartWeekOn(options.startWeekOn);
         }
         updateWeekDays();
-    }, [options === null || options === void 0 ? void 0 : options.startWeekOn]);
+    }, [options.startWeekOn]);
     return (react_1.default.createElement(Paper_1.default, { variant: "outlined", elevation: 0, sx: { p: 0 } },
         react_1.default.createElement(dateFnsContext_1.default.Provider, { value: dateFnsLocale },
             react_1.default.createElement(Toolbar_1.default, { today: today, events: events, switchMode: mode, alertProps: alertState, toolbarProps: toolbarProps, onDateChange: handleDateChange, onModeChange: handleModeChange, onSearchResult: onSearchResult, onAlertCloseButtonClicked: onAlertCloseButtonClicked }),
@@ -451,20 +459,20 @@ var Scheduler = function (_a) {
                 isMonthMode &&
                     react_1.default.createElement(TransitionModeComponent, { in: true },
                         react_1.default.createElement(Grid_1.default, { item: true, xs: 12 },
-                            react_1.default.createElement(MonthModeView_1.default, { options: options, rows: state === null || state === void 0 ? void 0 : state.rows, columns: state === null || state === void 0 ? void 0 : state.columns, legacyStyle: legacyStyle, onTaskClick: onTaskClick, onCellClick: onCellClick, searchResult: searchResult, onEventsChange: handleEventsChange }))),
+                            react_1.default.createElement(Month_1.default, { options: options, rows: state === null || state === void 0 ? void 0 : state.rows, columns: state === null || state === void 0 ? void 0 : state.columns, legacyStyle: legacyStyle, onTaskClick: onTaskClick, onCellClick: onCellClick, searchResult: searchResult, onEventsChange: handleEventsChange }))),
                 isWeekMode &&
                     react_1.default.createElement(TransitionModeComponent, { in: true },
                         react_1.default.createElement(Grid_1.default, { item: true, xs: 12 },
-                            react_1.default.createElement(WeekModeView_1.default, { options: options, rows: state === null || state === void 0 ? void 0 : state.rows, columns: state === null || state === void 0 ? void 0 : state.columns, onTaskClick: onTaskClick, onCellClick: onCellClick, searchResult: searchResult, onEventsChange: handleEventsChange }))),
+                            react_1.default.createElement(Week_1.default, { options: options, rows: state === null || state === void 0 ? void 0 : state.rows, columns: state === null || state === void 0 ? void 0 : state.columns, onTaskClick: onTaskClick, onCellClick: onCellClick, searchResult: searchResult, onEventsChange: handleEventsChange }))),
                 isDayMode &&
                     react_1.default.createElement(TransitionModeComponent, { in: true },
                         react_1.default.createElement(Grid_1.default, { item: true, xs: 12 },
-                            react_1.default.createElement(DayModeView_1.default, { options: options, date: selectedDate, rows: state === null || state === void 0 ? void 0 : state.rows, columns: state === null || state === void 0 ? void 0 : state.columns, onTaskClick: onTaskClick, onCellClick: onCellClick, searchResult: searchResult, onEventsChange: handleEventsChange })))),
+                            react_1.default.createElement(Day_1.default, { options: options, date: selectedDate, rows: state === null || state === void 0 ? void 0 : state.rows, columns: state === null || state === void 0 ? void 0 : state.columns, onTaskClick: onTaskClick, onCellClick: onCellClick, searchResult: searchResult, onEventsChange: handleEventsChange })))),
             isTimelineMode &&
                 react_1.default.createElement(TransitionModeComponent, { in: true },
                     react_1.default.createElement(Grid_1.default, { container: true, spacing: 2, alignItems: "start" },
                         react_1.default.createElement(Grid_1.default, { item: true, xs: 12 },
-                            react_1.default.createElement(TimeLineModeView_1.default, { options: options, rows: state === null || state === void 0 ? void 0 : state.rows, onTaskClick: onTaskClick, searchResult: searchResult })))))));
+                            react_1.default.createElement(TimeLine_1.default, { options: options, rows: state === null || state === void 0 ? void 0 : state.rows, onTaskClick: onTaskClick, searchResult: searchResult })))))));
 };
 exports.default = Scheduler;
 //# sourceMappingURL=Scheduler.js.map

@@ -44,6 +44,7 @@ const App = () => {
       maxWidth: 540,
       minHeight: 540,
       maxHeight: 540,
+      reverseTimelineOrder: false,
     },
     alertProps: {
       open: true,
@@ -177,7 +178,7 @@ ReactDOM.render(<App/>, document.querySelector("#yourComponentRootId"));
 
 ```
 
-## Data structure
+## Event structure
 
 | Name       | Type     | Required | Details                                                      |  
 |------------|----------|----------|--------------------------------------------------------------|
@@ -209,15 +210,16 @@ For more details about date formats, see [date-fns docs](https://date-fns.org/v2
 
 ## Options
 
-| Name           | Type           | Default               | Description                                                                   | Values                                                               |
-|----------------|----------------|-----------------------|-------------------------------------------------------------------------------|----------------------------------------------------------------------|
-| transitionMode | TransitionMode | `TransitionMode.ZOOM` | This option is used to define the type of scheduler transition                | `TransitionMode.ZOOM`, `TransitionMode.FADE`, `TransitionMode.SLIDE` |
-| startWeekOn    | string         | `StartWeek.MON`       | This option is used to set the start of the calendar week to Monday or Sunday | `StartWeek.MON`, `StartWeek.SUN`                                     |
-| defaultMode    | Mode           | `Mode.WEEK`           | This option allows you to define the type of view to display                  | `Mode.MONTH`, `Mode.WEEK`, `Mode.DAY`, `Mode.TIMELINE`               |
-| minWidth       | number         | `540`                 | This option allows you to define the minimum width of the container           | `number`                                                             |
-| maxWidth       | number         | `540`                 | This option allows you to define the maximum width of the container           | `number`                                                             |
-| minHeight      | number         | `540`                 | This option allows you to define the minimum height of the container          | `number`                                                             |
-| maxHeight      | number         | `540`                 | This option allows you to define the maximum height of the container          | `number`                                                             |
+| Name                 | Type           | Default               | Description                                                                     | Values                                                               |
+|----------------------|----------------|-----------------------|---------------------------------------------------------------------------------|----------------------------------------------------------------------|
+| transitionMode       | TransitionMode | `TransitionMode.ZOOM` | This option is used to define the type of scheduler transition                  | `TransitionMode.ZOOM`, `TransitionMode.FADE`, `TransitionMode.SLIDE` |
+| startWeekOn          | string         | `StartWeek.MON`       | This option is used to set the start of the calendar week to Monday or Sunday   | `StartWeek.MON`, `StartWeek.SUN`                                     |
+| defaultMode          | Mode           | `Mode.WEEK`           | This option allows you to define the type of view to display                    | `Mode.MONTH`, `Mode.WEEK`, `Mode.DAY`, `Mode.TIMELINE`               |
+| minWidth             | number         | `540`                 | This option allows you to define the minimum width of the container             | `number`                                                             |
+| maxWidth             | number         | `540`                 | This option allows you to define the maximum width of the container             | `number`                                                             |
+| minHeight            | number         | `540`                 | This option allows you to define the minimum height of the container            | `number`                                                             |
+| maxHeight            | number         | `540`                 | This option allows you to define the maximum height of the container            | `number`                                                             |
+| reverseTimelineOrder | boolean        | `false`               | This option allows you to define the order of events displayed in Timeline view | `false`, `true`                                                      |
 
 ## alertProps
 

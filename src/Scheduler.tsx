@@ -22,15 +22,15 @@ import Paper from "@mui/material/Paper";
 import DateFnsLocaleContext from "./locales/dateFnsContext";
 import SchedulerToolbar from "./Toolbar";
 import Grid from "@mui/material/Grid";
-import MonthModeView from "./MonthModeView";
-import WeekModeView from "./WeekModeView";
-import DayModeView from "./DayModeView";
-import TimeLineModeView from "./TimeLineModeView";
+import MonthModeView from "./ModeView/Month";
+import WeekModeView from "./ModeView/Week";
+import DayModeView from "./ModeView/Day";
+import TimeLineModeView from "./ModeView/TimeLine";
 
 interface SchedulerProps {
   events: Event[];
   locale?: string;
-  options: Option;
+  options?: Option;
   alertProps?: AlertProps;
   legacyStyle?: boolean;
   toolbarProps?: ToolbarProps;
@@ -44,7 +44,16 @@ interface SchedulerProps {
 const Scheduler: FC<SchedulerProps> = ({
   events,
   locale = "en",
-  options,
+  options = {
+    transitionMode: TransitionMode.ZOOM,
+    startWeekOn: StartWeek.MON,
+    defaultMode: Mode.WEEK,
+    minWidth: 540,
+    maxWidth: 540,
+    minHeight: 540,
+    maxHeight: 540,
+    reverseTimelineOrder: false,
+  },
   alertProps,
   onCellClick,
   legacyStyle = false,
@@ -77,12 +86,12 @@ const Scheduler: FC<SchedulerProps> = ({
   const [searchResult, setSearchResult] = useState<Event>();
   const [selectedDay, setSelectedDay] = useState<number | Date>(today);
   const [alertState, setAlertState] = useState<AlertProps | undefined>(alertProps);
-  const [mode, setMode] = useState(options?.defaultMode || Mode.MONTH);
+  const [mode, setMode] = useState(options.defaultMode);
   const [daysInMonth, setDaysInMonth] = useState(getDaysInMonth(today));
-  const [startWeekOn, setStartWeekOn] = useState<StartWeek>(options?.startWeekOn || StartWeek.MON);
+  const [startWeekOn, setStartWeekOn] = useState<StartWeek>(options.startWeekOn);
   const [selectedDate, setSelectedDate] = useState(format(today, "MMMM-yyyy"));
   const [weekDays, updateWeekDays] = useReducer(() =>
-    options?.startWeekOn?.toUpperCase() === "SUN" ? [
+    options.startWeekOn.toUpperCase() === "SUN" ? [
       t("sun"), t("mon"), t("tue"),
       t("wed"), t("thu"), t("fri"),
       t("sat"),
@@ -93,8 +102,8 @@ const Scheduler: FC<SchedulerProps> = ({
   const isMonthMode = mode.toLowerCase() === Mode.MONTH;
   const isTimelineMode = mode.toLowerCase() === Mode.TIMELINE;
   const TransitionModeComponent = (
-    options?.transitionMode === TransitionMode.ZOOM ? Zoom :
-      options?.transitionMode === TransitionMode.FADE ? Fade : Slide
+    options.transitionMode === TransitionMode.ZOOM ? Zoom :
+      options.transitionMode === TransitionMode.FADE ? Fade : Slide
   );
 
   let dateFnsLocale: Locale;
@@ -477,17 +486,17 @@ const Scheduler: FC<SchedulerProps> = ({
   }, [locale]);
 
   useEffect(() => {
-    if (options?.defaultMode !== mode) {
-      setMode(options?.defaultMode as Mode);
+    if (options.defaultMode !== mode) {
+      setMode(options.defaultMode as Mode);
     }
-  }, [options?.defaultMode]);
+  }, [options.defaultMode]);
 
   useEffect(() => {
-    if (options?.startWeekOn !== undefined && options.startWeekOn !== startWeekOn) {
+    if (options.startWeekOn !== startWeekOn) {
       setStartWeekOn(options.startWeekOn);
     }
     updateWeekDays();
-  }, [options?.startWeekOn]);
+  }, [options.startWeekOn]);
 
   return (
     <Paper variant="outlined" elevation={ 0 } sx={ { p: 0 } }>

@@ -1,7 +1,7 @@
 import React, { FC } from "react";
-import { Event, Option } from "./types";
+import { Event, Option } from "../types";
 interface DayModeViewProps {
-    options?: Option;
+    options: Option;
     columns?: any[];
     rows?: any[];
     date?: string;

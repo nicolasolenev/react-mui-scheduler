@@ -41,7 +41,7 @@ var react_1 = __importStar(require("react"));
 var styles_1 = require("@mui/material/styles");
 var material_1 = require("@mui/material");
 var date_fns_1 = require("date-fns");
-var EventItem_1 = __importDefault(require("./EventItem"));
+var EventItem_1 = __importDefault(require("../EventItem"));
 var TableContainer_1 = __importDefault(require("@mui/material/TableContainer"));
 var Paper_1 = __importDefault(require("@mui/material/Paper"));
 var Table_1 = __importDefault(require("@mui/material/Table"));
@@ -185,7 +185,7 @@ var MonthModeView = function (_a) {
         onTaskClick && onTaskClick(event, task);
     };
     return (react_1.default.createElement(TableContainer_1.default, { component: Paper_1.default, sx: { boxShadow: "none" } },
-        react_1.default.createElement(Table_1.default, { size: "small", "aria-label": "simple table", stickyHeader: true, sx: { minWidth: (options === null || options === void 0 ? void 0 : options.minWidth) || 650 } },
+        react_1.default.createElement(Table_1.default, { size: "small", "aria-label": "simple table", stickyHeader: true, sx: { minWidth: options.minWidth || 650 } },
             legacyStyle && react_1.default.createElement(TableHead_1.default, { sx: { height: 24 } },
                 react_1.default.createElement(StyledTableRow, null, columns === null || columns === void 0 ? void 0 : columns.map(function (column, index) { return (react_1.default.createElement(StyledTableCell, { align: "center", key: (column === null || column === void 0 ? void 0 : column.headerName) + "-" + index }, column === null || column === void 0 ? void 0 : column.headerName)); }))),
             react_1.default.createElement(TableBody_1.default, null, rows === null || rows === void 0 ? void 0 : rows.map(function (row, index) {
@@ -215,4 +215,4 @@ var MonthModeView = function (_a) {
             })))));
 };
 exports.default = MonthModeView;
-//# sourceMappingURL=MonthModeView.js.map
+//# sourceMappingURL=Month.js.map

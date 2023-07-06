@@ -27,13 +27,14 @@ export interface Event {
     [key: string]: any;
 }
 export interface Option {
-    transitionMode?: TransitionMode;
-    startWeekOn?: StartWeek;
-    defaultMode?: Mode;
-    minWidth?: number;
-    maxWidth?: number;
-    minHeight?: number;
-    maxHeight?: number;
+    transitionMode: TransitionMode;
+    startWeekOn: StartWeek;
+    defaultMode: Mode;
+    minWidth: number;
+    maxWidth: number;
+    minHeight: number;
+    maxHeight: number;
+    reverseTimelineOrder: boolean;
 }
 export interface AlertProps {
     open: boolean;

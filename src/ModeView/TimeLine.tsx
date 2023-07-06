@@ -1,7 +1,7 @@
 import React, { FC, JSX, useContext } from "react";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import DateFnsLocaleContext from "./locales/dateFnsContext";
+import DateFnsLocaleContext from "../locales/dateFnsContext";
 import Timeline from "@mui/lab/Timeline";
 import TimelineItem from "@mui/lab/TimelineItem";
 import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
@@ -11,7 +11,7 @@ import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineDot from "@mui/lab/TimelineDot";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import TimelineContent from "@mui/lab/TimelineContent";
-import { Event, Option } from "./types";
+import { Event, Option } from "../types";
 
 const StyledContainer = styled(Typography)(() => ({
   ["&::-webkit-scrollbar"]: {
@@ -48,7 +48,7 @@ const TimeLineModeView: FC<TimeLineModeViewProps> = ({ options, rows, searchResu
     onTaskClick && onTaskClick(event, task);
   };
 
-  let filteredEvents = rows?.sort((a, b) => -b?.startHour?.localeCompare(a?.startHour));
+  let filteredEvents = options.reverseTimelineOrder ? rows?.sort((a, b) => -b?.startHour?.localeCompare(a?.startHour)) : rows;
   if (searchResult) {
     filteredEvents = filteredEvents?.filter(
       event => event?.groupLabel === searchResult?.groupLabel,
@@ -60,8 +60,8 @@ const TimeLineModeView: FC<TimeLineModeViewProps> = ({ options, rows, searchResu
       component="div"
       sx={ {
         overflowY: "auto",
-        minHeight: options?.minHeight || 540,
-        maxHeight: options?.maxHeight || 540,
+        minHeight: options.minHeight,
+        maxHeight: options.maxHeight,
       } }
     >
       <Timeline position="alternate">

@@ -2,7 +2,7 @@ import React, { FC, JSX, useState } from "react";
 import { alpha, lighten, styled, Theme, useTheme } from "@mui/material/styles";
 import { TableCell, tableCellClasses, TableRow } from "@mui/material";
 import { format, isSameMonth } from "date-fns";
-import EventItem from "./EventItem";
+import EventItem from "../EventItem";
 import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -12,7 +12,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import EventNoteRoundedIcon from "@mui/icons-material/EventNoteRounded";
 import { SxProps } from "@mui/system";
-import { Event, Option } from "./types";
+import { Event, Option } from "../types";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${ tableCellClasses.head }`]: {
@@ -203,7 +203,7 @@ const MonthModeView: FC<MonthModeViewProps> = ({
       <Table
         size="small"
         aria-label="simple table"
-        stickyHeader sx={ { minWidth: options?.minWidth || 650 } }
+        stickyHeader sx={ { minWidth: options.minWidth || 650 } }
       >
         { legacyStyle && <TableHead sx={ { height: 24 } }>
           <StyledTableRow>

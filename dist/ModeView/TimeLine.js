@@ -29,7 +29,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = __importStar(require("react"));
 var styles_1 = require("@mui/material/styles");
 var Typography_1 = __importDefault(require("@mui/material/Typography"));
-var dateFnsContext_1 = __importDefault(require("./locales/dateFnsContext"));
+var dateFnsContext_1 = __importDefault(require("../locales/dateFnsContext"));
 var Timeline_1 = __importDefault(require("@mui/lab/Timeline"));
 var TimelineItem_1 = __importDefault(require("@mui/lab/TimelineItem"));
 var TimelineOppositeContent_1 = __importDefault(require("@mui/lab/TimelineOppositeContent"));
@@ -68,14 +68,14 @@ var TimeLineModeView = function (_a) {
         event.stopPropagation();
         onTaskClick && onTaskClick(event, task);
     };
-    var filteredEvents = rows === null || rows === void 0 ? void 0 : rows.sort(function (a, b) { var _a; return -((_a = b === null || b === void 0 ? void 0 : b.startHour) === null || _a === void 0 ? void 0 : _a.localeCompare(a === null || a === void 0 ? void 0 : a.startHour)); });
+    var filteredEvents = options.reverseTimelineOrder ? rows === null || rows === void 0 ? void 0 : rows.sort(function (a, b) { var _a; return -((_a = b === null || b === void 0 ? void 0 : b.startHour) === null || _a === void 0 ? void 0 : _a.localeCompare(a === null || a === void 0 ? void 0 : a.startHour)); }) : rows;
     if (searchResult) {
         filteredEvents = filteredEvents === null || filteredEvents === void 0 ? void 0 : filteredEvents.filter(function (event) { return (event === null || event === void 0 ? void 0 : event.groupLabel) === (searchResult === null || searchResult === void 0 ? void 0 : searchResult.groupLabel); });
     }
     return (react_1.default.createElement(StyledContainer, { component: "div", sx: {
             overflowY: "auto",
-            minHeight: (options === null || options === void 0 ? void 0 : options.minHeight) || 540,
-            maxHeight: (options === null || options === void 0 ? void 0 : options.maxHeight) || 540,
+            minHeight: options.minHeight,
+            maxHeight: options.maxHeight,
         } },
         react_1.default.createElement(Timeline_1.default, { position: "alternate" }, filteredEvents === null || filteredEvents === void 0 ? void 0 : filteredEvents.map(function (task, index) {
             return (react_1.default.createElement(TimelineItem_1.default, { key: "timeline-".concat(index), sx: { cursor: "pointer" }, onClick: function (event) { return handleTaskClick(event, task); } },
@@ -97,4 +97,4 @@ var TimeLineModeView = function (_a) {
         }))));
 };
 exports.default = TimeLineModeView;
-//# sourceMappingURL=TimeLineModeView.js.map
+//# sourceMappingURL=TimeLine.js.map

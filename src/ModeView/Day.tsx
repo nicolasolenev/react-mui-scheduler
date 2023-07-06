@@ -1,17 +1,18 @@
 import React, { FC, JSX, useState } from "react";
-import { styled, useTheme } from "@mui/material/styles";
+import { styled } from "@mui/system";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import TableRow from "@mui/material/TableRow";
+import TableContainer from "@mui/material/TableContainer";
+import { useTheme } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
+import TableBody from "@mui/material/TableBody";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import { add, differenceInMinutes, format, isValid, parse } from "date-fns";
-import EventItem from "./EventItem";
-import { Event, Option } from "./types";
+import { format, parse, add, differenceInMinutes, isValid } from "date-fns";
+import EventItem from "../EventItem";
+import { Event, Option } from "../types";
 import { useTranslation } from "react-i18next";
 
 const StyledTableCell = styled(TableCell)(() => ({
@@ -21,7 +22,9 @@ const StyledTableCell = styled(TableCell)(() => ({
     borderTop: `1px solid #ccc !important`,
     borderBottom: `1px solid #ccc !important`,
     borderLeft: `1px solid #ccc !important`,
-    ["&:nth-of-type(1)"]: { borderLeft: `0px !important` },
+    ["&:nth-of-type(1)"]: {
+      borderLeft: `0px !important`,
+    },
   },
   [`&.${ tableCellClasses.body }`]: {
     fontSize: 12,
@@ -30,11 +33,7 @@ const StyledTableCell = styled(TableCell)(() => ({
     maxWidth: 128,
     cursor: "pointer",
     borderLeft: `1px solid #ccc`,
-    ["&:nth-of-type(1)"]: {
-      width: 80,
-      maxWidth: 80,
-    },
-    ["&:nth-of-type(8n+1)"]: { borderLeft: 0 },
+    ["&:nth-of-type(1)"]: { borderLeft: 0 },
   },
   [`&.${ tableCellClasses.body }:hover`]: {
     backgroundColor: "#eee",
@@ -66,17 +65,18 @@ const StyledTableContainer = styled(TableContainer)(() => ({
   },
 })) as typeof TableContainer;
 
-interface WeekModeViewProps {
+interface DayModeViewProps {
   options: Option;
-  columns: any[];
-  rows: any[];
-  searchResult: any;
+  columns?: any[];
+  rows?: any[];
+  date?: string;
+  searchResult?: any;
   onTaskClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: Event) => void;
-  onCellClick?: (event: React.MouseEvent<HTMLTableCellElement>, row: any, day: any) => void;
+  onCellClick?: (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, row: any, day?: any) => void;
   onEventsChange: (item: Event) => void;
 }
 
-const WeekModeView: FC<WeekModeViewProps> = ({
+const DayModeView: FC<DayModeViewProps> = ({
   options,
   columns,
   rows,
@@ -93,7 +93,7 @@ const WeekModeView: FC<WeekModeViewProps> = ({
     e.preventDefault();
   };
 
-  const onCellDragStart = (e: React.DragEvent<HTMLDivElement>, item: any, rowLabel: string, rowIndex?: number, dayIndex?: number): void => {
+  const onCellDragStart = (e: React.DragEvent<HTMLDivElement>, item: Event, rowLabel: string, rowIndex?: number, dayIndex?: number): void => {
     setState({
         ...state,
         itemTransfer: { item, rowLabel, rowIndex, dayIndex },
@@ -101,12 +101,9 @@ const WeekModeView: FC<WeekModeViewProps> = ({
     );
   };
 
-  const onCellDragEnter = (e: React.DragEvent<HTMLTableCellElement>, rowLabel: string, rowIndex?: number, dayIndex?: number): void => {
+  const onCellDragEnter = (e: React.DragEvent<HTMLTableCellElement>, rowLabel: string, rowIndex: number, dayIndex: number): void => {
     e.preventDefault();
-    setState({
-      ...state,
-      transferTarget: { rowLabel, rowIndex, dayIndex },
-    });
+    setState({ ...state, transferTarget: { rowLabel, rowIndex, dayIndex } });
   };
 
   const onCellDragEnd = (e: React.DragEvent<HTMLTableCellElement>): void => {
@@ -116,12 +113,12 @@ const WeekModeView: FC<WeekModeViewProps> = ({
     }
     let transfer = state.itemTransfert;
     let transferTarget = state.transfertTarget;
-    let rowsData = Array.from(rows);
+    let rowsData = Array.from(rows as any[]);
     let day = rowsData[transferTarget.rowIndex]?.days[transferTarget.dayIndex];
 
     if (day) {
       let hourRegExp = /[0-9]{2}:[0-9]{2}/;
-      let foundEventIndex = day.data.findIndex((e: any) =>
+      let foundEventIndex = day.data.findIndex((e: Event) =>
         e.id === transfer.item.id &&
         e.startHour === transfer.item.startHour &&
         e.endHour === transfer.item.endHour,
@@ -135,12 +132,12 @@ const WeekModeView: FC<WeekModeViewProps> = ({
       let prevEventCell = rowsData[transfer.rowIndex].days[transfer.dayIndex];
       // Timeline label (00:00 am, 01:00 am, etc.)
       let label = transferTarget.rowLabel?.toUpperCase();
-      let hourLabel = hourRegExp.exec(label)?.[0];
+      let hourLabel = hourRegExp.exec(label as string)?.[0];
       // Event's end hour
-      let endHour = hourRegExp.exec(transfer.item.endHour)?.[0];
+      let endHour = hourRegExp.exec(transfer.item.endHour as string)?.[0];
       let endHourDate = parse(endHour as string, "HH:mm", day.date);
       // Event start hour
-      let startHour = hourRegExp.exec(transfer.item.startHour)?.[0];
+      let startHour = hourRegExp.exec(transfer.item.startHour as string)?.[0];
       let startHourDate = parse(startHour as string, "HH:mm", day.date);
       // Minutes difference between end and start event hours
       let minutesDiff = differenceInMinutes(endHourDate, startHourDate);
@@ -157,30 +154,24 @@ const WeekModeView: FC<WeekModeViewProps> = ({
         );
       }
 
-      prevEventCell?.data?.splice(transfer.item.itemIndex, 1);
+      prevEventCell?.data?.splice(transfer?.item?.itemIndex, 1);
       transfer.item.startHour = label;
-      transfer.item.endHour = format(
-        newEndHour,
-        "HH:mm aaa",
-      );
-      transfer.item.date = format(
-        day.date,
-        "yyyy-MM-dd",
-      );
+      transfer.item.endHour = format(newEndHour, "HH:mm aaa");
+      transfer.item.date = format(day.date, "yyyy-MM-dd");
       day.data.push(transfer.item);
       setState({ ...state, rows: rowsData });
       onEventsChange && onEventsChange(transfer.item);
     }
   };
 
-  const handleCellClick = (event: React.MouseEvent<HTMLTableCellElement>, row: any, day?: any): void => {
+  const handleCellClick = (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, row: any, day?: any): void => {
     event.preventDefault();
     event.stopPropagation();
     onCellClick && onCellClick(event, row, day);
   };
 
-  const renderTask = (tasks: any, rowLabel: string, rowIndex?: number, dayIndex?: number) => {
-    return tasks?.map((task: Event, itemIndex: number) => {
+  const renderTask = (tasks: Event[], rowLabel: string, rowIndex?: number, dayIndex?: number) =>
+    tasks?.map((task: Event, itemIndex: number) => {
       let condition = (
         searchResult ?
           (
@@ -191,24 +182,22 @@ const WeekModeView: FC<WeekModeViewProps> = ({
       return (
         condition &&
         <EventItem
-          rowId={ rowIndex as number }
+          rowId={ itemIndex }
           event={ task }
           elevation={ 0 }
           boxSx={ { px: 0.3 } }
           onClick={ e => handleTaskClick(e, task) }
-          key={ `item_id-${ itemIndex }_r-${ rowIndex }_d-${ dayIndex }` }
+          key={ `iti18nem_id-${ itemIndex }_r-${ rowIndex }_d-${ dayIndex }` }
           onDragStart={ e => onCellDragStart(
             e, { ...task, itemIndex }, rowLabel, rowIndex, dayIndex,
           ) }
           sx={ {
-            py: 0,
-            color: theme.palette.common.white,
+            py: 0, mb: .5, color: theme.palette.common.white,
             backgroundColor: task?.color || theme.palette.primary.light,
           } }
         />
       );
     });
-  };
 
   const handleTaskClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: Event): void => {
     event.preventDefault();
@@ -219,19 +208,19 @@ const WeekModeView: FC<WeekModeViewProps> = ({
   return (
     <StyledTableContainer
       component={ Paper }
-      sx={ { maxHeight: options?.maxHeight || 540 } }
+      sx={ { maxHeight: options.maxHeight } }
     >
       <Table
         size="small"
         aria-label="simple table"
-        stickyHeader sx={ { minWidth: options.minWidth || 540 } }
+        stickyHeader sx={ { minWidth: options.minWidth } }
       >
         <TableHead sx={ { height: 24 } }>
           <StyledTableRow>
             <StyledTableCell align="left"/>
             { columns?.map((column, index) => (
               <StyledTableCell
-                align="center"
+                align="center" colSpan={ 2 }
                 key={ `weekday-${ column?.day }-${ index }` }
               >
                 { column?.weekDay } { column?.month }/{ column?.day }
@@ -247,7 +236,7 @@ const WeekModeView: FC<WeekModeViewProps> = ({
             >
               <Tooltip
                 placement="right"
-                title={ t("eventWeekTimelineCount", { count: row.days?.reduce((prev: any, curr: any) => prev + curr?.data?.length, 0) }) }
+                title={ t("eventDayTimelineCount", { count: row.days?.reduce((prev: any, curr: any) => prev + curr?.data?.length, 0) }) }
               >
                 <StyledTableCell
                   scope="row"
@@ -266,6 +255,7 @@ const WeekModeView: FC<WeekModeViewProps> = ({
                   scope="row"
                   align="center"
                   component="th"
+                  colSpan={ 2 }
                   sx={ { px: .3, py: .5 } }
                   onDragEnd={ onCellDragEnd }
                   onDragOver={ onCellDragOver }
@@ -274,13 +264,7 @@ const WeekModeView: FC<WeekModeViewProps> = ({
                     event, { rowIndex, ...row }, { dayIndex, ...day },
                   ) }
                 >
-                  { day?.data?.length > 0 &&
-                    renderTask(
-                      day?.data,
-                      row?.label,
-                      rowIndex,
-                      dayIndex,
-                    ) }
+                  { day?.data?.length > 0 && renderTask(day?.data, row?.label, rowIndex, dayIndex) }
                 </StyledTableCell>
               )) }
             </StyledTableRow>
@@ -291,4 +275,4 @@ const WeekModeView: FC<WeekModeViewProps> = ({
   );
 };
 
-export default WeekModeView;
+export default DayModeView;
