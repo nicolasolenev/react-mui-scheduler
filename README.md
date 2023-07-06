@@ -28,13 +28,13 @@ React mui scheduler is a react component based on @mui v5 that allows you to man
 ```typescript jsx
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
-import Scheduler, { Event, Mode, TransitionMode } from "react-mui-scheduler";
+import Scheduler, { Event, Mode, StartWeek, TransitionMode } from "react-mui-scheduler";
 
 const App = () => {
   const [state] = useState({
     options: {
       transitionMode: TransitionMode.ZOOM, // or TransitionMode.FADE
-      startWeekOn: "mon",     // or sun
+      startWeekOn: StartWeek.MON,     // or StartWeek.SUN
       defaultMode: Mode.MONTH,    // or Mode.WEEK | Mode.DAY | Mode.TIMELINE
       minWidth: 540,
       maxWidth: 540,
@@ -171,25 +171,26 @@ For more details about date formats, see [date-fns docs](https://date-fns.org/v2
 
 ## Props
 
-| Name                      | Type    | Default | Description                                                      | Values                                           |
-|---------------------------|---------|---------|------------------------------------------------------------------|--------------------------------------------------|
-| locale                    | string  | `enUS`  | This prop is used to set the locale of the scheduler             | `ar`, `de`, `enUS`, `es`, `fr`, `ja`, `ko`, `zh` |
-| events                    | object  |         | This prop sets event data                                        |                                                  |
-| legacyStyle               | boolean | `false` | This prop allows to use the old display style                    | `false`, `true`                                  |
-| options                   | object  |         | This prop is used to set scheduler properties                    |                                                  |
-| alertProps                | object  |         | This prop is used to set scheduler properties                    |                                                  |
-| toolbarProps              | object  |         | This prop is used to set toolbar properties                      |                                                  |
-| onEventsChange            | event   |         | This event is fired when the event change occurs                 |                                                  |
-| onCellClick               | event   |         | This event is fired when a cell is clicked                       |                                                  |
-| onTaskClick               | event   |         | This event is fired when a task is clicked                       |                                                  |
-| onAlertCloseButtonClicked | event   |         | This event is fired when the close button of the alert component |                                                  |
+| Name                      | Type         | Default | Description                                                      | Values                                                 |
+|---------------------------|--------------|---------|------------------------------------------------------------------|--------------------------------------------------------|
+| locale                    | string       | `enUS`  | This prop is used to set the locale of the scheduler             | `ar`, `br`, `de`, `enUS`, `es`, `fr`, `ja`, `ko`, `zh` |
+| events                    | Event[]      |         | This prop sets event data                                        |                                                        |
+| legacyStyle               | boolean      | `false` | This prop allows to use the old display style                    | `false`, `true`                                        |
+| options                   | Option       |         | This prop is used to set scheduler properties                    |                                                        |
+| alertProps                | AlertProps   |         | This prop is used to set scheduler properties                    |                                                        |
+| toolbarProps              | ToolbarProps |         | This prop is used to set toolbar properties                      |                                                        |
+| onEventsChange            | event        |         | This event is fired when the event change occurs                 |                                                        |
+| onCellClick               | event        |         | This event is fired when a cell is clicked                       |                                                        |
+| onTaskClick               | event        |         | This event is fired when a task is clicked                       |                                                        |
+| onAlertCloseButtonClicked | event        |         | This event is fired when the close button of the alert component |                                                        |
+| onDateChange              | event        |         | This event is fired when a date from the DatePicker is clicked   |                                                        |
 
 ## Options
 
 | Name           | Type           | Default               | Description                                                                   | Values                                                               |
 |----------------|----------------|-----------------------|-------------------------------------------------------------------------------|----------------------------------------------------------------------|
 | transitionMode | TransitionMode | `TransitionMode.ZOOM` | This option is used to define the type of scheduler transition                | `TransitionMode.ZOOM`, `TransitionMode.FADE`, `TransitionMode.SLIDE` |
-| startWeekOn    | string         | `mon`                 | This option is used to set the start of the calendar week to Monday or Sunday | `mon`, `sun`                                                         |
+| startWeekOn    | string         | `StartWeek.MON`       | This option is used to set the start of the calendar week to Monday or Sunday | `StartWeek.MON`, `StartWeek.SUN`                                     |
 | defaultMode    | Mode           | `Mode.WEEK`           | This option allows you to define the type of view to display                  | `Mode.MONTH`, `Mode.WEEK`, `Mode.DAY`, `Mode.TIMELINE`               |
 | minWidth       | number         | `540`                 | This option allows you to define the minimum width of the container           | `number`                                                             |
 | maxWidth       | number         | `540`                 | This option allows you to define the maximum width of the container           | `number`                                                             |

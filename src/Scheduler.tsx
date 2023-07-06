@@ -1,7 +1,7 @@
 import React, { FC, JSX, useEffect, useReducer, useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
-import { AlertProps, Event, Mode, Option, ToolbarProps, TransitionMode } from "./types";
+import { AlertProps, Event, Mode, Option, StartWeek, ToolbarProps, TransitionMode } from "./types";
 import {
   add,
   format,
@@ -33,7 +33,7 @@ interface SchedulerProps {
   options: Option;
   alertProps?: AlertProps;
   legacyStyle?: boolean;
-  toolbarProps: ToolbarProps;
+  toolbarProps?: ToolbarProps;
   onCellClick?: (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, row: any, day: any) => void;
   onTaskClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: Event) => void;
   onEventsChange?: (item: Event) => void;
@@ -49,7 +49,17 @@ const Scheduler: FC<SchedulerProps> = ({
   onCellClick,
   legacyStyle = false,
   onTaskClick,
-  toolbarProps,
+  toolbarProps = {
+    showSearchBar: true,
+    showSwitchModeButtons: {
+      showMonthButton: true,
+      showWeekButton: true,
+      showDayButton: true,
+      showTimelineButton: true,
+    },
+    showDatePicker: true,
+    showOptions: true,
+  },
   onEventsChange,
   onAlertCloseButtonClicked,
   onDateChange,
@@ -68,18 +78,14 @@ const Scheduler: FC<SchedulerProps> = ({
   const [alertState, setAlertState] = useState<AlertProps | undefined>(alertProps);
   const [mode, setMode] = useState(options?.defaultMode || Mode.MONTH);
   const [daysInMonth, setDaysInMonth] = useState(getDaysInMonth(today));
-  const [startWeekOn, setStartWeekOn] = useState(options?.startWeekOn || "mon");
+  const [startWeekOn, setStartWeekOn] = useState<StartWeek>(options?.startWeekOn || StartWeek.MON);
   const [selectedDate, setSelectedDate] = useState(format(today, "MMMM-yyyy"));
-  const [weekDays, updateWeekDays] = useReducer(() => {
-    if (options?.startWeekOn?.toUpperCase() === "SUN") {
-      return [
-        t("sun"), t("mon"), t("tue"),
-        t("wed"), t("thu"), t("fri"),
-        t("sat"),
-      ];
-    }
-    return weeks;
-  }, weeks);
+  const [weekDays, updateWeekDays] = useReducer(() =>
+    options?.startWeekOn?.toUpperCase() === "SUN" ? [
+      t("sun"), t("mon"), t("tue"),
+      t("wed"), t("thu"), t("fri"),
+      t("sat"),
+    ] : weeks, weeks);
 
   const isDayMode = mode.toLowerCase() === Mode.DAY;
   const isWeekMode = mode.toLowerCase() === Mode.WEEK;
@@ -269,7 +275,7 @@ const Scheduler: FC<SchedulerProps> = ({
     let data = [];
     let weekStart = startOfWeek(
       selectedDay,
-      { weekStartsOn: startWeekOn === "mon" ? 1 : 0 },
+      { weekStartsOn: startWeekOn === StartWeek.MON ? 1 : 0 },
     );
     for (let i = 0; i < 7; i++) {
       let date = add(weekStart, { days: i });
@@ -476,8 +482,8 @@ const Scheduler: FC<SchedulerProps> = ({
   }, [options?.defaultMode]);
 
   useEffect(() => {
-    if (options?.startWeekOn !== startWeekOn) {
-      setStartWeekOn(options?.startWeekOn as string);
+    if (options?.startWeekOn !== undefined && options.startWeekOn !== startWeekOn) {
+      setStartWeekOn(options.startWeekOn);
     }
     updateWeekDays();
   }, [options?.startWeekOn]);

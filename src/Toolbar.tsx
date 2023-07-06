@@ -174,6 +174,7 @@ const Toolbar: FC<ToolbarProps> = ({
   const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>): void => {
     setAnchorMenuEl(event.currentTarget);
   };
+
   return (
     <MuiToolbar
       variant="dense"

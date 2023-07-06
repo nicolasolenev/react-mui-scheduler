@@ -13,6 +13,11 @@ export enum Mode {
   WEEK = "week",
 }
 
+export enum StartWeek {
+  MON = "mon",
+  SUN = "sun",
+}
+
 export interface Event {
   id: number | string;
   label: string;
@@ -28,7 +33,7 @@ export interface Event {
 
 export interface Option {
   transitionMode?: TransitionMode;
-  startWeekOn?: string;
+  startWeekOn?: StartWeek;
   defaultMode?: Mode;
   minWidth?: number;
   maxWidth?: number;
