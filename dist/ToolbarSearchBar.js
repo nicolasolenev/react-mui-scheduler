@@ -39,7 +39,7 @@ var styles_1 = require("@mui/material/styles");
 var material_1 = require("@mui/material");
 var react_i18next_1 = require("react-i18next");
 var date_fns_1 = require("date-fns");
-var StyledAutoComplete = (0, styles_1.styled)(material_1.Autocomplete)(function (_a) {
+var StyledAutoComplete = (0, styles_1.styled)((material_1.Autocomplete))(function (_a) {
     var _b;
     var theme = _a.theme;
     return (_b = {
@@ -63,14 +63,14 @@ var StyledAutoComplete = (0, styles_1.styled)(material_1.Autocomplete)(function 
 var ToolbarSearchBar = function (_a) {
     var events = _a.events, onInputChange = _a.onInputChange;
     var t = (0, react_i18next_1.useTranslation)(["common"]).t;
-    var _b = (0, react_1.useState)(""), value = _b[0], setValue = _b[1];
+    var _b = (0, react_1.useState)(), value = _b[0], setValue = _b[1];
     var _c = (0, react_1.useState)(""), inputValue = _c[0], setInputValue = _c[1];
     var handleOnChange = function (event, value) {
         setValue(value);
         if (onInputChange)
-            onInputChange(value);
+            onInputChange("".concat((value === null || value === void 0 ? void 0 : value.groupLabel) || "", " | (").concat((value === null || value === void 0 ? void 0 : value.startHour) || "", " - ").concat((value === null || value === void 0 ? void 0 : value.endHour) || "", ")"));
     };
-    return (react_1.default.createElement(StyledAutoComplete, { value: value, id: "scheduler-autocomplete", inputValue: inputValue, sx: { mb: 0, display: "inline-flex" }, onChange: handleOnChange, options: events === null || events === void 0 ? void 0 : events.sort(function (a, b) { return -b.groupLabel.localeCompare(a.groupLabel); }), groupBy: function (option) { return option ? option === null || option === void 0 ? void 0 : option.groupLabel : null; }, getOptionLabel: function (option) { return (option ?
+    return (react_1.default.createElement(StyledAutoComplete, { value: value, id: "scheduler-autocomplete", inputValue: inputValue, sx: { mb: 0, display: "inline-flex" }, onChange: handleOnChange, options: events === null || events === void 0 ? void 0 : events.sort(function (a, b) { return -b.groupLabel.localeCompare(a.groupLabel); }), groupBy: function (option) { return option ? option === null || option === void 0 ? void 0 : option.groupLabel : ""; }, getOptionLabel: function (option) { return (option ?
             "".concat(option.groupLabel || "", " | (").concat(option.startHour || "", " - ").concat(option.endHour || "", ")") : ""); }, isOptionEqualToValue: function (option, value) { return option.id === value.id; }, onInputChange: function (event, newInputValue) {
             setInputValue(newInputValue);
             onInputChange(newInputValue);

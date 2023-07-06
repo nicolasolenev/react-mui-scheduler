@@ -1,5 +1,5 @@
 import React, { FC, JSX, useState } from "react";
-import { alpha, styled, Theme, useTheme } from "@mui/material/styles";
+import { alpha, lighten, styled, Theme, useTheme } from "@mui/material/styles";
 import { TableCell, tableCellClasses, TableRow } from "@mui/material";
 import { format, isSameMonth } from "date-fns";
 import EventItem from "./EventItem";
@@ -183,7 +183,7 @@ const MonthModeView: FC<MonthModeViewProps> = ({
             width: "100%",
             py: 0,
             my: .3,
-            color: "#fff",
+            color: theme.palette.common.white,
             backgroundColor: task?.color || theme.palette.primary.light,
             textAlign: "left",
           } }
@@ -258,7 +258,7 @@ const MonthModeView: FC<MonthModeViewProps> = ({
                             currentDay &&
                             alpha(theme.palette.primary.main, 1)
                           ),
-                          color: (currentDay && "#fff"),
+                          color: (currentDay && theme.palette.common.white),
                         } as SxProps<Theme> }
                       >
                         { day.day }
@@ -267,7 +267,7 @@ const MonthModeView: FC<MonthModeViewProps> = ({
                       { legacyStyle && day?.data?.length === 0 &&
                         <EventNoteRoundedIcon
                           fontSize="small"
-                          htmlColor={ theme.palette.divider }
+                          htmlColor={ theme.palette.mode === "light" ? theme.palette.divider : lighten(theme.palette.common.white, .5) }
                         /> }
                     </Box>
                   </StyledTableCell>

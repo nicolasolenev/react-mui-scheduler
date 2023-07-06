@@ -29,6 +29,10 @@ React mui scheduler is a react component based on @mui v5 that allows you to man
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import Scheduler, { Event, Mode, StartWeek, TransitionMode } from "react-mui-scheduler";
+import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
+import AutorenewIcon from "@mui/icons-material/Autorenew";
+import ArchiveIcon from "@mui/icons-material/Archive";
+import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
 
 const App = () => {
   const [state] = useState({
@@ -60,6 +64,24 @@ const App = () => {
       },
       showDatePicker: true,
       showOptions: true,
+      optionMenus: [
+        {
+          label: "Read events",
+          icon: <PlayCircleOutlineIcon fontSize="small"/>,
+        },
+        {
+          label: "Refresh",
+          icon: <AutorenewIcon fontSize="small"/>,
+        },
+        {
+          label: "Export",
+          icon: <ArchiveIcon fontSize="small"/>,
+        },
+        {
+          label: "Print",
+          icon: <LocalPrintshopIcon fontSize="small"/>,
+        },
+      ],
     },
   });
 

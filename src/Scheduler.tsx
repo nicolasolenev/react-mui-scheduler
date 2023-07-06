@@ -59,7 +59,8 @@ const Scheduler: FC<SchedulerProps> = ({
     },
     showDatePicker: true,
     showOptions: true,
-  },
+    optionMenus: [],
+  } as ToolbarProps,
   onEventsChange,
   onAlertCloseButtonClicked,
   onDateChange,
@@ -402,7 +403,7 @@ const Scheduler: FC<SchedulerProps> = ({
     setMode(newMode);
   };
 
-  const onSearchResult = (item: any): void => {
+  const onSearchResult = (item: Event): void => {
     setSearchResult(item);
   };
 

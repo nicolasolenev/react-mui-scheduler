@@ -1,6 +1,7 @@
 import { FC } from "react";
+import { Event } from "./types";
 interface ToolbarSearchBarProps {
-    events: any[];
+    events: Event[];
     onInputChange: (value: string) => void;
 }
 declare const ToolbarSearchBar: FC<ToolbarSearchBarProps>;

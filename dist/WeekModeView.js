@@ -50,6 +50,7 @@ var Tooltip_1 = __importDefault(require("@mui/material/Tooltip"));
 var Typography_1 = __importDefault(require("@mui/material/Typography"));
 var date_fns_1 = require("date-fns");
 var EventItem_1 = __importDefault(require("./EventItem"));
+var react_i18next_1 = require("react-i18next");
 var StyledTableCell = (0, styles_1.styled)(TableCell_1.default)(function () {
     var _a, _b, _c;
     return (_a = {},
@@ -114,6 +115,7 @@ var WeekModeView = function (_a) {
     var options = _a.options, columns = _a.columns, rows = _a.rows, searchResult = _a.searchResult, onTaskClick = _a.onTaskClick, onCellClick = _a.onCellClick, onEventsChange = _a.onEventsChange;
     var theme = (0, styles_1.useTheme)();
     var _b = (0, react_1.useState)({ columns: columns, rows: rows }), state = _b[0], setState = _b[1];
+    var t = (0, react_i18next_1.useTranslation)(["common"]).t;
     var onCellDragOver = function (e) {
         e.preventDefault();
     };
@@ -187,7 +189,7 @@ var WeekModeView = function (_a) {
             return (condition &&
                 react_1.default.createElement(EventItem_1.default, { rowId: rowIndex, event: task, elevation: 0, boxSx: { px: 0.3 }, onClick: function (e) { return handleTaskClick(e, task); }, key: "item_id-".concat(itemIndex, "_r-").concat(rowIndex, "_d-").concat(dayIndex), onDragStart: function (e) { return onCellDragStart(e, __assign(__assign({}, task), { itemIndex: itemIndex }), rowLabel, rowIndex, dayIndex); }, sx: {
                         py: 0,
-                        color: "#fff",
+                        color: theme.palette.common.white,
                         backgroundColor: (task === null || task === void 0 ? void 0 : task.color) || theme.palette.primary.light,
                     } }));
         });
@@ -210,9 +212,8 @@ var WeekModeView = function (_a) {
                         column.day)); }))),
             react_1.default.createElement(TableBody_1.default, null, rows === null || rows === void 0 ? void 0 : rows.map(function (row, rowIndex) {
                 var _a, _b, _c;
-                var lineTasks = (_a = row.days) === null || _a === void 0 ? void 0 : _a.reduce(function (prev, curr) { var _a; return prev + ((_a = curr === null || curr === void 0 ? void 0 : curr.data) === null || _a === void 0 ? void 0 : _a.length); }, 0);
                 return (react_1.default.createElement(StyledTableRow, { key: "timeline-".concat(rowIndex), sx: { "&:last-child td, &:last-child th": { border: 0 } } },
-                    react_1.default.createElement(Tooltip_1.default, { placement: "right", title: "".concat(lineTasks, " event").concat(lineTasks > 1 ? "s" : "", " on this week timeline") },
+                    react_1.default.createElement(Tooltip_1.default, { placement: "right", title: t("eventWeekTimelineCount", { count: (_a = row.days) === null || _a === void 0 ? void 0 : _a.reduce(function (prev, curr) { var _a; return prev + ((_a = curr === null || curr === void 0 ? void 0 : curr.data) === null || _a === void 0 ? void 0 : _a.length); }, 0) }) },
                         react_1.default.createElement(StyledTableCell, { scope: "row", align: "center", component: "th", sx: { px: 1 }, onClick: function (event) { return handleCellClick(event, row); } },
                             react_1.default.createElement(Typography_1.default, { variant: "body2" }, row === null || row === void 0 ? void 0 : row.label),
                             ((_b = row === null || row === void 0 ? void 0 : row.data) === null || _b === void 0 ? void 0 : _b.length) > 0 && renderTask(row === null || row === void 0 ? void 0 : row.data, row.id))), (_c = row === null || row === void 0 ? void 0 : row.days) === null || _c === void 0 ? void 0 :

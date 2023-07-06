@@ -173,7 +173,7 @@ var MonthModeView = function (_a) {
                         width: "100%",
                         py: 0,
                         my: .3,
-                        color: "#fff",
+                        color: theme.palette.common.white,
                         backgroundColor: (task === null || task === void 0 ? void 0 : task.color) || theme.palette.primary.light,
                         textAlign: "left",
                     } }));
@@ -207,10 +207,10 @@ var MonthModeView = function (_a) {
                                 index === 0 && ((_b = (_a = columns[indexD]) === null || _a === void 0 ? void 0 : _a.headerName) === null || _b === void 0 ? void 0 : _b.toUpperCase()),
                             ".",
                             react_1.default.createElement(Typography_1.default, { variant: "body2", sx: __assign(__assign({}, currentDaySx), { background: (currentDay &&
-                                        (0, styles_1.alpha)(theme.palette.primary.main, 1)), color: (currentDay && "#fff") }) }, day.day),
+                                        (0, styles_1.alpha)(theme.palette.primary.main, 1)), color: (currentDay && theme.palette.common.white) }) }, day.day),
                             (((_c = day === null || day === void 0 ? void 0 : day.data) === null || _c === void 0 ? void 0 : _c.length) > 0 && renderTask(day === null || day === void 0 ? void 0 : day.data, row.id)),
                             legacyStyle && ((_d = day === null || day === void 0 ? void 0 : day.data) === null || _d === void 0 ? void 0 : _d.length) === 0 &&
-                                react_1.default.createElement(EventNoteRounded_1.default, { fontSize: "small", htmlColor: theme.palette.divider }))));
+                                react_1.default.createElement(EventNoteRounded_1.default, { fontSize: "small", htmlColor: theme.palette.mode === "light" ? theme.palette.divider : (0, styles_1.lighten)(theme.palette.common.white, .5) }))));
                 })));
             })))));
 };

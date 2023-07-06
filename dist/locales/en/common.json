@@ -10,5 +10,9 @@
     "fri": "Fri",
     "sat": "Sat",
     "sun": "Sun",
-    "search": "Search..."
+    "search": "Search...",
+    "eventDayTimelineCount_one": "{{count}} event on this day timeline",
+    "eventDayTimelineCount_other": "{{count}} events on this day timeline",
+    "eventWeekTimelineCount_one": "{{count}} event on this week timeline",
+    "eventWeekTimelineCount_other": "{{count}} events on this week timeline"
 }

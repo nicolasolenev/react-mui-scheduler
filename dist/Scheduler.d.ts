@@ -6,7 +6,7 @@ interface SchedulerProps {
     options: Option;
     alertProps?: AlertProps;
     legacyStyle?: boolean;
-    toolbarProps: ToolbarProps;
+    toolbarProps?: ToolbarProps;
     onCellClick?: (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, row: any, day: any) => void;
     onTaskClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: Event) => void;
     onEventsChange?: (item: Event) => void;

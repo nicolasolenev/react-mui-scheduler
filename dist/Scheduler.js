@@ -91,34 +91,42 @@ var WeekModeView_1 = __importDefault(require("./WeekModeView"));
 var DayModeView_1 = __importDefault(require("./DayModeView"));
 var TimeLineModeView_1 = __importDefault(require("./TimeLineModeView"));
 var Scheduler = function (_a) {
-    var events = _a.events, _b = _a.locale, locale = _b === void 0 ? "en" : _b, options = _a.options, alertProps = _a.alertProps, onCellClick = _a.onCellClick, _c = _a.legacyStyle, legacyStyle = _c === void 0 ? false : _c, onTaskClick = _a.onTaskClick, toolbarProps = _a.toolbarProps, onEventsChange = _a.onEventsChange, onAlertCloseButtonClicked = _a.onAlertCloseButtonClicked, onDateChange = _a.onDateChange;
+    var events = _a.events, _b = _a.locale, locale = _b === void 0 ? "en" : _b, options = _a.options, alertProps = _a.alertProps, onCellClick = _a.onCellClick, _c = _a.legacyStyle, legacyStyle = _c === void 0 ? false : _c, onTaskClick = _a.onTaskClick, _d = _a.toolbarProps, toolbarProps = _d === void 0 ? {
+        showSearchBar: true,
+        showSwitchModeButtons: {
+            showMonthButton: true,
+            showWeekButton: true,
+            showDayButton: true,
+            showTimelineButton: true,
+        },
+        showDatePicker: true,
+        showOptions: true,
+        optionMenus: [],
+    } : _d, onEventsChange = _a.onEventsChange, onAlertCloseButtonClicked = _a.onAlertCloseButtonClicked, onDateChange = _a.onDateChange;
     var today = new Date();
     (0, styles_1.useTheme)();
-    var _d = (0, react_i18next_1.useTranslation)(["common"]), t = _d.t, i18n = _d.i18n;
+    var _e = (0, react_i18next_1.useTranslation)(["common"]), t = _e.t, i18n = _e.i18n;
     var weeks = [
         t("mon"), t("tue"), t("wed"),
         t("thu"), t("fri"), t("sat"),
         t("sun"),
     ];
-    var _e = (0, react_1.useState)({}), state = _e[0], setState = _e[1];
-    var _f = (0, react_1.useState)(), searchResult = _f[0], setSearchResult = _f[1];
-    var _g = (0, react_1.useState)(today), selectedDay = _g[0], setSelectedDay = _g[1];
-    var _h = (0, react_1.useState)(alertProps), alertState = _h[0], setAlertState = _h[1];
-    var _j = (0, react_1.useState)((options === null || options === void 0 ? void 0 : options.defaultMode) || types_1.Mode.MONTH), mode = _j[0], setMode = _j[1];
-    var _k = (0, react_1.useState)((0, date_fns_1.getDaysInMonth)(today)), daysInMonth = _k[0], setDaysInMonth = _k[1];
-    var _l = (0, react_1.useState)((options === null || options === void 0 ? void 0 : options.startWeekOn) || "mon"), startWeekOn = _l[0], setStartWeekOn = _l[1];
-    var _m = (0, react_1.useState)((0, date_fns_1.format)(today, "MMMM-yyyy")), selectedDate = _m[0], setSelectedDate = _m[1];
-    var _o = (0, react_1.useReducer)(function () {
+    var _f = (0, react_1.useState)({}), state = _f[0], setState = _f[1];
+    var _g = (0, react_1.useState)(), searchResult = _g[0], setSearchResult = _g[1];
+    var _h = (0, react_1.useState)(today), selectedDay = _h[0], setSelectedDay = _h[1];
+    var _j = (0, react_1.useState)(alertProps), alertState = _j[0], setAlertState = _j[1];
+    var _k = (0, react_1.useState)((options === null || options === void 0 ? void 0 : options.defaultMode) || types_1.Mode.MONTH), mode = _k[0], setMode = _k[1];
+    var _l = (0, react_1.useState)((0, date_fns_1.getDaysInMonth)(today)), daysInMonth = _l[0], setDaysInMonth = _l[1];
+    var _m = (0, react_1.useState)((options === null || options === void 0 ? void 0 : options.startWeekOn) || types_1.StartWeek.MON), startWeekOn = _m[0], setStartWeekOn = _m[1];
+    var _o = (0, react_1.useState)((0, date_fns_1.format)(today, "MMMM-yyyy")), selectedDate = _o[0], setSelectedDate = _o[1];
+    var _p = (0, react_1.useReducer)(function () {
         var _a;
-        if (((_a = options === null || options === void 0 ? void 0 : options.startWeekOn) === null || _a === void 0 ? void 0 : _a.toUpperCase()) === "SUN") {
-            return [
-                t("sun"), t("mon"), t("tue"),
-                t("wed"), t("thu"), t("fri"),
-                t("sat"),
-            ];
-        }
-        return weeks;
-    }, weeks), weekDays = _o[0], updateWeekDays = _o[1];
+        return ((_a = options === null || options === void 0 ? void 0 : options.startWeekOn) === null || _a === void 0 ? void 0 : _a.toUpperCase()) === "SUN" ? [
+            t("sun"), t("mon"), t("tue"),
+            t("wed"), t("thu"), t("fri"),
+            t("sat"),
+        ] : weeks;
+    }, weeks), weekDays = _p[0], updateWeekDays = _p[1];
     var isDayMode = mode.toLowerCase() === types_1.Mode.DAY;
     var isWeekMode = mode.toLowerCase() === types_1.Mode.WEEK;
     var isMonthMode = mode.toLowerCase() === types_1.Mode.MONTH;
@@ -273,7 +281,7 @@ var Scheduler = function (_a) {
     };
     var getWeekHeader = function () {
         var data = [];
-        var weekStart = (0, date_fns_1.startOfWeek)(selectedDay, { weekStartsOn: startWeekOn === "mon" ? 1 : 0 });
+        var weekStart = (0, date_fns_1.startOfWeek)(selectedDay, { weekStartsOn: startWeekOn === types_1.StartWeek.MON ? 1 : 0 });
         for (var i = 0; i < 7; i++) {
             var date = (0, date_fns_1.add)(weekStart, { days: i });
             data.push({
@@ -431,8 +439,8 @@ var Scheduler = function (_a) {
         }
     }, [options === null || options === void 0 ? void 0 : options.defaultMode]);
     (0, react_1.useEffect)(function () {
-        if ((options === null || options === void 0 ? void 0 : options.startWeekOn) !== startWeekOn) {
-            setStartWeekOn(options === null || options === void 0 ? void 0 : options.startWeekOn);
+        if ((options === null || options === void 0 ? void 0 : options.startWeekOn) !== undefined && options.startWeekOn !== startWeekOn) {
+            setStartWeekOn(options.startWeekOn);
         }
         updateWeekDays();
     }, [options === null || options === void 0 ? void 0 : options.startWeekOn]);

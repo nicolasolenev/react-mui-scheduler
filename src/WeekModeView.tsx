@@ -202,7 +202,7 @@ const WeekModeView: FC<WeekModeViewProps> = ({
           ) }
           sx={ {
             py: 0,
-            color: "#fff",
+            color: theme.palette.common.white,
             backgroundColor: task?.color || theme.palette.primary.light,
           } }
         />

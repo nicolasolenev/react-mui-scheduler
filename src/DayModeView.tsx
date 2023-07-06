@@ -192,7 +192,7 @@ const DayModeView: FC<DayModeViewProps> = ({
             e, { ...task, itemIndex }, rowLabel, rowIndex, dayIndex,
           ) }
           sx={ {
-            py: 0, mb: .5, color: "#fff",
+            py: 0, mb: .5, color: theme.palette.common.white,
             backgroundColor: task?.color || theme.palette.primary.light,
           } }
         />

@@ -1,4 +1,5 @@
 import { AlertColor } from "@mui/material/Alert/Alert";
+import React from "react";
 
 export enum TransitionMode {
   FADE = "fade",
@@ -51,6 +52,11 @@ export interface AlertProps {
   delay: number;
 }
 
+export interface OptionMenu {
+  label: string;
+  icon: string | React.JSX.Element;
+}
+
 export interface ToolbarProps {
   showSearchBar: boolean;
   showSwitchModeButtons: {
@@ -61,4 +67,5 @@ export interface ToolbarProps {
   };
   showDatePicker: boolean;
   showOptions: boolean;
+  optionMenus?: OptionMenu[];
 }

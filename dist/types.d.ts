@@ -1,4 +1,5 @@
 import { AlertColor } from "@mui/material/Alert/Alert";
+import React from "react";
 export declare enum TransitionMode {
     FADE = "fade",
     SLIDE = "slide",
@@ -9,6 +10,10 @@ export declare enum Mode {
     MONTH = "month",
     TIMELINE = "timeline",
     WEEK = "week"
+}
+export declare enum StartWeek {
+    MON = "mon",
+    SUN = "sun"
 }
 export interface Event {
     id: number | string;
@@ -23,7 +28,7 @@ export interface Event {
 }
 export interface Option {
     transitionMode?: TransitionMode;
-    startWeekOn?: string;
+    startWeekOn?: StartWeek;
     defaultMode?: Mode;
     minWidth?: number;
     maxWidth?: number;
@@ -39,6 +44,10 @@ export interface AlertProps {
     showNotification: boolean;
     delay: number;
 }
+export interface OptionMenu {
+    label: string;
+    icon: string | React.JSX.Element;
+}
 export interface ToolbarProps {
     showSearchBar: boolean;
     showSwitchModeButtons: {
@@ -49,4 +58,5 @@ export interface ToolbarProps {
     };
     showDatePicker: boolean;
     showOptions: boolean;
+    optionMenus?: OptionMenu[];
 }

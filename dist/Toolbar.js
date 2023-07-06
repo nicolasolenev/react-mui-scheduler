@@ -43,10 +43,6 @@ var react_i18next_1 = require("react-i18next");
 var date_fns_1 = require("date-fns");
 var dateFnsContext_1 = __importDefault(require("./locales/dateFnsContext"));
 var types_1 = require("./types");
-var PlayCircleOutline_1 = __importDefault(require("@mui/icons-material/PlayCircleOutline"));
-var Autorenew_1 = __importDefault(require("@mui/icons-material/Autorenew"));
-var Archive_1 = __importDefault(require("@mui/icons-material/Archive"));
-var LocalPrintshop_1 = __importDefault(require("@mui/icons-material/LocalPrintshop"));
 var Grid_1 = __importDefault(require("@mui/material/Grid"));
 var Typography_1 = __importDefault(require("@mui/material/Typography"));
 var Hidden_1 = __importDefault(require("@mui/material/Hidden"));
@@ -66,31 +62,20 @@ var ToggleButtonGroup_1 = __importDefault(require("@mui/material/ToggleButtonGro
 var ToggleButton_1 = __importDefault(require("@mui/material/ToggleButton"));
 var MenuItem_1 = __importDefault(require("@mui/material/MenuItem"));
 var ListItemIcon_1 = __importDefault(require("@mui/material/ListItemIcon"));
-var Divider_1 = __importDefault(require("@mui/material/Divider"));
-var Settings_1 = __importDefault(require("@mui/icons-material/Settings"));
 var Collapse_1 = __importDefault(require("@mui/material/Collapse"));
 var Alert_1 = __importDefault(require("@mui/material/Alert"));
 var Close_1 = __importDefault(require("@mui/icons-material/Close"));
 var Toolbar_1 = __importDefault(require("@mui/material/Toolbar"));
 var MoreVert_1 = __importDefault(require("@mui/icons-material/MoreVert"));
 var Toolbar = function (_a) {
-    var events = _a.events, today = _a.today, switchMode = _a.switchMode, _b = _a.alertProps, alertProps = _b === void 0 ? {
+    var _b;
+    var events = _a.events, today = _a.today, switchMode = _a.switchMode, _c = _a.alertProps, alertProps = _c === void 0 ? {
         open: false,
         message: "",
         color: "info",
         severity: "info",
         showActionButton: true,
-    } : _b, _c = _a.toolbarProps, toolbarProps = _c === void 0 ? {
-        showSearchBar: true,
-        showSwitchModeButtons: {
-            showDayButton: true,
-            showMonthButton: true,
-            showTimelineButton: true,
-            showWeekButton: true,
-        },
-        showDatePicker: true,
-        showOptions: false,
-    } : _c, onModeChange = _a.onModeChange, onDateChange = _a.onDateChange, onSearchResult = _a.onSearchResult, onAlertCloseButtonClicked = _a.onAlertCloseButtonClicked;
+    } : _c, toolbarProps = _a.toolbarProps, onModeChange = _a.onModeChange, onDateChange = _a.onDateChange, onSearchResult = _a.onSearchResult, onAlertCloseButtonClicked = _a.onAlertCloseButtonClicked;
     var theme = (0, styles_1.useTheme)();
     var t = (0, react_i18next_1.useTranslation)(["common"]).t;
     var _d = (0, react_1.useState)(switchMode), mode = _d[0], setMode = _d[1];
@@ -111,24 +96,6 @@ var Toolbar = function (_a) {
         color: "inherit",
         "aria-label": "menu",
     };
-    var menus = [
-        {
-            label: "Read events",
-            icon: react_1.default.createElement(PlayCircleOutline_1.default, { fontSize: "small" }),
-        },
-        {
-            label: "Refresh",
-            icon: react_1.default.createElement(Autorenew_1.default, { fontSize: "small" }),
-        },
-        {
-            label: "Export",
-            icon: react_1.default.createElement(Archive_1.default, { fontSize: "small" }),
-        },
-        {
-            label: "Print",
-            icon: react_1.default.createElement(LocalPrintshop_1.default, { fontSize: "small" }),
-        },
-    ];
     var handleCloseMenu = function () {
         setAnchorMenuEl(null);
     };
@@ -194,7 +161,7 @@ var Toolbar = function (_a) {
                             react_1.default.createElement(Today_1.default, null))),
                     react_1.default.createElement(Menu_1.default, { id: "date-menu", anchorEl: anchorDateEl, open: openDateSelector, onClose: handleCloseDateSelector, MenuListProps: { "aria-labelledby": "basic-button" } },
                         react_1.default.createElement(LocalizationProvider_1.LocalizationProvider, { adapterLocale: dateFnsLocale, dateAdapter: AdapterDateFns_1.AdapterDateFns },
-                            react_1.default.createElement(StaticDatePicker_1.StaticDatePicker, { displayStaticWrapperAs: "desktop", value: selectedDate, views: isMonthMode ? ["month", "year"] : ["day", "month", "year"], onChange: function (value, context) {
+                            react_1.default.createElement(StaticDatePicker_1.StaticDatePicker, { displayStaticWrapperAs: "desktop", value: selectedDate, views: isMonthMode ? ["month", "year"] : ["day", "month", "year"], onChange: function (value) {
                                     setDaysInMonth((0, date_fns_1.getDaysInMonth)(value));
                                     setSelectedDate(value);
                                     handleCloseDateSelector();
@@ -208,7 +175,7 @@ var Toolbar = function (_a) {
                     (toolbarProps === null || toolbarProps === void 0 ? void 0 : toolbarProps.showSearchBar) &&
                         react_1.default.createElement(ToolbarSearchBar_1.default, { events: events, onInputChange: function (value) {
                                 var newDate = new Date();
-                                if (value === null || value === void 0 ? void 0 : value.date) {
+                                if (value instanceof Event && (value === null || value === void 0 ? void 0 : value.date)) {
                                     newDate = (0, date_fns_1.parse)(value.date, "yyyy-MM-dd", today);
                                 }
                                 setDaysInMonth((0, date_fns_1.getDaysInMonth)(newDate));
@@ -235,15 +202,9 @@ var Toolbar = function (_a) {
                         react_1.default.createElement(IconButton_1.default, __assign({ sx: { ml: 1 }, onClick: handleOpenMenu }, commonIconButtonProps),
                             react_1.default.createElement(MoreVert_1.default, null)))),
             react_1.default.createElement(Grid_1.default, { item: true, xs: 12, sx: {} },
-                react_1.default.createElement(Menu_1.default, { id: "menu-menu", open: openMenu, anchorEl: anchorMenuEl, onClose: handleCloseMenu, onClick: handleCloseMenu, transformOrigin: { horizontal: "right", vertical: "top" }, anchorOrigin: { horizontal: "right", vertical: "bottom" } },
-                    menus.map(function (menu) { return (react_1.default.createElement(MenuItem_1.default, { key: menu.label },
-                        react_1.default.createElement(ListItemIcon_1.default, null, menu.icon),
-                        react_1.default.createElement(Typography_1.default, { variant: "body2" }, menu.label))); }),
-                    react_1.default.createElement(Divider_1.default, null),
-                    react_1.default.createElement(MenuItem_1.default, null,
-                        react_1.default.createElement(ListItemIcon_1.default, null,
-                            react_1.default.createElement(Settings_1.default, { fontSize: "small" })),
-                        react_1.default.createElement(Typography_1.default, { variant: "body2" }, "Settings"))),
+                react_1.default.createElement(Menu_1.default, { id: "menu-menu", open: openMenu, anchorEl: anchorMenuEl, onClose: handleCloseMenu, onClick: handleCloseMenu, transformOrigin: { horizontal: "right", vertical: "top" }, anchorOrigin: { horizontal: "right", vertical: "bottom" } }, (_b = toolbarProps.optionMenus) === null || _b === void 0 ? void 0 : _b.map(function (menu) { return (react_1.default.createElement(MenuItem_1.default, { key: menu.label },
+                    react_1.default.createElement(ListItemIcon_1.default, null, menu.icon),
+                    react_1.default.createElement(Typography_1.default, { variant: "body2" }, menu.label))); })),
                 react_1.default.createElement(Collapse_1.default, { in: alertProps === null || alertProps === void 0 ? void 0 : alertProps.open },
                     react_1.default.createElement(Alert_1.default, { color: alertProps === null || alertProps === void 0 ? void 0 : alertProps.color, severity: alertProps === null || alertProps === void 0 ? void 0 : alertProps.severity, sx: { borderRadius: 0, mb: 0 }, action: (alertProps === null || alertProps === void 0 ? void 0 : alertProps.showActionButton) ?
                             react_1.default.createElement(IconButton_1.default, { "aria-label": "close", color: "inherit", size: "small", onClick: handleCloseAlert },

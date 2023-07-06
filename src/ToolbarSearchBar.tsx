@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { format, parse } from "date-fns";
 import { Event } from "./types";
 
-const StyledAutoComplete = styled(Autocomplete)(({ theme }) => ({
+const StyledAutoComplete = styled(Autocomplete<Event>)(({ theme }) => ({
   color: "inherit",
   width: "94%",
   display: "inline-flex",
@@ -20,21 +20,21 @@ const StyledAutoComplete = styled(Autocomplete)(({ theme }) => ({
   [theme.breakpoints.up("lg")]: {
     width: "27ch",
   },
-})) as typeof Autocomplete;
+})) as typeof Autocomplete<Event>;
 
 interface ToolbarSearchBarProps {
-  events: any[];
+  events: Event[];
   onInputChange: (value: string) => void;
 }
 
 const ToolbarSearchBar: FC<ToolbarSearchBarProps> = ({ events, onInputChange }): JSX.Element => {
   const { t } = useTranslation(["common"]);
-  const [value, setValue] = useState<string>("");
+  const [value, setValue] = useState<Event | null>();
   const [inputValue, setInputValue] = useState<string>("");
 
-  const handleOnChange = (event: React.SyntheticEvent, value: string): void => {
+  const handleOnChange = (event: React.SyntheticEvent, value: Event | null): void => {
     setValue(value);
-    if (onInputChange) onInputChange(value);
+    if (onInputChange) onInputChange(`${ value?.groupLabel || "" } | (${ value?.startHour || "" } - ${ value?.endHour || "" })`);
   };
 
   return (
@@ -45,12 +45,12 @@ const ToolbarSearchBar: FC<ToolbarSearchBarProps> = ({ events, onInputChange }):
       sx={ { mb: 0, display: "inline-flex" } }
       onChange={ handleOnChange }
       options={ events?.sort((a, b) => -b.groupLabel.localeCompare(a.groupLabel)) }
-      groupBy={ (option: any) => option ? option?.groupLabel : null }
-      getOptionLabel={ (option) => (
+      groupBy={ (option: Event) => option ? option?.groupLabel : "" }
+      getOptionLabel={ (option: Event): string => (
         option ?
           `${ option.groupLabel || "" } | (${ option.startHour || "" } - ${ option.endHour || "" })` : ""
       ) }
-      isOptionEqualToValue={ (option, value) => option.id === value.id }
+      isOptionEqualToValue={ (option: Event, value: Event): boolean => option.id === value.id }
       onInputChange={ (event, newInputValue) => {
         setInputValue(newInputValue);
         onInputChange(newInputValue);

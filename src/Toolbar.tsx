@@ -3,11 +3,7 @@ import { useTheme } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 import { add, format, getDaysInMonth, parse, sub } from "date-fns";
 import DateFnsLocaleContext from "./locales/dateFnsContext";
-import { AlertProps, Event, Mode, ToolbarProps as SchedulerToolbarProps } from "./types";
-import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
-import AutorenewIcon from "@mui/icons-material/Autorenew";
-import ArchiveIcon from "@mui/icons-material/Archive";
-import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
+import { AlertProps, Event, Mode, OptionMenu, ToolbarProps as SchedulerToolbarProps } from "./types";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Hidden from "@mui/material/Hidden";
@@ -27,16 +23,12 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import ToggleButton from "@mui/material/ToggleButton";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import Divider from "@mui/material/Divider";
-import SettingsIcon from "@mui/icons-material/Settings";
 import Collapse from "@mui/material/Collapse";
 import Alert from "@mui/material/Alert";
 import CloseIcon from "@mui/icons-material/Close";
 import MuiToolbar from "@mui/material/Toolbar";
 import { IconButtonProps } from "@mui/material/IconButton/IconButton";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { PickerChangeHandlerContext } from "@mui/x-date-pickers/internals/hooks/usePicker/usePickerValue.types";
-import { DateValidationError } from "@mui/x-date-pickers";
 
 interface ToolbarProps {
   events: Event[];
@@ -61,17 +53,7 @@ const Toolbar: FC<ToolbarProps> = ({
     severity: "info",
     showActionButton: true,
   } as AlertProps,
-  toolbarProps = {
-    showSearchBar: true,
-    showSwitchModeButtons: {
-      showDayButton: true,
-      showMonthButton: true,
-      showTimelineButton: true,
-      showWeekButton: true,
-    },
-    showDatePicker: true,
-    showOptions: false,
-  } as SchedulerToolbarProps,
+  toolbarProps,
   onModeChange,
   onDateChange,
   onSearchResult,
@@ -80,10 +62,10 @@ const Toolbar: FC<ToolbarProps> = ({
   const theme = useTheme();
   const { t } = useTranslation(["common"]);
   const [mode, setMode] = useState<Mode>(switchMode);
-  const [searchResult, setSearchResult] = useState<any>();
+  const [searchResult, setSearchResult] = useState<Event | string>();
   const [anchorMenuEl, setAnchorMenuEl] = useState<EventTarget & HTMLButtonElement | null>(null);
   const [anchorDateEl, setAnchorDateEl] = useState<EventTarget & HTMLButtonElement | null>(null);
-  const [selectedDate, setSelectedDate] = useState<number | Date | null>(today || new Date());
+  const [selectedDate, setSelectedDate] = useState<number | Date>(today || new Date());
   const [daysInMonth, setDaysInMonth] = useState(getDaysInMonth(selectedDate as number | Date));
 
   const openMenu = Boolean(anchorMenuEl);
@@ -100,25 +82,6 @@ const Toolbar: FC<ToolbarProps> = ({
     "aria-label": "menu",
   };
 
-  const menus = [
-    {
-      label: "Read events",
-      icon: <PlayCircleOutlineIcon fontSize="small"/>,
-    },
-    {
-      label: "Refresh",
-      icon: <AutorenewIcon fontSize="small"/>,
-    },
-    {
-      label: "Export",
-      icon: <ArchiveIcon fontSize="small"/>,
-    },
-    {
-      label: "Print",
-      icon: <LocalPrintshopIcon fontSize="small"/>,
-    },
-  ];
-
   const handleCloseMenu = (): void => {
     setAnchorMenuEl(null);
   };
@@ -131,11 +94,11 @@ const Toolbar: FC<ToolbarProps> = ({
     setAnchorDateEl(null);
   };
 
-  const handleChangeDate = (method: any): void => {
+  const handleChangeDate = (method: (date: Date | number, duration: Duration) => Date): void => {
     if (typeof method !== "function") {
       return;
     }
-    let options: any = { months: 1 };
+    let options: Duration = { months: 1 };
     if (isWeekMode) {
       options = { weeks: 1 };
     }
@@ -162,7 +125,7 @@ const Toolbar: FC<ToolbarProps> = ({
   }, [daysInMonth, selectedDate]);
 
   useEffect(() => {
-    onSearchResult && onSearchResult(searchResult);
+    onSearchResult && onSearchResult(searchResult as Event);
   }, [searchResult]);
 
   useEffect(() => {
@@ -250,9 +213,9 @@ const Toolbar: FC<ToolbarProps> = ({
                     displayStaticWrapperAs="desktop"
                     value={ selectedDate }
                     views={ isMonthMode ? ["month", "year"] : ["day", "month", "year"] }
-                    onChange={ (value: number | Date | null, context: PickerChangeHandlerContext<DateValidationError>): void => {
+                    onChange={ (value: number | Date | null): void => {
                       setDaysInMonth(getDaysInMonth(value as number | Date));
-                      setSelectedDate(value);
+                      setSelectedDate(value as number | Date);
                       handleCloseDateSelector();
                     } }
                   />
@@ -271,10 +234,10 @@ const Toolbar: FC<ToolbarProps> = ({
             { toolbarProps?.showSearchBar &&
               <ToolbarSearchbar
                 events={ events }
-                onInputChange={ (value: any) => {
+                onInputChange={ (value: string | Event) => {
                   let newDate = new Date();
-                  if (value?.date) {
-                    newDate = parse(value.date, "yyyy-MM-dd", today);
+                  if (value instanceof Event && (value as Event)?.date) {
+                    newDate = parse((value as Event).date, "yyyy-MM-dd", today);
                   }
                   setDaysInMonth(getDaysInMonth(newDate));
                   setSelectedDate(newDate);
@@ -337,19 +300,12 @@ const Toolbar: FC<ToolbarProps> = ({
             transformOrigin={ { horizontal: "right", vertical: "top" } }
             anchorOrigin={ { horizontal: "right", vertical: "bottom" } }
           >
-            { menus.map((menu) => (
+            { toolbarProps.optionMenus?.map((menu) => (
               <MenuItem key={ menu.label }>
                 <ListItemIcon>{ menu.icon }</ListItemIcon>
                 <Typography variant="body2">{ menu.label }</Typography>
               </MenuItem>
             )) }
-            <Divider/>
-            <MenuItem>
-              <ListItemIcon>
-                <SettingsIcon fontSize="small"/>
-              </ListItemIcon>
-              <Typography variant="body2">Settings</Typography>
-            </MenuItem>
           </Menu>
           <Collapse in={ alertProps?.open }>
             <Alert
