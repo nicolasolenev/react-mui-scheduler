@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.StartWeek = exports.Mode = exports.TransitionMode = void 0;
+exports.DateView = exports.StartWeek = exports.Mode = exports.TransitionMode = void 0;
 var TransitionMode;
 (function (TransitionMode) {
     TransitionMode["FADE"] = "fade";
@@ -19,4 +19,10 @@ var StartWeek;
     StartWeek["MON"] = "mon";
     StartWeek["SUN"] = "sun";
 })(StartWeek = exports.StartWeek || (exports.StartWeek = {}));
+var DateView;
+(function (DateView) {
+    DateView["YEAR"] = "year";
+    DateView["MONTH"] = "month";
+    DateView["DAY"] = "day";
+})(DateView = exports.DateView || (exports.DateView = {}));
 //# sourceMappingURL=types.js.map

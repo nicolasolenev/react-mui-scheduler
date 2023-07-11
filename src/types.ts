@@ -19,6 +19,12 @@ export enum StartWeek {
   SUN = "sun",
 }
 
+export enum DateView {
+  YEAR = "year",
+  MONTH = "month",
+  DAY = "day",
+}
+
 export interface Event {
   id: number | string;
   label: string;

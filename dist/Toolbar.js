@@ -147,68 +147,70 @@ var Toolbar = function (_a) {
             display: "block",
             borderBottom: "1px ".concat(theme.palette.divider, " solid"),
         } },
-        react_1.default.createElement(Grid_1.default, { container: true, spacing: 0, alignItems: "center", justifyContent: "flex-end" },
-            react_1.default.createElement(Grid_1.default, { item: true, xs: 1, sm: true, md: true }, toolbarProps.showDatePicker &&
-                react_1.default.createElement(Typography_1.default, { component: "div", sx: { display: "flex" } },
-                    react_1.default.createElement(Hidden_1.default, { smDown: true },
-                        react_1.default.createElement(IconButton_1.default, __assign({ sx: { ml: 0, mr: -.1 } }, commonIconButtonProps, { onClick: function () { return handleChangeDate(date_fns_1.sub); } }),
-                            react_1.default.createElement(ChevronLeft_1.default, null)),
-                        react_1.default.createElement(Button_1.default, { size: "small", id: "basic-button", "aria-haspopup": "true", "aria-controls": "basic-menu", onClick: handleOpenDateSelector, sx: { color: "text.primary" }, "aria-expanded": openDateSelector ? "true" : undefined }, (0, date_fns_1.format)(selectedDate, isMonthMode ? "MMMM-yyyy" : "PPP", { locale: dateFnsLocale })),
-                        react_1.default.createElement(IconButton_1.default, __assign({ sx: { ml: .2 } }, commonIconButtonProps, { onClick: function () { return handleChangeDate(date_fns_1.add); } }),
-                            react_1.default.createElement(ChevronRight_1.default, null))),
-                    react_1.default.createElement(Hidden_1.default, { smUp: true },
-                        react_1.default.createElement(IconButton_1.default, __assign({ sx: { ml: 0, "aria-label": "menu" } }, commonIconButtonProps, { size: "small", onClick: handleOpenDateSelector }),
-                            react_1.default.createElement(Today_1.default, null))),
-                    react_1.default.createElement(Menu_1.default, { id: "date-menu", anchorEl: anchorDateEl, open: openDateSelector, onClose: handleCloseDateSelector, MenuListProps: { "aria-labelledby": "basic-button" } },
-                        react_1.default.createElement(LocalizationProvider_1.LocalizationProvider, { adapterLocale: dateFnsLocale, dateAdapter: AdapterDateFns_1.AdapterDateFns },
-                            react_1.default.createElement(StaticDatePicker_1.StaticDatePicker, { displayStaticWrapperAs: "desktop", value: selectedDate, views: isMonthMode ? ["month", "year"] : ["day", "month", "year"], onChange: function (value) {
+        react_1.default.createElement(LocalizationProvider_1.LocalizationProvider, { adapterLocale: dateFnsLocale, dateAdapter: AdapterDateFns_1.AdapterDateFns },
+            react_1.default.createElement(Grid_1.default, { container: true, spacing: 0, alignItems: "center", justifyContent: "flex-end" },
+                react_1.default.createElement(Grid_1.default, { item: true, xs: 1, sm: 2, md: 3 }, toolbarProps.showDatePicker &&
+                    react_1.default.createElement(Typography_1.default, { component: "div", sx: { display: "flex" } },
+                        react_1.default.createElement(Hidden_1.default, { smDown: true },
+                            react_1.default.createElement(IconButton_1.default, __assign({ sx: { ml: 0, mr: -.1 } }, commonIconButtonProps, { onClick: function () { return handleChangeDate(date_fns_1.sub); } }),
+                                react_1.default.createElement(ChevronLeft_1.default, null)),
+                            react_1.default.createElement(Button_1.default, { size: "small", id: "basic-button", "aria-haspopup": "true", "aria-controls": "basic-menu", onClick: handleOpenDateSelector, sx: { color: "text.primary" }, "aria-expanded": openDateSelector ? "true" : undefined }, (0, date_fns_1.format)(selectedDate, isMonthMode ? "MMMM-yyyy" : "PPP", { locale: dateFnsLocale })),
+                            react_1.default.createElement(IconButton_1.default, __assign({ sx: { ml: .2 } }, commonIconButtonProps, { onClick: function () { return handleChangeDate(date_fns_1.add); } }),
+                                react_1.default.createElement(ChevronRight_1.default, null))),
+                        react_1.default.createElement(Hidden_1.default, { smUp: true },
+                            react_1.default.createElement(IconButton_1.default, __assign({ sx: { ml: 0, "aria-label": "menu" } }, commonIconButtonProps, { size: "small", onClick: handleOpenDateSelector }),
+                                react_1.default.createElement(Today_1.default, null))),
+                        react_1.default.createElement(Menu_1.default, { id: "date-menu", anchorEl: anchorDateEl, open: openDateSelector, onClose: handleCloseDateSelector, MenuListProps: { "aria-labelledby": "basic-button" } },
+                            react_1.default.createElement(StaticDatePicker_1.StaticDatePicker, { displayStaticWrapperAs: "desktop", value: selectedDate, views: isMonthMode ?
+                                    [types_1.DateView.MONTH, types_1.DateView.YEAR] :
+                                    [types_1.DateView.DAY, types_1.DateView.MONTH, types_1.DateView.YEAR], onChange: function (value) {
                                     setDaysInMonth((0, date_fns_1.getDaysInMonth)(value));
                                     setSelectedDate(value);
                                     handleCloseDateSelector();
-                                } }))))),
-            react_1.default.createElement(Grid_1.default, { item: true, xs: true, sm: true, md: true, sx: { textAlign: "right" } },
-                react_1.default.createElement(Stack_1.default, { direction: "row", sx: {
-                        pr: .5,
-                        alignItems: "center",
-                        justifyContent: "flex-end",
-                    } },
-                    (toolbarProps === null || toolbarProps === void 0 ? void 0 : toolbarProps.showSearchBar) &&
-                        react_1.default.createElement(ToolbarSearchBar_1.default, { events: events, onInputChange: function (value) {
-                                var newDate = new Date();
-                                if (value instanceof Event && (value === null || value === void 0 ? void 0 : value.date)) {
-                                    newDate = (0, date_fns_1.parse)(value.date, "yyyy-MM-dd", today);
-                                }
-                                setDaysInMonth((0, date_fns_1.getDaysInMonth)(newDate));
-                                setSelectedDate(newDate);
-                                setSearchResult(value);
-                            } }),
-                    react_1.default.createElement(Hidden_1.default, { mdUp: true },
-                        react_1.default.createElement(IconButton_1.default, __assign({ sx: { mr: 0, "aria-label": "menu" } }, commonIconButtonProps, { size: "small", onClick: handleOpenDateSelector }),
-                            react_1.default.createElement(GridView_1.default, null))),
-                    react_1.default.createElement(Hidden_1.default, { mdDown: true }, Object.values(toolbarProps.showSwitchModeButtons).some(function (val) { return val; }) &&
-                        react_1.default.createElement(ToggleButtonGroup_1.default, { exclusive: true, value: mode, size: "small", color: "primary", "aria-label": "text button group", sx: { mt: .2, mr: 1.3, display: "contents" }, onChange: function (e, newMode) {
-                                setMode(newMode);
-                            } }, [
-                            toolbarProps.showSwitchModeButtons.showMonthButton ?
-                                { label: t("month"), value: types_1.Mode.MONTH } : null,
-                            toolbarProps.showSwitchModeButtons.showWeekButton ?
-                                { label: t("week"), value: types_1.Mode.WEEK } : null,
-                            toolbarProps.showSwitchModeButtons.showDayButton ?
-                                { label: t("day"), value: types_1.Mode.DAY } : null,
-                            toolbarProps.showSwitchModeButtons.showTimelineButton ?
-                                { label: t("timeline"), value: types_1.Mode.TIMELINE } : null,
-                        ].filter(Boolean).map(function (tb) { return (react_1.default.createElement(ToggleButton_1.default, { sx: { mt: .5 }, key: tb === null || tb === void 0 ? void 0 : tb.value, value: tb === null || tb === void 0 ? void 0 : tb.value }, tb === null || tb === void 0 ? void 0 : tb.label)); }))),
-                    (toolbarProps === null || toolbarProps === void 0 ? void 0 : toolbarProps.showOptions) &&
-                        react_1.default.createElement(IconButton_1.default, __assign({ sx: { ml: 1 }, onClick: handleOpenMenu }, commonIconButtonProps),
-                            react_1.default.createElement(MoreVert_1.default, null)))),
-            react_1.default.createElement(Grid_1.default, { item: true, xs: 12, sx: {} },
-                react_1.default.createElement(Menu_1.default, { id: "menu-menu", open: openMenu, anchorEl: anchorMenuEl, onClose: handleCloseMenu, onClick: handleCloseMenu, transformOrigin: { horizontal: "right", vertical: "top" }, anchorOrigin: { horizontal: "right", vertical: "bottom" } }, (_b = toolbarProps.optionMenus) === null || _b === void 0 ? void 0 : _b.map(function (menu) { return (react_1.default.createElement(MenuItem_1.default, { key: menu.label },
-                    react_1.default.createElement(ListItemIcon_1.default, null, menu.icon),
-                    react_1.default.createElement(Typography_1.default, { variant: "body2" }, menu.label))); })),
-                react_1.default.createElement(Collapse_1.default, { in: alertProps === null || alertProps === void 0 ? void 0 : alertProps.open },
-                    react_1.default.createElement(Alert_1.default, { color: alertProps === null || alertProps === void 0 ? void 0 : alertProps.color, severity: alertProps === null || alertProps === void 0 ? void 0 : alertProps.severity, sx: { borderRadius: 0, mb: 0 }, action: (alertProps === null || alertProps === void 0 ? void 0 : alertProps.showActionButton) ?
-                            react_1.default.createElement(IconButton_1.default, { "aria-label": "close", color: "inherit", size: "small", onClick: handleCloseAlert },
-                                react_1.default.createElement(Close_1.default, { fontSize: "inherit" })) : null }, alertProps === null || alertProps === void 0 ? void 0 : alertProps.message))))));
+                                } })))),
+                react_1.default.createElement(Grid_1.default, { item: true, xs: true, sm: true, md: true, sx: { textAlign: "right" } },
+                    react_1.default.createElement(Stack_1.default, { direction: "row", sx: {
+                            pr: .5,
+                            alignItems: "center",
+                            justifyContent: "flex-end",
+                        } },
+                        (toolbarProps === null || toolbarProps === void 0 ? void 0 : toolbarProps.showSearchBar) &&
+                            react_1.default.createElement(ToolbarSearchBar_1.default, { events: events, onInputChange: function (value) {
+                                    var newDate = new Date();
+                                    if (value instanceof Event && (value === null || value === void 0 ? void 0 : value.date)) {
+                                        newDate = (0, date_fns_1.parse)(value.date, "yyyy-MM-dd", today);
+                                    }
+                                    setDaysInMonth((0, date_fns_1.getDaysInMonth)(newDate));
+                                    setSelectedDate(newDate);
+                                    setSearchResult(value);
+                                } }),
+                        react_1.default.createElement(Hidden_1.default, { mdUp: true },
+                            react_1.default.createElement(IconButton_1.default, __assign({ sx: { mr: 0, "aria-label": "menu" } }, commonIconButtonProps, { size: "small", onClick: handleOpenDateSelector }),
+                                react_1.default.createElement(GridView_1.default, null))),
+                        react_1.default.createElement(Hidden_1.default, { mdDown: true }, Object.values(toolbarProps.showSwitchModeButtons).some(function (val) { return val; }) &&
+                            react_1.default.createElement(ToggleButtonGroup_1.default, { exclusive: true, value: mode, size: "small", color: "primary", "aria-label": "text button group", sx: { mt: .2, mr: 1.3, display: "contents" }, onChange: function (e, newMode) {
+                                    setMode(newMode);
+                                } }, [
+                                toolbarProps.showSwitchModeButtons.showMonthButton ?
+                                    { label: t("month"), value: types_1.Mode.MONTH } : null,
+                                toolbarProps.showSwitchModeButtons.showWeekButton ?
+                                    { label: t("week"), value: types_1.Mode.WEEK } : null,
+                                toolbarProps.showSwitchModeButtons.showDayButton ?
+                                    { label: t("day"), value: types_1.Mode.DAY } : null,
+                                toolbarProps.showSwitchModeButtons.showTimelineButton ?
+                                    { label: t("timeline"), value: types_1.Mode.TIMELINE } : null,
+                            ].filter(Boolean).map(function (tb) { return (react_1.default.createElement(ToggleButton_1.default, { sx: { mt: .5 }, key: tb === null || tb === void 0 ? void 0 : tb.value, value: tb === null || tb === void 0 ? void 0 : tb.value }, tb === null || tb === void 0 ? void 0 : tb.label)); }))),
+                        (toolbarProps === null || toolbarProps === void 0 ? void 0 : toolbarProps.showOptions) &&
+                            react_1.default.createElement(IconButton_1.default, __assign({ sx: { ml: 1 }, onClick: handleOpenMenu }, commonIconButtonProps),
+                                react_1.default.createElement(MoreVert_1.default, null)))),
+                react_1.default.createElement(Grid_1.default, { item: true, xs: 12, sx: {} },
+                    react_1.default.createElement(Menu_1.default, { id: "menu-menu", open: openMenu, anchorEl: anchorMenuEl, onClose: handleCloseMenu, onClick: handleCloseMenu, transformOrigin: { horizontal: "right", vertical: "top" }, anchorOrigin: { horizontal: "right", vertical: "bottom" } }, (_b = toolbarProps.optionMenus) === null || _b === void 0 ? void 0 : _b.map(function (menu) { return (react_1.default.createElement(MenuItem_1.default, { key: menu.label },
+                        react_1.default.createElement(ListItemIcon_1.default, null, menu.icon),
+                        react_1.default.createElement(Typography_1.default, { variant: "body2" }, menu.label))); })),
+                    react_1.default.createElement(Collapse_1.default, { in: alertProps === null || alertProps === void 0 ? void 0 : alertProps.open },
+                        react_1.default.createElement(Alert_1.default, { color: alertProps === null || alertProps === void 0 ? void 0 : alertProps.color, severity: alertProps === null || alertProps === void 0 ? void 0 : alertProps.severity, sx: { borderRadius: 0, mb: 0 }, action: (alertProps === null || alertProps === void 0 ? void 0 : alertProps.showActionButton) ?
+                                react_1.default.createElement(IconButton_1.default, { "aria-label": "close", color: "inherit", size: "small", onClick: handleCloseAlert },
+                                    react_1.default.createElement(Close_1.default, { fontSize: "inherit" })) : null }, alertProps === null || alertProps === void 0 ? void 0 : alertProps.message)))))));
 };
 exports.default = Toolbar;
 //# sourceMappingURL=Toolbar.js.map

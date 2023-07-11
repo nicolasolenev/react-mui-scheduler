@@ -44,24 +44,20 @@ const ToolbarSearchBar: FC<ToolbarSearchBarProps> = ({ events, onInputChange }):
       inputValue={ inputValue }
       sx={ { mb: 0, display: "inline-flex" } }
       onChange={ handleOnChange }
-      options={ events?.sort((a, b) => -b.groupLabel.localeCompare(a.groupLabel)) }
+      options={ events }
       groupBy={ (option: Event) => option ? option?.groupLabel : "" }
       getOptionLabel={ (option: Event): string => (
         option ?
-          `${ option.groupLabel || "" } | (${ option.startHour || "" } - ${ option.endHour || "" })` : ""
+          `${ option.groupLabel || "" } | ${ option.date } | (${ option.startHour || "" } - ${ option.endHour || "" })` : ""
       ) }
       isOptionEqualToValue={ (option: Event, value: Event): boolean => option.id === value.id }
       onInputChange={ (event, newInputValue) => {
         setInputValue(newInputValue);
         onInputChange(newInputValue);
       } }
-      renderOption={ (props, option) => (
+      renderOption={ (props, option: Event) => (
         <Box component="li" sx={ { fontSize: 12 } } { ...props }>
-          { format(
-            parse(option?.date, "yyyy-MM-dd", new Date()),
-            "dd-MMMM-yyyy",
-          ) }
-          ({ option?.startHour || "" } - { option?.endHour || "" })
+          { `${ format(parse(option?.date, "yyyy-MM-dd", new Date()), "dd-MMMM-yyyy") } (${ option?.startHour || "" } - ${ option?.endHour || "" })` }
         </Box>
       ) }
       renderInput={ (params) => (

@@ -17,7 +17,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.i18n = void 0;
 var Scheduler_1 = __importDefault(require("./Scheduler"));
+var i18n_1 = __importDefault(require("./locales/i18n"));
+exports.i18n = i18n_1.default;
 __exportStar(require("./types"), exports);
 exports.default = Scheduler_1.default;
 //# sourceMappingURL=index.js.map

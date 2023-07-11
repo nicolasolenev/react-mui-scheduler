@@ -70,17 +70,11 @@ var ToolbarSearchBar = function (_a) {
         if (onInputChange)
             onInputChange("".concat((value === null || value === void 0 ? void 0 : value.groupLabel) || "", " | (").concat((value === null || value === void 0 ? void 0 : value.startHour) || "", " - ").concat((value === null || value === void 0 ? void 0 : value.endHour) || "", ")"));
     };
-    return (react_1.default.createElement(StyledAutoComplete, { value: value, id: "scheduler-autocomplete", inputValue: inputValue, sx: { mb: 0, display: "inline-flex" }, onChange: handleOnChange, options: events === null || events === void 0 ? void 0 : events.sort(function (a, b) { return -b.groupLabel.localeCompare(a.groupLabel); }), groupBy: function (option) { return option ? option === null || option === void 0 ? void 0 : option.groupLabel : ""; }, getOptionLabel: function (option) { return (option ?
-            "".concat(option.groupLabel || "", " | (").concat(option.startHour || "", " - ").concat(option.endHour || "", ")") : ""); }, isOptionEqualToValue: function (option, value) { return option.id === value.id; }, onInputChange: function (event, newInputValue) {
+    return (react_1.default.createElement(StyledAutoComplete, { value: value, id: "scheduler-autocomplete", inputValue: inputValue, sx: { mb: 0, display: "inline-flex" }, onChange: handleOnChange, options: events, groupBy: function (option) { return option ? option === null || option === void 0 ? void 0 : option.groupLabel : ""; }, getOptionLabel: function (option) { return (option ?
+            "".concat(option.groupLabel || "", " | ").concat(option.date, " | (").concat(option.startHour || "", " - ").concat(option.endHour || "", ")") : ""); }, isOptionEqualToValue: function (option, value) { return option.id === value.id; }, onInputChange: function (event, newInputValue) {
             setInputValue(newInputValue);
             onInputChange(newInputValue);
-        }, renderOption: function (props, option) { return (react_1.default.createElement(material_1.Box, __assign({ component: "li", sx: { fontSize: 12 } }, props),
-            (0, date_fns_1.format)((0, date_fns_1.parse)(option === null || option === void 0 ? void 0 : option.date, "yyyy-MM-dd", new Date()), "dd-MMMM-yyyy"),
-            "(",
-            (option === null || option === void 0 ? void 0 : option.startHour) || "",
-            " - ",
-            (option === null || option === void 0 ? void 0 : option.endHour) || "",
-            ")")); }, renderInput: function (params) { return (react_1.default.createElement(material_1.TextField, __assign({}, params, { size: "small", label: t("search"), InputProps: __assign({}, params.InputProps) }))); } }));
+        }, renderOption: function (props, option) { return (react_1.default.createElement(material_1.Box, __assign({ component: "li", sx: { fontSize: 12 } }, props), "".concat((0, date_fns_1.format)((0, date_fns_1.parse)(option === null || option === void 0 ? void 0 : option.date, "yyyy-MM-dd", new Date()), "dd-MMMM-yyyy"), " (").concat((option === null || option === void 0 ? void 0 : option.startHour) || "", " - ").concat((option === null || option === void 0 ? void 0 : option.endHour) || "", ")"))); }, renderInput: function (params) { return (react_1.default.createElement(material_1.TextField, __assign({}, params, { size: "small", label: t("search"), InputProps: __assign({}, params.InputProps) }))); } }));
 };
 exports.default = ToolbarSearchBar;
 //# sourceMappingURL=ToolbarSearchBar.js.map
