@@ -1,9 +1,10 @@
-import React, { FC, JSX, useState } from "react";
+import React, { FC, JSX, useContext, useState } from "react";
 import { styled } from "@mui/material/styles";
 import { Autocomplete, Box, TextField } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { format, parse } from "date-fns";
 import { Event } from "./types";
+import DateFnsLocaleContext from "./locales/dateFnsContext";
 
 const StyledAutoComplete = styled(Autocomplete<Event>)(({ theme }) => ({
   color: "inherit",
@@ -31,6 +32,7 @@ const ToolbarSearchBar: FC<ToolbarSearchBarProps> = ({ events, onInputChange }):
   const { t } = useTranslation(["common"]);
   const [value, setValue] = useState<Event | null>();
   const [inputValue, setInputValue] = useState<string>("");
+  const dateFnsLocale = useContext(DateFnsLocaleContext);
 
   const handleOnChange = (event: React.SyntheticEvent, value: Event | null): void => {
     setValue(value);
@@ -57,7 +59,7 @@ const ToolbarSearchBar: FC<ToolbarSearchBarProps> = ({ events, onInputChange }):
       } }
       renderOption={ (props, option: Event) => (
         <Box component="li" sx={ { fontSize: 12 } } { ...props }>
-          { `${ format(parse(option?.date, "yyyy-MM-dd", new Date()), "dd-MMMM-yyyy") } (${ option?.startHour || "" } - ${ option?.endHour || "" })` }
+          { `${ format(parse(option?.date, "yyyy-MM-dd", new Date()), "dd-MMMM-yyyy", { locale: dateFnsLocale }) } (${ option?.startHour || "" } - ${ option?.endHour || "" })` }
         </Box>
       ) }
       renderInput={ (params) => (
