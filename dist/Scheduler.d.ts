@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { AlertProps, Event, Option, ToolbarProps } from "./types";
+import { AlertProps, Day, Event, Option, Row, ToolbarProps } from "./types";
 interface SchedulerProps {
     events: Event[];
     locale?: string;
@@ -7,7 +7,7 @@ interface SchedulerProps {
     alertProps?: AlertProps;
     legacyStyle?: boolean;
     toolbarProps?: ToolbarProps;
-    onCellClick?: (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, row: any, day: any) => void;
+    onCellClick?: (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, row: Row, day?: Day) => void;
     onTaskClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: Event) => void;
     onEventsChange?: (item: Event) => void;
     onAlertCloseButtonClicked?: (event: React.MouseEvent<HTMLButtonElement>) => void;

@@ -1,12 +1,12 @@
 import React, { FC } from "react";
-import { Event, Option } from "../types";
+import { ColumnHeader, Day, Event, Option, Row } from "../types";
 interface WeekModeViewProps {
     options: Option;
-    columns: any[];
-    rows: any[];
-    searchResult: any;
+    columns: ColumnHeader[] | undefined;
+    rows: Row[] | undefined;
+    searchResult: Event;
     onTaskClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: Event) => void;
-    onCellClick?: (event: React.MouseEvent<HTMLTableCellElement>, row: any, day: any) => void;
+    onCellClick?: (event: React.MouseEvent<HTMLTableCellElement>, row: Row, day?: Day) => void;
     onEventsChange: (item: Event) => void;
 }
 declare const WeekModeView: FC<WeekModeViewProps>;

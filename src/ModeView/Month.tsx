@@ -12,7 +12,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import EventNoteRoundedIcon from "@mui/icons-material/EventNoteRounded";
 import { SxProps } from "@mui/system";
-import { Event, Option } from "../types";
+import { ColumnHeader, Day, Event, ItemTransfer, ModeState, Option, RowHeader, TransferTarget } from "../types";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${ tableCellClasses.head }`]: {
@@ -50,13 +50,13 @@ const StyledTableRow = styled(TableRow)(() => ({
 }));
 
 interface MonthModeViewProps {
-  rows: any[];
+  rows: RowHeader[] | undefined;
   options: Option;
-  columns: any[];
+  columns: ColumnHeader[] | undefined;
   legacyStyle?: boolean;
   searchResult: Event | undefined;
   onTaskClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: Event) => void;
-  onCellClick?: (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, row: any, day: any) => void;
+  onCellClick?: (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, row: RowHeader, day: Day) => void;
   onEventsChange: (item: Event) => void;
 }
 
@@ -71,7 +71,7 @@ const MonthModeView: FC<MonthModeViewProps> = ({
   onEventsChange,
 }): JSX.Element => {
   const theme = useTheme();
-  const [state, setState] = useState<any>({});
+  const [state, setState] = useState<ModeState>({});
   const today = new Date();
   let currentDaySx: SxProps<Theme> = {
     width: 24,
@@ -103,16 +103,16 @@ const MonthModeView: FC<MonthModeViewProps> = ({
 
   const onCellDragEnd = (e: React.DragEvent<HTMLTableCellElement>) => {
     e.preventDefault();
-    if (!state.itemTransfert && !state.transfertTarget) return;
-    let transfer = state.itemTransfert;
-    let transferTarget = state.transfertTarget;
+    if (!state.itemTransfer && !state.transferTarget) return;
+    let transfer = state.itemTransfer as ItemTransfer;
+    let transferTarget = state.transferTarget as TransferTarget;
     let rowsCopy = Array.from(rows);
-    let rowInd = rowsCopy.findIndex(d => d.id === transferTarget.rowIndex);
+    let rowInd = rowsCopy.findIndex(d => d.id === transferTarget?.rowIndex);
 
     if (rowInd !== -1) {
       let dayInd = rowsCopy[rowInd]
         ?.days
-        ?.findIndex((d: any) => d.id === transferTarget.elementId);
+        ?.findIndex((d: Day) => d.id === transferTarget?.elementId);
       if (dayInd !== -1) {
         let day = rowsCopy[rowInd]?.days[dayInd];
         let splittedDate = transfer?.item?.date?.split("-");
@@ -120,23 +120,23 @@ const MonthModeView: FC<MonthModeViewProps> = ({
           // Get day of the date (DD)
           transfer.item.day = parseInt(splittedDate[2]);
         }
-        if (transfer.item.day !== day?.day) {
-          let itemCheck = day.data.findIndex((item: any) => (
+        if (transfer?.item?.day !== day?.day) {
+          let itemCheck = day.data.findIndex((item: Event) => (
             item.day === transfer.item.day && item.label === transfer.item.label
           ));
           if (itemCheck === -1) {
-            let prevDayEvents = rowsCopy[transfer.rowIndex]
+            let prevDayEvents = rowsCopy[transfer.rowIndex as number]
               .days
-              .find((d: any) => d.day === transfer.item.day);
+              .find((d: Day) => d.day === transfer.item.day);
             let itemIndexToRemove = prevDayEvents
               ?.data
-              ?.findIndex((i: any) => i.id === transfer.item.id);
+              ?.findIndex((i: Event) => i.id === transfer.item.id);
             if (itemIndexToRemove === undefined || itemIndexToRemove === -1) {
               return;
             }
             prevDayEvents?.data?.splice(itemIndexToRemove, 1);
             transfer.item.day = day?.day;
-            transfer.item.date = format(day?.date, "yyyy-MM-dd");
+            transfer.item.date = format(day?.date as number | Date, "yyyy-MM-dd");
             day.data.push(transfer.item);
             setState({
               ...state,
@@ -151,7 +151,7 @@ const MonthModeView: FC<MonthModeViewProps> = ({
     }
   };
 
-  const handleCellClick = (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, row: any, day: any) => {
+  const handleCellClick = (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, row: RowHeader, day: Day) => {
     event.preventDefault();
     event.stopPropagation();
     if (day?.data?.length === 0 && onCellClick) {
@@ -231,9 +231,9 @@ const MonthModeView: FC<MonthModeViewProps> = ({
                 },
               } }
             >
-              { row?.days?.map((day: any, indexD: number) => {
+              { row?.days?.map((day: Day, indexD: number) => {
                 const currentDay = (
-                  day.day === today.getUTCDate() && isSameMonth(day.date, today)
+                  day.day === today.getUTCDate() && isSameMonth(day.date as number | Date, today)
                 );
                 return (
                   <StyledTableCell
@@ -244,7 +244,7 @@ const MonthModeView: FC<MonthModeViewProps> = ({
                     key={ `day-${ day.id }` }
                     onDragEnd={ onCellDragEnd }
                     onDragOver={ onCellDragOver }
-                    onDragEnter={ e => onCellDragEnter(e, day.id, row.id) }
+                    onDragEnter={ e => onCellDragEnter(e, day.id as number, row.id) }
                     onClick={ (event) => handleCellClick(event, row, day) }
                   >
                     <Box sx={ { height: "100%", overflowY: "visible" } }>

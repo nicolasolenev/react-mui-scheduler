@@ -1,13 +1,13 @@
 import React, { FC } from "react";
-import { Event, Option } from "../types";
+import { ColumnHeader, Day, Event, Option, RowHeader } from "../types";
 interface MonthModeViewProps {
-    rows: any[];
+    rows: RowHeader[] | undefined;
     options: Option;
-    columns: any[];
+    columns: ColumnHeader[] | undefined;
     legacyStyle?: boolean;
     searchResult: Event | undefined;
     onTaskClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: Event) => void;
-    onCellClick?: (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, row: any, day: any) => void;
+    onCellClick?: (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, row: RowHeader, day: Day) => void;
     onEventsChange: (item: Event) => void;
 }
 declare const MonthModeView: FC<MonthModeViewProps>;

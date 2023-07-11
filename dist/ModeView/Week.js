@@ -129,11 +129,11 @@ var WeekModeView = function (_a) {
     var onCellDragEnd = function (e) {
         var _a, _b, _c, _d, _e, _f;
         e.preventDefault();
-        if (!state.itemTransfert || !state.transfertTarget) {
+        if (!state.itemTransfer || !state.transferTarget) {
             return;
         }
-        var transfer = state.itemTransfert;
-        var transferTarget = state.transfertTarget;
+        var transfer = state.itemTransfer;
+        var transferTarget = state.transferTarget;
         var rowsData = Array.from(rows);
         var day = (_a = rowsData[transferTarget.rowIndex]) === null || _a === void 0 ? void 0 : _a.days[transferTarget.dayIndex];
         if (day) {
@@ -216,7 +216,7 @@ var WeekModeView = function (_a) {
                     react_1.default.createElement(Tooltip_1.default, { placement: "right", title: t("eventWeekTimelineCount", { count: (_a = row.days) === null || _a === void 0 ? void 0 : _a.reduce(function (prev, curr) { var _a; return prev + ((_a = curr === null || curr === void 0 ? void 0 : curr.data) === null || _a === void 0 ? void 0 : _a.length); }, 0) }) },
                         react_1.default.createElement(StyledTableCell, { scope: "row", align: "center", component: "th", sx: { px: 1 }, onClick: function (event) { return handleCellClick(event, row); } },
                             react_1.default.createElement(Typography_1.default, { variant: "body2" }, row === null || row === void 0 ? void 0 : row.label),
-                            ((_b = row === null || row === void 0 ? void 0 : row.data) === null || _b === void 0 ? void 0 : _b.length) > 0 && renderTask(row === null || row === void 0 ? void 0 : row.data, row.id))), (_c = row === null || row === void 0 ? void 0 : row.days) === null || _c === void 0 ? void 0 :
+                            Number((_b = row === null || row === void 0 ? void 0 : row.data) === null || _b === void 0 ? void 0 : _b.length) > 0 && renderTask(row === null || row === void 0 ? void 0 : row.data, row.id))), (_c = row === null || row === void 0 ? void 0 : row.days) === null || _c === void 0 ? void 0 :
                     _c.map(function (day, dayIndex) {
                         var _a;
                         return (react_1.default.createElement(StyledTableCell, { key: day === null || day === void 0 ? void 0 : day.id, scope: "row", align: "center", component: "th", sx: { px: .3, py: .5 }, onDragEnd: onCellDragEnd, onDragOver: onCellDragOver, onDragEnter: function (e) { return onCellDragEnter(e, row === null || row === void 0 ? void 0 : row.label, rowIndex, dayIndex); }, onClick: function (event) { return handleCellClick(event, __assign({ rowIndex: rowIndex }, row), __assign({ dayIndex: dayIndex }, day)); } }, ((_a = day === null || day === void 0 ? void 0 : day.data) === null || _a === void 0 ? void 0 : _a.length) > 0 &&

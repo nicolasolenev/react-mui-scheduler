@@ -11,7 +11,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { add, differenceInMinutes, format, isValid, parse } from "date-fns";
 import EventItem from "../EventItem";
-import { Event, Option } from "../types";
+import { ColumnHeader, Day, Event, ItemTransfer, ModeState, Option, Row, RowHeader, TransferTarget } from "../types";
 import { useTranslation } from "react-i18next";
 
 const StyledTableCell = styled(TableCell)(() => ({
@@ -68,11 +68,11 @@ const StyledTableContainer = styled(TableContainer)(() => ({
 
 interface WeekModeViewProps {
   options: Option;
-  columns: any[];
-  rows: any[];
-  searchResult: any;
+  columns: ColumnHeader[] | undefined;
+  rows: Row[] | undefined;
+  searchResult: Event;
   onTaskClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: Event) => void;
-  onCellClick?: (event: React.MouseEvent<HTMLTableCellElement>, row: any, day: any) => void;
+  onCellClick?: (event: React.MouseEvent<HTMLTableCellElement>, row: Row, day?: Day) => void;
   onEventsChange: (item: Event) => void;
 }
 
@@ -86,14 +86,14 @@ const WeekModeView: FC<WeekModeViewProps> = ({
   onEventsChange,
 }): JSX.Element => {
   const theme = useTheme();
-  const [state, setState] = useState<any>({ columns, rows });
+  const [state, setState] = useState<ModeState>({ columns, rows });
   const { t } = useTranslation(["common"]);
 
   const onCellDragOver = (e: React.DragEvent<HTMLTableCellElement>): void => {
     e.preventDefault();
   };
 
-  const onCellDragStart = (e: React.DragEvent<HTMLDivElement>, item: any, rowLabel: string, rowIndex?: number, dayIndex?: number): void => {
+  const onCellDragStart = (e: React.DragEvent<HTMLDivElement>, item: Event, rowLabel?: string, rowIndex?: number, dayIndex?: number): void => {
     setState({
         ...state,
         itemTransfer: { item, rowLabel, rowIndex, dayIndex },
@@ -101,7 +101,7 @@ const WeekModeView: FC<WeekModeViewProps> = ({
     );
   };
 
-  const onCellDragEnter = (e: React.DragEvent<HTMLTableCellElement>, rowLabel: string, rowIndex?: number, dayIndex?: number): void => {
+  const onCellDragEnter = (e: React.DragEvent<HTMLTableCellElement>, rowLabel?: string, rowIndex?: number, dayIndex?: number): void => {
     e.preventDefault();
     setState({
       ...state,
@@ -111,17 +111,17 @@ const WeekModeView: FC<WeekModeViewProps> = ({
 
   const onCellDragEnd = (e: React.DragEvent<HTMLTableCellElement>): void => {
     e.preventDefault();
-    if (!state.itemTransfert || !state.transfertTarget) {
+    if (!state.itemTransfer || !state.transferTarget) {
       return;
     }
-    let transfer = state.itemTransfert;
-    let transferTarget = state.transfertTarget;
-    let rowsData = Array.from(rows);
-    let day = rowsData[transferTarget.rowIndex]?.days[transferTarget.dayIndex];
+    let transfer = state.itemTransfer as ItemTransfer;
+    let transferTarget = state.transferTarget as TransferTarget;
+    let rowsData = Array.from(rows as Row[]);
+    let day = rowsData[transferTarget.rowIndex as number]?.days[transferTarget.dayIndex as number];
 
     if (day) {
       let hourRegExp = /[0-9]{2}:[0-9]{2}/;
-      let foundEventIndex = day.data.findIndex((e: any) =>
+      let foundEventIndex = day.data.findIndex((e) =>
         e.id === transfer.item.id &&
         e.startHour === transfer.item.startHour &&
         e.endHour === transfer.item.endHour,
@@ -132,39 +132,39 @@ const WeekModeView: FC<WeekModeViewProps> = ({
       }
 
       // Event cell item to transfer
-      let prevEventCell = rowsData[transfer.rowIndex].days[transfer.dayIndex];
+      let prevEventCell = rowsData[transfer.rowIndex as number].days[transfer.dayIndex as number];
       // Timeline label (00:00 am, 01:00 am, etc.)
       let label = transferTarget.rowLabel?.toUpperCase();
-      let hourLabel = hourRegExp.exec(label)?.[0];
+      let hourLabel = hourRegExp.exec(label as string)?.[0];
       // Event's end hour
       let endHour = hourRegExp.exec(transfer.item.endHour)?.[0];
-      let endHourDate = parse(endHour as string, "HH:mm", day.date);
+      let endHourDate = parse(endHour as string, "HH:mm", day.date as number | Date);
       // Event start hour
       let startHour = hourRegExp.exec(transfer.item.startHour)?.[0];
-      let startHourDate = parse(startHour as string, "HH:mm", day.date);
+      let startHourDate = parse(startHour as string, "HH:mm", day.date as number | Date);
       // Minutes difference between end and start event hours
       let minutesDiff = differenceInMinutes(endHourDate, startHourDate);
       // New event end hour according to it new cell
       let newEndHour = add(
-        parse(hourLabel as string, "HH:mm", day.date), { minutes: minutesDiff },
+        parse(hourLabel as string, "HH:mm", day.date as number | Date), { minutes: minutesDiff },
       );
 
       if (!isValid(startHourDate)) {
-        startHourDate = day.date;
+        startHourDate = day.date as Date;
         minutesDiff = differenceInMinutes(endHourDate, startHourDate);
         newEndHour = add(
-          parse(hourLabel as string, "HH:mm", day.date), { minutes: minutesDiff },
+          parse(hourLabel as string, "HH:mm", day.date as number | Date), { minutes: minutesDiff },
         );
       }
 
       prevEventCell?.data?.splice(transfer.item.itemIndex, 1);
-      transfer.item.startHour = label;
+      transfer.item.startHour = label as string;
       transfer.item.endHour = format(
         newEndHour,
         "HH:mm aaa",
       );
       transfer.item.date = format(
-        day.date,
+        day.date as number | Date,
         "yyyy-MM-dd",
       );
       day.data.push(transfer.item);
@@ -173,14 +173,14 @@ const WeekModeView: FC<WeekModeViewProps> = ({
     }
   };
 
-  const handleCellClick = (event: React.MouseEvent<HTMLTableCellElement>, row: any, day?: any): void => {
+  const handleCellClick = (event: React.MouseEvent<HTMLTableCellElement>, row: Row, day?: Day): void => {
     event.preventDefault();
     event.stopPropagation();
     onCellClick && onCellClick(event, row, day);
   };
 
-  const renderTask = (tasks: any, rowLabel: string, rowIndex?: number, dayIndex?: number) => {
-    return tasks?.map((task: Event, itemIndex: number) => {
+  const renderTask = (tasks: Event[], rowLabel?: string, rowIndex?: number, dayIndex?: number) => {
+    return tasks?.map((task, itemIndex: number) => {
       let condition = (
         searchResult ?
           (
@@ -247,7 +247,7 @@ const WeekModeView: FC<WeekModeViewProps> = ({
             >
               <Tooltip
                 placement="right"
-                title={ t("eventWeekTimelineCount", { count: row.days?.reduce((prev: any, curr: any) => prev + curr?.data?.length, 0) }) }
+                title={ t("eventWeekTimelineCount", { count: row.days?.reduce((prev, curr) => prev + curr?.data?.length, 0) }) }
               >
                 <StyledTableCell
                   scope="row"
@@ -257,10 +257,10 @@ const WeekModeView: FC<WeekModeViewProps> = ({
                   onClick={ (event) => handleCellClick(event, row) }
                 >
                   <Typography variant="body2">{ row?.label }</Typography>
-                  { row?.data?.length > 0 && renderTask(row?.data, row.id) }
+                  { Number(row?.data?.length) > 0 && renderTask(row?.data as Event[], row.id as string) }
                 </StyledTableCell>
               </Tooltip>
-              { row?.days?.map((day: any, dayIndex: number) => (
+              { row?.days?.map((day, dayIndex: number) => (
                 <StyledTableCell
                   key={ day?.id }
                   scope="row"

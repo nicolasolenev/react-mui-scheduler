@@ -1,13 +1,13 @@
 import React, { FC } from "react";
-import { Event, Option } from "../types";
+import { ColumnHeader, Day, Event, Option, Row } from "../types";
 interface DayModeViewProps {
     options: Option;
-    columns?: any[];
-    rows?: any[];
+    columns?: ColumnHeader[];
+    rows?: Row[];
     date?: string;
-    searchResult?: any;
+    searchResult?: Event;
     onTaskClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: Event) => void;
-    onCellClick?: (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, row: any, day?: any) => void;
+    onCellClick?: (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, row: Row, day?: Day) => void;
     onEventsChange: (item: Event) => void;
 }
 declare const DayModeView: FC<DayModeViewProps>;

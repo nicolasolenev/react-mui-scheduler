@@ -12,7 +12,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { format, parse, add, differenceInMinutes, isValid } from "date-fns";
 import EventItem from "../EventItem";
-import { Event, Option } from "../types";
+import { ColumnHeader, Day, Event, ItemTransfer, ModeState, Option, Row, TransferTarget } from "../types";
 import { useTranslation } from "react-i18next";
 
 const StyledTableCell = styled(TableCell)(() => ({
@@ -67,12 +67,12 @@ const StyledTableContainer = styled(TableContainer)(() => ({
 
 interface DayModeViewProps {
   options: Option;
-  columns?: any[];
-  rows?: any[];
+  columns?: ColumnHeader[];
+  rows?: Row[];
   date?: string;
-  searchResult?: any;
+  searchResult?: Event;
   onTaskClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: Event) => void;
-  onCellClick?: (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, row: any, day?: any) => void;
+  onCellClick?: (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, row: Row, day?: Day) => void;
   onEventsChange: (item: Event) => void;
 }
 
@@ -86,7 +86,7 @@ const DayModeView: FC<DayModeViewProps> = ({
   onEventsChange,
 }): JSX.Element => {
   const theme = useTheme();
-  const [state, setState] = useState<any>({ columns, rows });
+  const [state, setState] = useState<ModeState>({ columns, rows });
   const { t } = useTranslation(["common"]);
 
   const onCellDragOver = (e: React.DragEvent<HTMLTableCellElement>): void => {
@@ -108,13 +108,13 @@ const DayModeView: FC<DayModeViewProps> = ({
 
   const onCellDragEnd = (e: React.DragEvent<HTMLTableCellElement>): void => {
     e.preventDefault();
-    if (!state.itemTransfert || !state.transfertTarget) {
+    if (!state?.itemTransfer || !state?.transferTarget)
       return;
-    }
-    let transfer = state.itemTransfert;
-    let transferTarget = state.transfertTarget;
-    let rowsData = Array.from(rows as any[]);
-    let day = rowsData[transferTarget.rowIndex]?.days[transferTarget.dayIndex];
+
+    let transfer = state?.itemTransfer as ItemTransfer;
+    let transferTarget = state?.transferTarget as TransferTarget;
+    let rowsData = Array.from(rows as Row[]);
+    let day = rowsData[transferTarget?.rowIndex as number]?.days[transferTarget?.dayIndex as number];
 
     if (day) {
       let hourRegExp = /[0-9]{2}:[0-9]{2}/;
@@ -129,42 +129,42 @@ const DayModeView: FC<DayModeViewProps> = ({
       }
 
       // Event cell item to transfer
-      let prevEventCell = rowsData[transfer.rowIndex].days[transfer.dayIndex];
+      let prevEventCell = rowsData[transfer.rowIndex as number].days[transfer.dayIndex as number];
       // Timeline label (00:00 am, 01:00 am, etc.)
       let label = transferTarget.rowLabel?.toUpperCase();
       let hourLabel = hourRegExp.exec(label as string)?.[0];
       // Event's end hour
       let endHour = hourRegExp.exec(transfer.item.endHour as string)?.[0];
-      let endHourDate = parse(endHour as string, "HH:mm", day.date);
+      let endHourDate = parse(endHour as string, "HH:mm", day.date as number | Date);
       // Event start hour
       let startHour = hourRegExp.exec(transfer.item.startHour as string)?.[0];
-      let startHourDate = parse(startHour as string, "HH:mm", day.date);
+      let startHourDate = parse(startHour as string, "HH:mm", day.date as number | Date);
       // Minutes difference between end and start event hours
       let minutesDiff = differenceInMinutes(endHourDate, startHourDate);
       // New event end hour according to it new cell
       let newEndHour = add(
-        parse(hourLabel as string, "HH:mm", day.date), { minutes: minutesDiff },
+        parse(hourLabel as string, "HH:mm", day.date as number | Date), { minutes: minutesDiff },
       );
 
       if (!isValid(startHourDate)) {
-        startHourDate = day.date;
+        startHourDate = day.date as Date;
         minutesDiff = differenceInMinutes(endHourDate, startHourDate);
         newEndHour = add(
-          parse(hourLabel as string, "HH:mm", day.date), { minutes: minutesDiff },
+          parse(hourLabel as string, "HH:mm", day.date as number | Date), { minutes: minutesDiff },
         );
       }
 
-      prevEventCell?.data?.splice(transfer?.item?.itemIndex, 1);
-      transfer.item.startHour = label;
+      prevEventCell?.data?.splice(transfer.item?.itemIndex, 1);
+      transfer.item.startHour = label as string;
       transfer.item.endHour = format(newEndHour, "HH:mm aaa");
-      transfer.item.date = format(day.date, "yyyy-MM-dd");
+      transfer.item.date = format(day.date as number | Date, "yyyy-MM-dd");
       day.data.push(transfer.item);
       setState({ ...state, rows: rowsData });
       onEventsChange && onEventsChange(transfer.item);
     }
   };
 
-  const handleCellClick = (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, row: any, day?: any): void => {
+  const handleCellClick = (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, row: Row, day?: Day): void => {
     event.preventDefault();
     event.stopPropagation();
     onCellClick && onCellClick(event, row, day);
@@ -236,7 +236,7 @@ const DayModeView: FC<DayModeViewProps> = ({
             >
               <Tooltip
                 placement="right"
-                title={ t("eventDayTimelineCount", { count: row.days?.reduce((prev: any, curr: any) => prev + curr?.data?.length, 0) }) }
+                title={ t("eventDayTimelineCount", { count: row.days?.reduce((prev, curr) => prev + curr?.data?.length, 0) }) }
               >
                 <StyledTableCell
                   scope="row"
@@ -246,10 +246,10 @@ const DayModeView: FC<DayModeViewProps> = ({
                   onClick={ (event) => handleCellClick(event, row) }
                 >
                   <Typography variant="body2">{ row?.label }</Typography>
-                  { row?.data?.length > 0 && renderTask(row?.data, row.id) }
+                  { Number(row?.data?.length) > 0 && renderTask(row?.data as Event[], row.id as string) }
                 </StyledTableCell>
               </Tooltip>
-              { row?.days?.map((day: any, dayIndex: number) => (
+              { row?.days?.map((day, dayIndex: number) => (
                 <StyledTableCell
                   key={ day?.id }
                   scope="row"
@@ -259,12 +259,12 @@ const DayModeView: FC<DayModeViewProps> = ({
                   sx={ { px: .3, py: .5 } }
                   onDragEnd={ onCellDragEnd }
                   onDragOver={ onCellDragOver }
-                  onDragEnter={ e => onCellDragEnter(e, row?.label, rowIndex, dayIndex) }
+                  onDragEnter={ e => onCellDragEnter(e, row?.label as string, rowIndex, dayIndex) }
                   onClick={ (event) => handleCellClick(
                     event, { rowIndex, ...row }, { dayIndex, ...day },
                   ) }
                 >
-                  { day?.data?.length > 0 && renderTask(day?.data, row?.label, rowIndex, dayIndex) }
+                  { day?.data?.length > 0 && renderTask(day?.data, row?.label as string, rowIndex, dayIndex) }
                 </StyledTableCell>
               )) }
             </StyledTableRow>

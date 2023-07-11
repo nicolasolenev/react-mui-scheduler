@@ -188,7 +188,8 @@ var Scheduler = function (_a) {
     };
     var getMonthRows = function () {
         var _a, _b;
-        var rows = [], daysBefore = [];
+        var rows = [];
+        var daysBefore = [];
         var iteration = (0, date_fns_1.getWeeksInMonth)(selectedDay);
         var startOnSunday = ((startWeekOn === null || startWeekOn === void 0 ? void 0 : startWeekOn.toUpperCase()) === "SUN" &&
             t("sun").toUpperCase() === weekDays[0].toUpperCase());
@@ -251,7 +252,7 @@ var Scheduler = function (_a) {
             };
             for (var j = 0; 
             // This condition ensure that days will not exceed 31
-            // i === 0 ? 7 - daysBefore?.length means that we substract inserted days
+            // i === 0 ? 7 - daysBefore?.length means that we subtract inserted days
             // in the first line to 7
             j < (i === 0 ? 7 - daysBefore.length : 7) && (dateDay <= daysInMonth); j++) {
                 _loop_3(j);

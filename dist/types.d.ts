@@ -61,3 +61,54 @@ export interface ToolbarProps {
     showOptions: boolean;
     optionMenus?: OptionMenu[];
 }
+export interface Row {
+    id: number | string;
+    label?: string;
+    days: Day[];
+    data?: Event[];
+    rowIndex?: number;
+}
+export interface Day {
+    id: number | string;
+    date: Date | number | undefined;
+    data: Event[];
+    day?: number | string;
+    dayIndex?: number;
+}
+export interface ModeState {
+    columns?: ColumnHeader[];
+    rows?: RowHeader[] | Row[] | Event[];
+    itemTransfer?: ItemTransfer | null;
+    transferTarget?: TransferTarget | null;
+}
+export interface ColumnHeader {
+    id?: string;
+    flex?: number;
+    sortable?: boolean;
+    editable?: boolean;
+    align?: string;
+    headerName?: string;
+    headerAlign?: string;
+    field?: string;
+    headerClassName?: string;
+    date?: number | Date;
+    month?: string;
+    weekDay?: string;
+    day?: string;
+}
+export interface RowHeader {
+    id: number;
+    days: Day[];
+}
+export interface ItemTransfer {
+    item: Event;
+    rowLabel?: string;
+    rowIndex?: number;
+    dayIndex?: number;
+}
+export interface TransferTarget {
+    rowLabel?: string;
+    rowIndex?: number;
+    dayIndex?: number;
+    elementId?: number;
+}
