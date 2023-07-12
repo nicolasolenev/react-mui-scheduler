@@ -93,8 +93,8 @@ const App = () => {
       groupLabel: "Dr Shaun Murphy",
       user: "Dr Shaun Murphy",
       color: "#f28f6a",
-      startHour: "04:00 AM",
-      endHour: "05:00 AM",
+      startHour: "04:00",
+      endHour: "05:00",
       date: "2022-05-05",
       createdAt: new Date(),
       createdBy: "Kristina Mayer",
@@ -105,8 +105,8 @@ const App = () => {
       groupLabel: "Dr Claire Brown",
       user: "Dr Claire Brown",
       color: "#099ce5",
-      startHour: "09:00 AM",
-      endHour: "10:00 AM",
+      startHour: "09:00",
+      endHour: "10:00",
       date: "2022-05-09",
       createdAt: new Date(),
       createdBy: "Kristina Mayer",
@@ -117,8 +117,8 @@ const App = () => {
       groupLabel: "Dr Menlendez Hary",
       user: "Dr Menlendez Hary",
       color: "#263686",
-      startHour: "13 PM",
-      endHour: "14 PM",
+      startHour: "13:00",
+      endHour: "14:00",
       date: "2022-05-10",
       createdAt: new Date(),
       createdBy: "Kristina Mayer",
@@ -129,8 +129,8 @@ const App = () => {
       groupLabel: "Dr Shaun Murphy",
       user: "Dr Shaun Murphy",
       color: "#f28f6a",
-      startHour: "08:00 AM",
-      endHour: "09:00 AM",
+      startHour: "08:00",
+      endHour: "09:00",
       date: "2022-05-11",
       createdAt: new Date(),
       createdBy: "Kristina Mayer",
@@ -180,15 +180,15 @@ ReactDOM.render(<App/>, document.querySelector("#yourComponentRootId"));
 
 ## Event structure
 
-| Name       | Type               | Required | Details                                                      |  
+| Name       | Type               | Required | Details                                                      |
 |------------|--------------------|----------|--------------------------------------------------------------|
 | id         | `number \| string` | `true`   | Unique id for every event                                    |
-| label      | `string`           | `true`   |                                                              | 
-| color      | `string`           | `false`  | If not set, the primary color of the theme will be applied   | 
+| label      | `string`           | `true`   |                                                              |
+| color      | `string`           | `false`  | If not set, the primary color of the theme will be applied   |
 | groupLabel | `string`           | `true`   |                                                              |
-| startHour  | `string`           | `true`   | Hour string format with `HH:mm aaa`                          |  
-| endHour    | `string`           | `true`   | Hour string format with `HH:mm aaa`                          | 
-| date       | `string`           | `true`   | Date string, must be formatted with `yyyy-MM-dd` date format | 
+| startHour  | `string`           | `true`   | Hour string format with `HH:mm`                              |
+| endHour    | `string`           | `true`   | Hour string format with `HH:mm`                              |
+| date       | `string`           | `true`   | Date string, must be formatted with `yyyy-MM-dd` date format |
 
 For more details about date formats, see [date-fns docs](https://date-fns.org/v2.24.0/docs/)
 
