@@ -93,9 +93,8 @@ const App = () => {
       groupLabel: "Dr Shaun Murphy",
       user: "Dr Shaun Murphy",
       color: "#f28f6a",
-      startHour: "04:00",
-      endHour: "05:00",
-      date: new Date("2022-05-05"),
+      startDate: new Date("2022-05-05 04:00"),
+      endDate: new Date("2022-05-05 05:00"),
       createdAt: new Date(),
       createdBy: "Kristina Mayer",
     },
@@ -105,9 +104,8 @@ const App = () => {
       groupLabel: "Dr Claire Brown",
       user: "Dr Claire Brown",
       color: "#099ce5",
-      startHour: "09:00",
-      endHour: "10:00",
-      date: new Date("2022-05-09"),
+      startDate: new Date("2022-05-09 09:00"),
+      endDate: new Date("2022-05-09 10:00"),
       createdAt: new Date(),
       createdBy: "Kristina Mayer",
     },
@@ -117,9 +115,8 @@ const App = () => {
       groupLabel: "Dr Menlendez Hary",
       user: "Dr Menlendez Hary",
       color: "#263686",
-      startHour: "13:00",
-      endHour: "14:00",
-      date: new Date("2022-05-10"),
+      startDate: new Date("2022-05-10 13:00"),
+      endDate: new Date("2022-05-10 14:00"),
       createdAt: new Date(),
       createdBy: "Kristina Mayer",
     },
@@ -129,9 +126,8 @@ const App = () => {
       groupLabel: "Dr Shaun Murphy",
       user: "Dr Shaun Murphy",
       color: "#f28f6a",
-      startHour: "08:00",
-      endHour: "09:00",
-      date: new Date("2022-05-11"),
+      startDate: new Date("2022-05-11 08:00"),
+      endDate: new Date("2022-05-11 09:00"),
       createdAt: new Date(),
       createdBy: "Kristina Mayer",
     },
@@ -186,9 +182,8 @@ ReactDOM.render(<App/>, document.querySelector("#yourComponentRootId"));
 | label      | `string`           | `true`   |                                                            |
 | color      | `string`           | `false`  | If not set, the primary color of the theme will be applied |
 | groupLabel | `string`           | `true`   |                                                            |
-| startHour  | `string`           | `true`   | Hour string format with `HH:mm`                            |
-| endHour    | `string`           | `true`   | Hour string format with `HH:mm`                            |
-| date       | `Date`             | `true`   | Date representing event                                    |
+| startDate  | `Date`             | `true`   | Starting Date object of the event                          |
+| endDate    | `string`           | `true`   | Ending Date object of the event                            |
 
 For more details about date formats, see [date-fns docs](https://date-fns.org/v2.24.0/docs/)
 
