@@ -41,12 +41,6 @@ const StyledTableCell = styled(TableCell)(() => ({
   },
 }));
 
-const StyledTableRow = styled(TableRow)(() => ({
-  ["&:last-child td, &:last-child th"]: {
-    border: 0,
-  },
-}));
-
 const StyledTableContainer = styled(TableContainer)(() => ({
   ["&::-webkit-scrollbar"]: {
     width: 7,
@@ -222,7 +216,7 @@ const WeekModeView: FC<WeekModeViewProps> = ({
         stickyHeader sx={ { minWidth: options.minWidth } }
       >
         <TableHead sx={ { height: 24 } }>
-          <StyledTableRow>
+          <TableRow>
             <StyledTableCell align="left"/>
             { columns?.map((column, index) => (
               <StyledTableCell
@@ -232,14 +226,11 @@ const WeekModeView: FC<WeekModeViewProps> = ({
                 { column?.weekDay } { column?.month }/{ column?.day }
               </StyledTableCell>
             )) }
-          </StyledTableRow>
+          </TableRow>
         </TableHead>
         <TableBody>
           { rows?.map((row, rowIndex) => (
-            <StyledTableRow
-              key={ `timeline-${ rowIndex }` }
-              sx={ { "&:last-child td, &:last-child th": { border: 0 } } }
-            >
+            <TableRow key={ `timeline-${ rowIndex }` }>
               <Tooltip
                 placement="right"
                 title={ t("eventWeekTimelineCount", { count: row.days?.reduce((prev, curr) => prev + curr?.data?.length, 0) }) }
@@ -278,7 +269,7 @@ const WeekModeView: FC<WeekModeViewProps> = ({
                     ) }
                 </StyledTableCell>
               )) }
-            </StyledTableRow>
+            </TableRow>
           )) }
         </TableBody>
       </Table>

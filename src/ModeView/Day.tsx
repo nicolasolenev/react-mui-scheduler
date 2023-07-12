@@ -40,12 +40,6 @@ const StyledTableCell = styled(TableCell)(() => ({
   },
 }));
 
-const StyledTableRow = styled(TableRow)(() => ({
-  ["&:last-child td, &:last-child th"]: {
-    border: 0,
-  },
-}));
-
 const StyledTableContainer = styled(TableContainer)(() => ({
   ["&::-webkit-scrollbar"]: {
     width: 7,
@@ -214,7 +208,7 @@ const DayModeView: FC<DayModeViewProps> = ({
         stickyHeader sx={ { minWidth: options.minWidth } }
       >
         <TableHead sx={ { height: 24 } }>
-          <StyledTableRow>
+          <TableRow>
             <StyledTableCell align="left"/>
             { columns?.map((column, index) => (
               <StyledTableCell
@@ -224,14 +218,11 @@ const DayModeView: FC<DayModeViewProps> = ({
                 { column?.weekDay } { column?.month }/{ column?.day }
               </StyledTableCell>
             )) }
-          </StyledTableRow>
+          </TableRow>
         </TableHead>
         <TableBody>
           { rows?.map((row, rowIndex) => (
-            <StyledTableRow
-              key={ `timeline-${ rowIndex }` }
-              sx={ { "&:last-child td, &:last-child th": { border: 0 } } }
-            >
+            <TableRow key={ `timeline-${ rowIndex }` }>
               <Tooltip
                 placement="right"
                 title={ t("eventDayTimelineCount", { count: row.days?.reduce((prev, curr) => prev + curr?.data?.length, 0) }) }
@@ -265,7 +256,7 @@ const DayModeView: FC<DayModeViewProps> = ({
                   { day?.data?.length > 0 && renderTask(day?.data, row?.label as string, rowIndex, dayIndex) }
                 </StyledTableCell>
               )) }
-            </StyledTableRow>
+            </TableRow>
           )) }
         </TableBody>
       </Table>

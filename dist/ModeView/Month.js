@@ -84,14 +84,6 @@ var StyledTableCell = (0, styles_1.styled)(material_1.TableCell)(function (_a) {
         },
         _b);
 });
-var StyledTableRow = (0, styles_1.styled)(material_1.TableRow)(function () {
-    var _a;
-    return (_a = {},
-        _a["&:last-child td, &:last-child th"] = {
-            border: 0,
-        },
-        _a);
-});
 var MonthModeView = function (_a) {
     var _b = _a.rows, rows = _b === void 0 ? [] : _b, options = _a.options, _c = _a.columns, columns = _c === void 0 ? [] : _c, legacyStyle = _a.legacyStyle, searchResult = _a.searchResult, onTaskClick = _a.onTaskClick, onCellClick = _a.onCellClick, onEventsChange = _a.onEventsChange;
     var theme = (0, styles_1.useTheme)();
@@ -185,18 +177,10 @@ var MonthModeView = function (_a) {
     return (react_1.default.createElement(TableContainer_1.default, { component: Paper_1.default, sx: { boxShadow: "none" } },
         react_1.default.createElement(Table_1.default, { size: "small", "aria-label": "simple table", stickyHeader: true, sx: { minWidth: options.minWidth || 650 } },
             legacyStyle && react_1.default.createElement(TableHead_1.default, { sx: { height: 24 } },
-                react_1.default.createElement(StyledTableRow, null, columns === null || columns === void 0 ? void 0 : columns.map(function (column, index) { return (react_1.default.createElement(StyledTableCell, { align: "center", key: (column === null || column === void 0 ? void 0 : column.headerName) + "-" + index }, column === null || column === void 0 ? void 0 : column.headerName)); }))),
+                react_1.default.createElement(material_1.TableRow, null, columns === null || columns === void 0 ? void 0 : columns.map(function (column, index) { return (react_1.default.createElement(StyledTableCell, { align: "center", key: (column === null || column === void 0 ? void 0 : column.headerName) + "-" + index }, column === null || column === void 0 ? void 0 : column.headerName)); }))),
             react_1.default.createElement(TableBody_1.default, null, rows === null || rows === void 0 ? void 0 : rows.map(function (row, index) {
                 var _a;
-                return (react_1.default.createElement(StyledTableRow, { key: "row-".concat(row.id, "-").concat(index), sx: {
-                        "&:last-child th": {
-                            border: 0,
-                            borderLeft: "1px ".concat(theme.palette.divider, " solid"),
-                            "&:firs-child": {
-                                borderLeft: 0,
-                            },
-                        },
-                    } }, (_a = row === null || row === void 0 ? void 0 : row.days) === null || _a === void 0 ? void 0 : _a.map(function (day, indexD) {
+                return (react_1.default.createElement(material_1.TableRow, { key: "row-".concat(row.id, "-").concat(index) }, (_a = row === null || row === void 0 ? void 0 : row.days) === null || _a === void 0 ? void 0 : _a.map(function (day, indexD) {
                     var _a, _b, _c, _d;
                     var currentDay = (day.day === today.getUTCDate() && (0, date_fns_1.isSameMonth)(day.date, today));
                     return (react_1.default.createElement(StyledTableCell, { scope: "row", align: "center", component: "th", sx: { px: 0.5, position: "relative" }, key: "day-".concat(day.id), onDragEnd: onCellDragEnd, onDragOver: onCellDragOver, onDragEnter: function (e) { return onCellDragEnter(e, day.id, row.id); }, onClick: function (event) { return handleCellClick(event, row, day); } },

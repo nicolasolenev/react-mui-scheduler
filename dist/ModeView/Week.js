@@ -82,14 +82,6 @@ var StyledTableCell = (0, styles_1.styled)(TableCell_1.default)(function () {
         },
         _a);
 });
-var StyledTableRow = (0, styles_1.styled)(TableRow_1.default)(function () {
-    var _a;
-    return (_a = {},
-        _a["&:last-child td, &:last-child th"] = {
-            border: 0,
-        },
-        _a);
-});
 var StyledTableContainer = (0, styles_1.styled)(TableContainer_1.default)(function () {
     var _a;
     return (_a = {},
@@ -200,7 +192,7 @@ var WeekModeView = function (_a) {
     return (react_1.default.createElement(StyledTableContainer, { component: Paper_1.default, sx: { maxHeight: options.maxHeight } },
         react_1.default.createElement(Table_1.default, { size: "small", "aria-label": "simple table", stickyHeader: true, sx: { minWidth: options.minWidth } },
             react_1.default.createElement(TableHead_1.default, { sx: { height: 24 } },
-                react_1.default.createElement(StyledTableRow, null,
+                react_1.default.createElement(TableRow_1.default, null,
                     react_1.default.createElement(StyledTableCell, { align: "left" }), columns === null || columns === void 0 ? void 0 :
                     columns.map(function (column, index) { return (react_1.default.createElement(StyledTableCell, { align: "center", key: "weekday-".concat(column === null || column === void 0 ? void 0 : column.day, "-").concat(index) }, column === null || column === void 0 ? void 0 :
                         column.weekDay,
@@ -210,7 +202,7 @@ var WeekModeView = function (_a) {
                         column.day)); }))),
             react_1.default.createElement(TableBody_1.default, null, rows === null || rows === void 0 ? void 0 : rows.map(function (row, rowIndex) {
                 var _a, _b, _c;
-                return (react_1.default.createElement(StyledTableRow, { key: "timeline-".concat(rowIndex), sx: { "&:last-child td, &:last-child th": { border: 0 } } },
+                return (react_1.default.createElement(TableRow_1.default, { key: "timeline-".concat(rowIndex) },
                     react_1.default.createElement(Tooltip_1.default, { placement: "right", title: t("eventWeekTimelineCount", { count: (_a = row.days) === null || _a === void 0 ? void 0 : _a.reduce(function (prev, curr) { var _a; return prev + ((_a = curr === null || curr === void 0 ? void 0 : curr.data) === null || _a === void 0 ? void 0 : _a.length); }, 0) }) },
                         react_1.default.createElement(StyledTableCell, { scope: "row", align: "center", component: "th", sx: { px: 1 }, onClick: function (event) { return handleCellClick(event, row); } },
                             react_1.default.createElement(Typography_1.default, { variant: "body2" }, row === null || row === void 0 ? void 0 : row.label),

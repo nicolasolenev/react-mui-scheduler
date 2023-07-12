@@ -43,12 +43,6 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-const StyledTableRow = styled(TableRow)(() => ({
-  ["&:last-child td, &:last-child th"]: {
-    border: 0,
-  },
-}));
-
 interface MonthModeViewProps {
   rows: RowHeader[] | undefined;
   options: Option;
@@ -204,7 +198,7 @@ const MonthModeView: FC<MonthModeViewProps> = ({
         stickyHeader sx={ { minWidth: options.minWidth || 650 } }
       >
         { legacyStyle && <TableHead sx={ { height: 24 } }>
-          <StyledTableRow>
+          <TableRow>
             { columns?.map((column, index) => (
               <StyledTableCell
                 align="center"
@@ -213,22 +207,11 @@ const MonthModeView: FC<MonthModeViewProps> = ({
                 { column?.headerName }
               </StyledTableCell>
             )) }
-          </StyledTableRow>
+          </TableRow>
         </TableHead> }
         <TableBody>
           { rows?.map((row, index) => (
-            <StyledTableRow
-              key={ `row-${ row.id }-${ index }` }
-              sx={ {
-                "&:last-child th": {
-                  border: 0,
-                  borderLeft: `1px ${ theme.palette.divider } solid`,
-                  "&:firs-child": {
-                    borderLeft: 0,
-                  },
-                },
-              } }
-            >
+            <TableRow key={ `row-${ row.id }-${ index }` }>
               { row?.days?.map((day: Day, indexD: number) => {
                 const currentDay = (
                   day.day === today.getUTCDate() && isSameMonth(day.date as number | Date, today)
@@ -271,7 +254,7 @@ const MonthModeView: FC<MonthModeViewProps> = ({
                   </StyledTableCell>
                 );
               }) }
-            </StyledTableRow>
+            </TableRow>
           )) }
         </TableBody>
       </Table>
