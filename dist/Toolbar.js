@@ -69,7 +69,7 @@ var Toolbar_1 = __importDefault(require("@mui/material/Toolbar"));
 var MoreVert_1 = __importDefault(require("@mui/icons-material/MoreVert"));
 var Toolbar = function (_a) {
     var _b;
-    var events = _a.events, today = _a.today, switchMode = _a.switchMode, _c = _a.alertProps, alertProps = _c === void 0 ? {
+    var events = _a.events, switchMode = _a.switchMode, _c = _a.alertProps, alertProps = _c === void 0 ? {
         open: false,
         message: "",
         color: "info",
@@ -82,7 +82,7 @@ var Toolbar = function (_a) {
     var _e = (0, react_1.useState)(), searchResult = _e[0], setSearchResult = _e[1];
     var _f = (0, react_1.useState)(null), anchorMenuEl = _f[0], setAnchorMenuEl = _f[1];
     var _g = (0, react_1.useState)(null), anchorDateEl = _g[0], setAnchorDateEl = _g[1];
-    var _h = (0, react_1.useState)(today || new Date()), selectedDate = _h[0], setSelectedDate = _h[1];
+    var _h = (0, react_1.useState)(new Date()), selectedDate = _h[0], setSelectedDate = _h[1];
     var _j = (0, react_1.useState)((0, date_fns_1.getDaysInMonth)(selectedDate)), daysInMonth = _j[0], setDaysInMonth = _j[1];
     var openMenu = Boolean(anchorMenuEl);
     var openDateSelector = Boolean(anchorDateEl);
@@ -177,9 +177,8 @@ var Toolbar = function (_a) {
                         (toolbarProps === null || toolbarProps === void 0 ? void 0 : toolbarProps.showSearchBar) &&
                             react_1.default.createElement(ToolbarSearchBar_1.default, { events: events, onInputChange: function (value) {
                                     var newDate = new Date();
-                                    if (value instanceof Event && (value === null || value === void 0 ? void 0 : value.date)) {
-                                        newDate = (0, date_fns_1.parse)(value.date, "yyyy-MM-dd", today);
-                                    }
+                                    if (value instanceof Event && (value === null || value === void 0 ? void 0 : value.date))
+                                        newDate = value.date;
                                     setDaysInMonth((0, date_fns_1.getDaysInMonth)(newDate));
                                     setSelectedDate(newDate);
                                     setSearchResult(value);

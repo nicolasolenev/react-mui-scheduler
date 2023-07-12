@@ -1,7 +1,7 @@
 import React, { FC, JSX, useState } from "react";
 import { alpha, lighten, styled, Theme, useTheme } from "@mui/material/styles";
 import { TableCell, tableCellClasses, TableRow } from "@mui/material";
-import { format, isSameMonth } from "date-fns";
+import { isSameMonth } from "date-fns";
 import EventItem from "../EventItem";
 import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
@@ -115,11 +115,9 @@ const MonthModeView: FC<MonthModeViewProps> = ({
         ?.findIndex((d: Day) => d.id === transferTarget?.elementId);
       if (dayInd !== -1) {
         let day = rowsCopy[rowInd]?.days[dayInd];
-        let splittedDate = transfer?.item?.date?.split("-");
-        if (!transfer?.item?.day) {
-          // Get day of the date (DD)
-          transfer.item.day = parseInt(splittedDate[2]);
-        }
+        // Get day of the date (DD)
+        if (!transfer?.item?.day)
+          transfer.item.day = transfer?.item?.date.getDay();
         if (transfer?.item?.day !== day?.day) {
           let itemCheck = day.data.findIndex((item: Event) => (
             item.day === transfer.item.day && item.label === transfer.item.label
@@ -136,7 +134,7 @@ const MonthModeView: FC<MonthModeViewProps> = ({
             }
             prevDayEvents?.data?.splice(itemIndexToRemove, 1);
             transfer.item.day = day?.day;
-            transfer.item.date = format(day?.date as number | Date, "yyyy-MM-dd");
+            transfer.item.date = day?.date;
             day.data.push(transfer.item);
             setState({
               ...state,

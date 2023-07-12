@@ -112,7 +112,6 @@ var Scheduler = function (_a) {
         showOptions: true,
         optionMenus: [],
     } : _e, onEventsChange = _a.onEventsChange, onAlertCloseButtonClicked = _a.onAlertCloseButtonClicked, onDateChange = _a.onDateChange;
-    var today = new Date();
     (0, styles_1.useTheme)();
     var _f = (0, react_i18next_1.useTranslation)(["common"]), t = _f.t, i18n = _f.i18n;
     var weeks = [
@@ -122,12 +121,12 @@ var Scheduler = function (_a) {
     ];
     var _g = (0, react_1.useState)({}), state = _g[0], setState = _g[1];
     var _h = (0, react_1.useState)(), searchResult = _h[0], setSearchResult = _h[1];
-    var _j = (0, react_1.useState)(today), selectedDay = _j[0], setSelectedDay = _j[1];
+    var _j = (0, react_1.useState)(new Date()), selectedDay = _j[0], setSelectedDay = _j[1];
     var _k = (0, react_1.useState)(alertProps), alertState = _k[0], setAlertState = _k[1];
     var _l = (0, react_1.useState)(options.defaultMode), mode = _l[0], setMode = _l[1];
-    var _m = (0, react_1.useState)((0, date_fns_1.getDaysInMonth)(today)), daysInMonth = _m[0], setDaysInMonth = _m[1];
+    var _m = (0, react_1.useState)((0, date_fns_1.getDaysInMonth)(new Date())), daysInMonth = _m[0], setDaysInMonth = _m[1];
     var _o = (0, react_1.useState)(options.startWeekOn), startWeekOn = _o[0], setStartWeekOn = _o[1];
-    var _p = (0, react_1.useState)((0, date_fns_1.format)(today, "MMMM-yyyy")), selectedDate = _p[0], setSelectedDate = _p[1];
+    var _p = (0, react_1.useState)((0, date_fns_1.format)(new Date(), "MMMM-yyyy")), selectedDate = _p[0], setSelectedDate = _p[1];
     var _q = (0, react_1.useReducer)(function () {
         return options.startWeekOn.toUpperCase() === "SUN" ? [
             t("sun"), t("mon"), t("tue"),
@@ -202,7 +201,7 @@ var Scheduler = function (_a) {
             var _loop_1 = function (i) {
                 var subDate = (0, date_fns_1.sub)(monthStartDate, { days: monthStartDay - i + (startOnSunday ? 1 : 0) });
                 var day = parseInt((0, date_fns_1.format)(subDate, "dd"));
-                var data = events.filter(function (event) { return ((0, date_fns_1.isSameDay)(subDate, (0, date_fns_1.parse)(event === null || event === void 0 ? void 0 : event.date, "yyyy-MM-dd", new Date()))); });
+                var data = events.filter(function (event) { return (0, date_fns_1.isSameDay)(subDate, event === null || event === void 0 ? void 0 : event.date); });
                 daysBefore.push({
                     id: "day_-".concat(day),
                     day: day,
@@ -221,7 +220,7 @@ var Scheduler = function (_a) {
             var _loop_2 = function (i) {
                 var subDate = (0, date_fns_1.sub)(monthStartDate, { days: i });
                 var day = parseInt((0, date_fns_1.format)(subDate, "dd"));
-                var data = events.filter(function (event) { return ((0, date_fns_1.isSameDay)(subDate, (0, date_fns_1.parse)(event === null || event === void 0 ? void 0 : event.date, "yyyy-MM-dd", new Date()))); });
+                var data = events.filter(function (event) { return (0, date_fns_1.isSameDay)(subDate, event === null || event === void 0 ? void 0 : event.date); });
                 daysBefore.push({
                     id: "day_-".concat(day),
                     day: day,
@@ -241,7 +240,7 @@ var Scheduler = function (_a) {
             var obj = [];
             var _loop_3 = function (j) {
                 var date = (0, date_fns_1.parse)("".concat(dateDay, "-").concat(selectedDate), "dd-MMMM-yyyy", new Date());
-                var data = events.filter(function (event) { return ((0, date_fns_1.isSameDay)(date, (0, date_fns_1.parse)(event === null || event === void 0 ? void 0 : event.date, "yyyy-MM-dd", new Date()))); });
+                var data = events.filter(function (event) { return (0, date_fns_1.isSameDay)(date, event === null || event === void 0 ? void 0 : event.date); });
                 obj.push({
                     id: "day_-".concat(dateDay),
                     date: date,
@@ -275,8 +274,7 @@ var Scheduler = function (_a) {
             for (var i = dateDay; i < (dateDay + lastRowDaysDiff); i++) {
                 addDate_1 = (0, date_fns_1.add)(addDate_1, { days: 1 });
                 var d = (0, date_fns_1.format)(addDate_1, "dd");
-                // eslint-disable-next-line
-                var data = events.filter(function (event) { return ((0, date_fns_1.isSameDay)(addDate_1, (0, date_fns_1.parse)(event === null || event === void 0 ? void 0 : event.date, "yyyy-MM-dd", new Date()))); });
+                var data = events.filter(function (event) { return (0, date_fns_1.isSameDay)(addDate_1, event === null || event === void 0 ? void 0 : event.date); });
                 lastDaysData.push({
                     id: "day_-".concat(d),
                     date: addDate_1,
@@ -308,7 +306,7 @@ var Scheduler = function (_a) {
         var dayStartHour = (0, date_fns_1.startOfDay)(selectedDay);
         var _loop_4 = function (i) {
             var id = "line_".concat(i);
-            var label = (0, date_fns_1.format)(dayStartHour, "HH:mm aaa");
+            var label = (0, date_fns_1.format)(dayStartHour, "HH:mm");
             //TODO Add everyday event capability
             //if (i === 0) {
             //id = `line_everyday`; label = 'Everyday'
@@ -323,8 +321,7 @@ var Scheduler = function (_a) {
                 columns.map(function (column, index) {
                     var data = events.filter(function (event) {
                         var _a;
-                        var eventDate = (0, date_fns_1.parse)(event === null || event === void 0 ? void 0 : event.date, "yyyy-MM-dd", new Date());
-                        return ((0, date_fns_1.isSameDay)(column === null || column === void 0 ? void 0 : column.date, eventDate) &&
+                        return ((0, date_fns_1.isSameDay)(column === null || column === void 0 ? void 0 : column.date, event === null || event === void 0 ? void 0 : event.date) &&
                             ((_a = event === null || event === void 0 ? void 0 : event.startHour) === null || _a === void 0 ? void 0 : _a.toUpperCase()) === (label === null || label === void 0 ? void 0 : label.toUpperCase()));
                     });
                     obj_1.days.push({
@@ -357,15 +354,14 @@ var Scheduler = function (_a) {
         var dayStartHour = (0, date_fns_1.startOfDay)(selectedDay);
         var _loop_5 = function (i) {
             var id = "line_".concat(i);
-            var label = (0, date_fns_1.format)(dayStartHour, "HH:mm aaa");
+            var label = (0, date_fns_1.format)(dayStartHour, "HH:mm");
             if (i > 0) {
                 var obj = { id: id, label: label, days: [] };
                 var columns = getDayHeader();
                 var column_1 = columns[0];
                 var matchedEvents = events.filter(function (event) {
                     var _a;
-                    var eventDate = (0, date_fns_1.parse)(event === null || event === void 0 ? void 0 : event.date, "yyyy-MM-dd", new Date());
-                    return ((0, date_fns_1.isSameDay)(column_1 === null || column_1 === void 0 ? void 0 : column_1.date, eventDate) &&
+                    return ((0, date_fns_1.isSameDay)(column_1 === null || column_1 === void 0 ? void 0 : column_1.date, event === null || event === void 0 ? void 0 : event.date) &&
                         ((_a = event === null || event === void 0 ? void 0 : event.startHour) === null || _a === void 0 ? void 0 : _a.toUpperCase()) === (label === null || label === void 0 ? void 0 : label.toUpperCase()));
                 });
                 obj.days.push({
@@ -455,7 +451,7 @@ var Scheduler = function (_a) {
     }, [options.startWeekOn]);
     return (react_1.default.createElement(Paper_1.default, { variant: "outlined", elevation: 0, sx: { p: 0 } },
         react_1.default.createElement(dateFnsContext_1.default.Provider, { value: dateFnsLocale },
-            react_1.default.createElement(Toolbar_1.default, { today: today, events: events, switchMode: mode, alertProps: alertState, toolbarProps: toolbarProps, onDateChange: handleDateChange, onModeChange: handleModeChange, onSearchResult: onSearchResult, onAlertCloseButtonClicked: onAlertCloseButtonClicked }),
+            react_1.default.createElement(Toolbar_1.default, { events: events, switchMode: mode, alertProps: alertState, toolbarProps: toolbarProps, onDateChange: handleDateChange, onModeChange: handleModeChange, onSearchResult: onSearchResult, onAlertCloseButtonClicked: onAlertCloseButtonClicked }),
             react_1.default.createElement(Grid_1.default, { container: true, spacing: 0, alignItems: "center", justifyContent: "start" },
                 isMonthMode &&
                     react_1.default.createElement(TransitionModeComponent, { in: true },

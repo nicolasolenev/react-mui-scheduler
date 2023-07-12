@@ -155,7 +155,7 @@ const DayModeView: FC<DayModeViewProps> = ({
       prevEventCell?.data?.splice(transfer.item?.itemIndex, 1);
       transfer.item.startHour = label as string;
       transfer.item.endHour = format(newEndHour, "HH:mm aaa");
-      transfer.item.date = format(day.date as number | Date, "yyyy-MM-dd");
+      transfer.item.date = day.date;
       day.data.push(transfer.item);
       setState({ ...state, rows: rowsData });
       onEventsChange && onEventsChange(transfer.item);

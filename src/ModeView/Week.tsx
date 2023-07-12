@@ -11,7 +11,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { add, differenceInMinutes, format, isValid, parse } from "date-fns";
 import EventItem from "../EventItem";
-import { ColumnHeader, Day, Event, ItemTransfer, ModeState, Option, Row, RowHeader, TransferTarget } from "../types";
+import { ColumnHeader, Day, Event, ItemTransfer, ModeState, Option, Row, TransferTarget } from "../types";
 import { useTranslation } from "react-i18next";
 
 const StyledTableCell = styled(TableCell)(() => ({
@@ -163,10 +163,7 @@ const WeekModeView: FC<WeekModeViewProps> = ({
         newEndHour,
         "HH:mm aaa",
       );
-      transfer.item.date = format(
-        day.date as number | Date,
-        "yyyy-MM-dd",
-      );
+      transfer.item.date = day.date;
       day.data.push(transfer.item);
       setState({ ...state, rows: rowsData });
       onEventsChange && onEventsChange(transfer.item);

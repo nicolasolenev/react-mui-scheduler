@@ -116,7 +116,7 @@ var MonthModeView = function (_a) {
         setState(__assign(__assign({}, state), { transferTarget: { elementId: elementId, rowIndex: rowIndex } }));
     };
     var onCellDragEnd = function (e) {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j;
+        var _a, _b, _c, _d, _e, _f, _g, _h;
         e.preventDefault();
         if (!state.itemTransfer && !state.transferTarget)
             return;
@@ -128,24 +128,22 @@ var MonthModeView = function (_a) {
             var dayInd = (_b = (_a = rowsCopy[rowInd]) === null || _a === void 0 ? void 0 : _a.days) === null || _b === void 0 ? void 0 : _b.findIndex(function (d) { return d.id === (transferTarget === null || transferTarget === void 0 ? void 0 : transferTarget.elementId); });
             if (dayInd !== -1) {
                 var day = (_c = rowsCopy[rowInd]) === null || _c === void 0 ? void 0 : _c.days[dayInd];
-                var splittedDate = (_e = (_d = transfer === null || transfer === void 0 ? void 0 : transfer.item) === null || _d === void 0 ? void 0 : _d.date) === null || _e === void 0 ? void 0 : _e.split("-");
-                if (!((_f = transfer === null || transfer === void 0 ? void 0 : transfer.item) === null || _f === void 0 ? void 0 : _f.day)) {
-                    // Get day of the date (DD)
-                    transfer.item.day = parseInt(splittedDate[2]);
-                }
-                if (((_g = transfer === null || transfer === void 0 ? void 0 : transfer.item) === null || _g === void 0 ? void 0 : _g.day) !== (day === null || day === void 0 ? void 0 : day.day)) {
+                // Get day of the date (DD)
+                if (!((_d = transfer === null || transfer === void 0 ? void 0 : transfer.item) === null || _d === void 0 ? void 0 : _d.day))
+                    transfer.item.day = (_e = transfer === null || transfer === void 0 ? void 0 : transfer.item) === null || _e === void 0 ? void 0 : _e.date.getDay();
+                if (((_f = transfer === null || transfer === void 0 ? void 0 : transfer.item) === null || _f === void 0 ? void 0 : _f.day) !== (day === null || day === void 0 ? void 0 : day.day)) {
                     var itemCheck = day.data.findIndex(function (item) { return (item.day === transfer.item.day && item.label === transfer.item.label); });
                     if (itemCheck === -1) {
                         var prevDayEvents = rowsCopy[transfer.rowIndex]
                             .days
                             .find(function (d) { return d.day === transfer.item.day; });
-                        var itemIndexToRemove = (_h = prevDayEvents === null || prevDayEvents === void 0 ? void 0 : prevDayEvents.data) === null || _h === void 0 ? void 0 : _h.findIndex(function (i) { return i.id === transfer.item.id; });
+                        var itemIndexToRemove = (_g = prevDayEvents === null || prevDayEvents === void 0 ? void 0 : prevDayEvents.data) === null || _g === void 0 ? void 0 : _g.findIndex(function (i) { return i.id === transfer.item.id; });
                         if (itemIndexToRemove === undefined || itemIndexToRemove === -1) {
                             return;
                         }
-                        (_j = prevDayEvents === null || prevDayEvents === void 0 ? void 0 : prevDayEvents.data) === null || _j === void 0 ? void 0 : _j.splice(itemIndexToRemove, 1);
+                        (_h = prevDayEvents === null || prevDayEvents === void 0 ? void 0 : prevDayEvents.data) === null || _h === void 0 ? void 0 : _h.splice(itemIndexToRemove, 1);
                         transfer.item.day = day === null || day === void 0 ? void 0 : day.day;
-                        transfer.item.date = (0, date_fns_1.format)(day === null || day === void 0 ? void 0 : day.date, "yyyy-MM-dd");
+                        transfer.item.date = day === null || day === void 0 ? void 0 : day.date;
                         day.data.push(transfer.item);
                         setState(__assign(__assign({}, state), { rows: rowsCopy, itemTransfer: null, transferTarget: null }));
                         onEventsChange && onEventsChange(transfer.item);

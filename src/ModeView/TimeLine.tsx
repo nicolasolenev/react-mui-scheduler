@@ -5,13 +5,13 @@ import DateFnsLocaleContext from "../locales/dateFnsContext";
 import Timeline from "@mui/lab/Timeline";
 import TimelineItem from "@mui/lab/TimelineItem";
 import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
-import { format, parse } from "date-fns";
+import { format } from "date-fns";
 import TimelineSeparator from "@mui/lab/TimelineSeparator";
 import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineDot from "@mui/lab/TimelineDot";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import TimelineContent from "@mui/lab/TimelineContent";
-import { Event, Option, RowHeader } from "../types";
+import { Event, Option } from "../types";
 
 const StyledContainer = styled(Typography)(() => ({
   ["&::-webkit-scrollbar"]: {
@@ -78,16 +78,7 @@ const TimeLineModeView: FC<TimeLineModeViewProps> = ({ options, rows, searchResu
                 variant="body2"
                 color="text.secondary"
               >
-                { task?.date &&
-                  format(
-                    parse(
-                      task?.date,
-                      "yyyy-MM-dd",
-                      new Date(),
-                    ),
-                    "PPP",
-                    { locale: dateFnsLocale },
-                  ) }
+                { task?.date && format(task?.date, "PPP", { locale: dateFnsLocale }) }
                 <br/>
                 <Typography variant="caption">
                   { task?.startHour } - { task?.endHour }

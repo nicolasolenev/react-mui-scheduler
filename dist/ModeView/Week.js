@@ -170,7 +170,7 @@ var WeekModeView = function (_a) {
             (_f = prevEventCell === null || prevEventCell === void 0 ? void 0 : prevEventCell.data) === null || _f === void 0 ? void 0 : _f.splice(transfer.item.itemIndex, 1);
             transfer.item.startHour = label;
             transfer.item.endHour = (0, date_fns_1.format)(newEndHour, "HH:mm aaa");
-            transfer.item.date = (0, date_fns_1.format)(day.date, "yyyy-MM-dd");
+            transfer.item.date = day.date;
             day.data.push(transfer.item);
             setState(__assign(__assign({}, state), { rows: rowsData }));
             onEventsChange && onEventsChange(transfer.item);

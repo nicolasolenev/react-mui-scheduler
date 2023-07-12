@@ -2,7 +2,7 @@ import React, { FC, JSX, useContext, useState } from "react";
 import { styled } from "@mui/material/styles";
 import { Autocomplete, Box, TextField } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { format, parse } from "date-fns";
+import { format } from "date-fns";
 import { Event } from "./types";
 import DateFnsLocaleContext from "./locales/dateFnsContext";
 
@@ -59,7 +59,7 @@ const ToolbarSearchBar: FC<ToolbarSearchBarProps> = ({ events, onInputChange }):
       } }
       renderOption={ (props, option: Event) => (
         <Box component="li" sx={ { fontSize: 12 } } { ...props }>
-          { `${ format(parse(option?.date, "yyyy-MM-dd", new Date()), "dd-MMMM-yyyy", { locale: dateFnsLocale }) } (${ option?.startHour || "" } - ${ option?.endHour || "" })` }
+          { `${ format(option?.date, "dd-MMMM-yyyy", { locale: dateFnsLocale }) } (${ option?.startHour || "" } - ${ option?.endHour || "" })` }
         </Box>
       ) }
       renderInput={ (params) => (

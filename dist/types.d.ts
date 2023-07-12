@@ -26,7 +26,7 @@ export interface Event {
     groupLabel: string;
     startHour: string;
     endHour: string;
-    date: string;
+    date: Date;
     color?: string;
     user?: string;
     [key: string]: any;
@@ -75,7 +75,7 @@ export interface Row {
 }
 export interface Day {
     id: number | string;
-    date: Date | number | undefined;
+    date: Date;
     data: Event[];
     day?: number | string;
     dayIndex?: number;

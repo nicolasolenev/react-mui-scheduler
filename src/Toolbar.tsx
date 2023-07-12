@@ -32,19 +32,17 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 interface ToolbarProps {
   events: Event[];
-  today: number | Date;
   switchMode: Mode;
   alertProps?: AlertProps;
   toolbarProps: SchedulerToolbarProps;
   onModeChange: (mode: Mode) => void;
-  onDateChange: (daysInMonth: number, selectedDate: number | Date | null) => void;
+  onDateChange: (daysInMonth: number, selectedDate: Date) => void;
   onSearchResult: (searchResult: Event) => void;
   onAlertCloseButtonClicked?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const Toolbar: FC<ToolbarProps> = ({
   events,
-  today,
   switchMode,
   alertProps = {
     open: false,
@@ -65,7 +63,7 @@ const Toolbar: FC<ToolbarProps> = ({
   const [searchResult, setSearchResult] = useState<Event | string>();
   const [anchorMenuEl, setAnchorMenuEl] = useState<EventTarget & HTMLButtonElement | null>(null);
   const [anchorDateEl, setAnchorDateEl] = useState<EventTarget & HTMLButtonElement | null>(null);
-  const [selectedDate, setSelectedDate] = useState<number | Date>(today || new Date());
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [daysInMonth, setDaysInMonth] = useState(getDaysInMonth(selectedDate as number | Date));
 
   const openMenu = Boolean(anchorMenuEl);
@@ -216,9 +214,9 @@ const Toolbar: FC<ToolbarProps> = ({
                         [DateView.MONTH, DateView.YEAR] :
                         [DateView.DAY, DateView.MONTH, DateView.YEAR]
                     }
-                    onChange={ (value: number | Date | null): void => {
-                      setDaysInMonth(getDaysInMonth(value as number | Date));
-                      setSelectedDate(value as number | Date);
+                    onChange={ (value: Date | null): void => {
+                      setDaysInMonth(getDaysInMonth(value as Date));
+                      setSelectedDate(value as Date);
                       handleCloseDateSelector();
                     } }
                   />
@@ -238,9 +236,8 @@ const Toolbar: FC<ToolbarProps> = ({
                   events={ events }
                   onInputChange={ (value: string | Event) => {
                     let newDate = new Date();
-                    if (value instanceof Event && (value as Event)?.date) {
-                      newDate = parse((value as Event).date, "yyyy-MM-dd", today);
-                    }
+                    if (value instanceof Event && (value as Event)?.date)
+                      newDate = (value as Event).date;
                     setDaysInMonth(getDaysInMonth(newDate));
                     setSelectedDate(newDate);
                     setSearchResult(value);

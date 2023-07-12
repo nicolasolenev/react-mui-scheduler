@@ -166,7 +166,7 @@ var DayModeView = function (_a) {
             (_d = prevEventCell === null || prevEventCell === void 0 ? void 0 : prevEventCell.data) === null || _d === void 0 ? void 0 : _d.splice((_e = transfer.item) === null || _e === void 0 ? void 0 : _e.itemIndex, 1);
             transfer.item.startHour = label;
             transfer.item.endHour = (0, date_fns_1.format)(newEndHour, "HH:mm aaa");
-            transfer.item.date = (0, date_fns_1.format)(day.date, "yyyy-MM-dd");
+            transfer.item.date = day.date;
             day.data.push(transfer.item);
             setState(__assign(__assign({}, state), { rows: rowsData }));
             onEventsChange && onEventsChange(transfer.item);

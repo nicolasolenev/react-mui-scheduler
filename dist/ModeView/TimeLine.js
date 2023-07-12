@@ -80,8 +80,7 @@ var TimeLineModeView = function (_a) {
         react_1.default.createElement(Timeline_1.default, { position: "alternate" }, filteredEvents === null || filteredEvents === void 0 ? void 0 : filteredEvents.map(function (task, index) {
             return (react_1.default.createElement(TimelineItem_1.default, { key: "timeline-".concat(index), sx: { cursor: "pointer" }, onClick: function (event) { return handleTaskClick(event, task); } },
                 react_1.default.createElement(TimelineOppositeContent_1.default, { sx: { m: "auto 0" }, align: "right", variant: "body2", color: "text.secondary" },
-                    (task === null || task === void 0 ? void 0 : task.date) &&
-                        (0, date_fns_1.format)((0, date_fns_1.parse)(task === null || task === void 0 ? void 0 : task.date, "yyyy-MM-dd", new Date()), "PPP", { locale: dateFnsLocale }),
+                    (task === null || task === void 0 ? void 0 : task.date) && (0, date_fns_1.format)(task === null || task === void 0 ? void 0 : task.date, "PPP", { locale: dateFnsLocale }),
                     react_1.default.createElement("br", null),
                     react_1.default.createElement(Typography_1.default, { variant: "caption" }, task === null || task === void 0 ? void 0 :
                         task.startHour,

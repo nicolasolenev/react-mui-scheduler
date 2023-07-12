@@ -86,7 +86,6 @@ const Scheduler: FC<SchedulerProps> = ({
   onAlertCloseButtonClicked,
   onDateChange,
 }): JSX.Element => {
-  const today = new Date();
   useTheme();
   const { t, i18n } = useTranslation(["common"]);
   const weeks = [
@@ -96,12 +95,12 @@ const Scheduler: FC<SchedulerProps> = ({
   ];
   const [state, setState] = useState<ModeState>({});
   const [searchResult, setSearchResult] = useState<Event>();
-  const [selectedDay, setSelectedDay] = useState<number | Date>(today);
+  const [selectedDay, setSelectedDay] = useState<Date>(new Date());
   const [alertState, setAlertState] = useState<AlertProps | undefined>(alertProps);
   const [mode, setMode] = useState(options.defaultMode);
-  const [daysInMonth, setDaysInMonth] = useState(getDaysInMonth(today));
+  const [daysInMonth, setDaysInMonth] = useState(getDaysInMonth(new Date()));
   const [startWeekOn, setStartWeekOn] = useState<StartWeek>(options.startWeekOn);
-  const [selectedDate, setSelectedDate] = useState(format(today, "MMMM-yyyy"));
+  const [selectedDate, setSelectedDate] = useState(format(new Date(), "MMMM-yyyy"));
   const [weekDays, updateWeekDays] = useReducer(() =>
     options.startWeekOn.toUpperCase() === "SUN" ? [
       t("sun"), t("mon"), t("tue"),
@@ -189,12 +188,7 @@ const Scheduler: FC<SchedulerProps> = ({
           { days: monthStartDay - i + (startOnSunday ? 1 : 0) },
         );
         let day = parseInt(format(subDate, "dd"));
-        let data = events.filter((event) => (
-          isSameDay(
-            subDate,
-            parse(event?.date, "yyyy-MM-dd", new Date()),
-          )
-        ));
+        let data = events.filter((event) => isSameDay(subDate, event?.date));
         daysBefore.push({
           id: `day_-${ day }`,
           day: day,
@@ -206,9 +200,7 @@ const Scheduler: FC<SchedulerProps> = ({
       for (let i = 6; i > 0; i--) {
         let subDate = sub(monthStartDate, { days: i });
         let day = parseInt(format(subDate, "dd"));
-        let data = events.filter((event) => (
-          isSameDay(subDate, parse(event?.date, "yyyy-MM-dd", new Date()))
-        ));
+        let data = events.filter((event) => isSameDay(subDate, event?.date));
         daysBefore.push({
           id: `day_-${ day }`,
           day: day,
@@ -239,12 +231,7 @@ const Scheduler: FC<SchedulerProps> = ({
           "dd-MMMM-yyyy",
           new Date(),
         );
-        let data = events.filter((event) => (
-          isSameDay(
-            date,
-            parse(event?.date, "yyyy-MM-dd", new Date()),
-          )
-        ));
+        let data = events.filter((event) => isSameDay(date, event?.date));
         obj.push({
           id: `day_-${ dateDay }`,
           date,
@@ -274,13 +261,7 @@ const Scheduler: FC<SchedulerProps> = ({
       for (let i = dateDay; i < (dateDay + lastRowDaysDiff); i++) {
         addDate = add(addDate, { days: 1 });
         let d = format(addDate, "dd");
-        // eslint-disable-next-line
-        let data = events.filter((event) => (
-          isSameDay(
-            addDate,
-            parse(event?.date, "yyyy-MM-dd", new Date()),
-          )
-        ));
+        let data = events.filter((event) => isSameDay(addDate, event?.date));
         lastDaysData.push({
           id: `day_-${ d }`,
           date: addDate,
@@ -331,7 +312,7 @@ const Scheduler: FC<SchedulerProps> = ({
 
     for (let i = 0; i <= HOURS; i++) {
       let id = `line_${ i }`;
-      let label = format(dayStartHour, "HH:mm aaa");
+      let label = format(dayStartHour, "HH:mm");
 
       //TODO Add everyday event capability
       //if (i === 0) {
@@ -346,13 +327,10 @@ const Scheduler: FC<SchedulerProps> = ({
         let columns = getWeekHeader();
         // eslint-disable-next-line
         columns.map((column, index) => {
-          let data = events.filter((event) => {
-            let eventDate = parse(event?.date, "yyyy-MM-dd", new Date());
-            return (
-              isSameDay(column?.date, eventDate) &&
-              event?.startHour?.toUpperCase() === label?.toUpperCase()
-            );
-          });
+          let data = events.filter((event) => (
+            isSameDay(column?.date, event?.date) &&
+            event?.startHour?.toUpperCase() === label?.toUpperCase()
+          ));
           obj.days.push({
             id: `column-${ index }_m-${ column.month }_d-${ column.day }_${ id }`,
             date: column?.date,
@@ -386,19 +364,16 @@ const Scheduler: FC<SchedulerProps> = ({
 
     for (let i = 0; i <= HOURS; i++) {
       let id = `line_${ i }`;
-      let label = format(dayStartHour, "HH:mm aaa");
+      let label = format(dayStartHour, "HH:mm");
 
       if (i > 0) {
         let obj: Row = { id, label, days: [] };
         let columns = getDayHeader();
         let column = columns[0];
-        let matchedEvents = events.filter((event) => {
-          let eventDate = parse(event?.date, "yyyy-MM-dd", new Date());
-          return (
-            isSameDay(column?.date, eventDate) &&
-            event?.startHour?.toUpperCase() === label?.toUpperCase()
-          );
-        });
+        let matchedEvents = events.filter((event) => (
+          isSameDay(column?.date, event?.date) &&
+          event?.startHour?.toUpperCase() === label?.toUpperCase()
+        ));
         obj.days.push({
           id: `column-_m-${ column?.month }_d-${ column?.day }_${ id }`,
           date: column?.date,
@@ -414,9 +389,9 @@ const Scheduler: FC<SchedulerProps> = ({
 
   const getTimeLineRows = () => events;
 
-  const handleDateChange = (day: number, date: number | Date | null): void => {
+  const handleDateChange = (day: number, date: Date): void => {
     setDaysInMonth(day);
-    setSelectedDay(date as number | Date);
+    setSelectedDay(date);
     setSelectedDate(format(date as number | Date, "MMMM-yyyy"));
     onDateChange && onDateChange(day, date);
   };
@@ -515,7 +490,6 @@ const Scheduler: FC<SchedulerProps> = ({
     <Paper variant="outlined" elevation={ 0 } sx={ { p: 0 } }>
       <DateFnsLocaleContext.Provider value={ dateFnsLocale }>
         <SchedulerToolbar
-          today={ today }
           events={ events }
           switchMode={ mode }
           alertProps={ alertState }
