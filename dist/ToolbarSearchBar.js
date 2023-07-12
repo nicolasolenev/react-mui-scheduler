@@ -33,12 +33,16 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = __importStar(require("react"));
 var styles_1 = require("@mui/material/styles");
 var material_1 = require("@mui/material");
 var react_i18next_1 = require("react-i18next");
 var date_fns_1 = require("date-fns");
+var dateFnsContext_1 = __importDefault(require("./locales/dateFnsContext"));
 var StyledAutoComplete = (0, styles_1.styled)((material_1.Autocomplete))(function (_a) {
     var _b;
     var theme = _a.theme;
@@ -65,6 +69,7 @@ var ToolbarSearchBar = function (_a) {
     var t = (0, react_i18next_1.useTranslation)(["common"]).t;
     var _b = (0, react_1.useState)(), value = _b[0], setValue = _b[1];
     var _c = (0, react_1.useState)(""), inputValue = _c[0], setInputValue = _c[1];
+    var dateFnsLocale = (0, react_1.useContext)(dateFnsContext_1.default);
     var handleOnChange = function (event, value) {
         setValue(value);
         if (onInputChange)
@@ -74,7 +79,7 @@ var ToolbarSearchBar = function (_a) {
             "".concat(option.groupLabel || "", " | ").concat(option.date, " | (").concat(option.startHour || "", " - ").concat(option.endHour || "", ")") : ""); }, isOptionEqualToValue: function (option, value) { return option.id === value.id; }, onInputChange: function (event, newInputValue) {
             setInputValue(newInputValue);
             onInputChange(newInputValue);
-        }, renderOption: function (props, option) { return (react_1.default.createElement(material_1.Box, __assign({ component: "li", sx: { fontSize: 12 } }, props), "".concat((0, date_fns_1.format)((0, date_fns_1.parse)(option === null || option === void 0 ? void 0 : option.date, "yyyy-MM-dd", new Date()), "dd-MMMM-yyyy"), " (").concat((option === null || option === void 0 ? void 0 : option.startHour) || "", " - ").concat((option === null || option === void 0 ? void 0 : option.endHour) || "", ")"))); }, renderInput: function (params) { return (react_1.default.createElement(material_1.TextField, __assign({}, params, { size: "small", label: t("search"), InputProps: __assign({}, params.InputProps) }))); } }));
+        }, renderOption: function (props, option) { return (react_1.default.createElement(material_1.Box, __assign({ component: "li", sx: { fontSize: 12 } }, props), "".concat((0, date_fns_1.format)((0, date_fns_1.parse)(option === null || option === void 0 ? void 0 : option.date, "yyyy-MM-dd", new Date()), "dd-MMMM-yyyy", { locale: dateFnsLocale }), " (").concat((option === null || option === void 0 ? void 0 : option.startHour) || "", " - ").concat((option === null || option === void 0 ? void 0 : option.endHour) || "", ")"))); }, renderInput: function (params) { return (react_1.default.createElement(material_1.TextField, __assign({}, params, { size: "small", label: t("search"), InputProps: __assign({}, params.InputProps) }))); } }));
 };
 exports.default = ToolbarSearchBar;
 //# sourceMappingURL=ToolbarSearchBar.js.map

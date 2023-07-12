@@ -134,11 +134,9 @@ const DayModeView: FC<DayModeViewProps> = ({
       let label = transferTarget.rowLabel?.toUpperCase();
       let hourLabel = hourRegExp.exec(label as string)?.[0];
       // Event's end hour
-      let endHour = hourRegExp.exec(transfer.item.endHour as string)?.[0];
-      let endHourDate = parse(endHour as string, "HH:mm", day.date as number | Date);
+      let endHourDate = parse(transfer.item.endHour as string, "HH:mm", day.date as number | Date);
       // Event start hour
-      let startHour = hourRegExp.exec(transfer.item.startHour as string)?.[0];
-      let startHourDate = parse(startHour as string, "HH:mm", day.date as number | Date);
+      let startHourDate = parse(transfer.item.startHour as string, "HH:mm", day.date as number | Date);
       // Minutes difference between end and start event hours
       let minutesDiff = differenceInMinutes(endHourDate, startHourDate);
       // New event end hour according to it new cell

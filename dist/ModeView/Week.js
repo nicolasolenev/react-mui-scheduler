@@ -181,19 +181,17 @@ var WeekModeView = function (_a) {
         event.stopPropagation();
         onCellClick && onCellClick(event, row, day);
     };
-    var renderTask = function (tasks, rowLabel, rowIndex, dayIndex) {
-        return tasks === null || tasks === void 0 ? void 0 : tasks.map(function (task, itemIndex) {
-            var condition = (searchResult ?
-                ((task === null || task === void 0 ? void 0 : task.groupLabel) === (searchResult === null || searchResult === void 0 ? void 0 : searchResult.groupLabel) ||
-                    (task === null || task === void 0 ? void 0 : task.user) === (searchResult === null || searchResult === void 0 ? void 0 : searchResult.user)) : !searchResult);
-            return (condition &&
-                react_1.default.createElement(EventItem_1.default, { rowId: rowIndex, event: task, elevation: 0, boxSx: { px: 0.3 }, onClick: function (e) { return handleTaskClick(e, task); }, key: "item_id-".concat(itemIndex, "_r-").concat(rowIndex, "_d-").concat(dayIndex), onDragStart: function (e) { return onCellDragStart(e, __assign(__assign({}, task), { itemIndex: itemIndex }), rowLabel, rowIndex, dayIndex); }, sx: {
-                        py: 0,
-                        color: theme.palette.common.white,
-                        backgroundColor: (task === null || task === void 0 ? void 0 : task.color) || theme.palette.primary.light,
-                    } }));
-        });
-    };
+    var renderTask = function (tasks, rowLabel, rowIndex, dayIndex) { return tasks === null || tasks === void 0 ? void 0 : tasks.map(function (task, itemIndex) {
+        var condition = (searchResult ?
+            ((task === null || task === void 0 ? void 0 : task.groupLabel) === (searchResult === null || searchResult === void 0 ? void 0 : searchResult.groupLabel) ||
+                (task === null || task === void 0 ? void 0 : task.user) === (searchResult === null || searchResult === void 0 ? void 0 : searchResult.user)) : !searchResult);
+        return (condition &&
+            react_1.default.createElement(EventItem_1.default, { rowId: rowIndex, event: task, elevation: 0, boxSx: { px: 0.3 }, onClick: function (e) { return handleTaskClick(e, task); }, key: "item_id-".concat(itemIndex, "_r-").concat(rowIndex, "_d-").concat(dayIndex), onDragStart: function (e) { return onCellDragStart(e, __assign(__assign({}, task), { itemIndex: itemIndex }), rowLabel, rowIndex, dayIndex); }, sx: {
+                    py: 0,
+                    color: theme.palette.common.white,
+                    backgroundColor: (task === null || task === void 0 ? void 0 : task.color) || theme.palette.primary.light,
+                } }));
+    }); };
     var handleTaskClick = function (event, task) {
         event.preventDefault();
         event.stopPropagation();

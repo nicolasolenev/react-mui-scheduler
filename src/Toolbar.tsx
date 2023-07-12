@@ -265,8 +265,8 @@ const Toolbar: FC<ToolbarProps> = ({
                     color="primary"
                     aria-label="text button group"
                     sx={ { mt: .2, mr: 1.3, display: "contents" } }
-                    onChange={ (e, newMode) => {
-                      setMode(newMode);
+                    onChange={ (e: React.MouseEvent<HTMLElement>, newMode: Mode | null) => {
+                      if (null !== newMode) setMode(newMode);
                     } }
                   >
                     { [

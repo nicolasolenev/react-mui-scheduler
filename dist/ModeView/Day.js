@@ -126,7 +126,7 @@ var DayModeView = function (_a) {
         setState(__assign(__assign({}, state), { transferTarget: { rowLabel: rowLabel, rowIndex: rowIndex, dayIndex: dayIndex } }));
     };
     var onCellDragEnd = function (e) {
-        var _a, _b, _c, _d, _e, _f, _g;
+        var _a, _b, _c, _d, _e;
         e.preventDefault();
         if (!(state === null || state === void 0 ? void 0 : state.itemTransfer) || !(state === null || state === void 0 ? void 0 : state.transferTarget))
             return;
@@ -151,11 +151,9 @@ var DayModeView = function (_a) {
             var label = (_b = transferTarget.rowLabel) === null || _b === void 0 ? void 0 : _b.toUpperCase();
             var hourLabel = (_c = hourRegExp.exec(label)) === null || _c === void 0 ? void 0 : _c[0];
             // Event's end hour
-            var endHour = (_d = hourRegExp.exec(transfer.item.endHour)) === null || _d === void 0 ? void 0 : _d[0];
-            var endHourDate = (0, date_fns_1.parse)(endHour, "HH:mm", day.date);
+            var endHourDate = (0, date_fns_1.parse)(transfer.item.endHour, "HH:mm", day.date);
             // Event start hour
-            var startHour = (_e = hourRegExp.exec(transfer.item.startHour)) === null || _e === void 0 ? void 0 : _e[0];
-            var startHourDate = (0, date_fns_1.parse)(startHour, "HH:mm", day.date);
+            var startHourDate = (0, date_fns_1.parse)(transfer.item.startHour, "HH:mm", day.date);
             // Minutes difference between end and start event hours
             var minutesDiff = (0, date_fns_1.differenceInMinutes)(endHourDate, startHourDate);
             // New event end hour according to it new cell
@@ -165,7 +163,7 @@ var DayModeView = function (_a) {
                 minutesDiff = (0, date_fns_1.differenceInMinutes)(endHourDate, startHourDate);
                 newEndHour = (0, date_fns_1.add)((0, date_fns_1.parse)(hourLabel, "HH:mm", day.date), { minutes: minutesDiff });
             }
-            (_f = prevEventCell === null || prevEventCell === void 0 ? void 0 : prevEventCell.data) === null || _f === void 0 ? void 0 : _f.splice((_g = transfer.item) === null || _g === void 0 ? void 0 : _g.itemIndex, 1);
+            (_d = prevEventCell === null || prevEventCell === void 0 ? void 0 : prevEventCell.data) === null || _d === void 0 ? void 0 : _d.splice((_e = transfer.item) === null || _e === void 0 ? void 0 : _e.itemIndex, 1);
             transfer.item.startHour = label;
             transfer.item.endHour = (0, date_fns_1.format)(newEndHour, "HH:mm aaa");
             transfer.item.date = (0, date_fns_1.format)(day.date, "yyyy-MM-dd");

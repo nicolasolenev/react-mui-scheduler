@@ -189,7 +189,8 @@ var Toolbar = function (_a) {
                                 react_1.default.createElement(GridView_1.default, null))),
                         react_1.default.createElement(Hidden_1.default, { mdDown: true }, Object.values(toolbarProps.showSwitchModeButtons).some(function (val) { return val; }) &&
                             react_1.default.createElement(ToggleButtonGroup_1.default, { exclusive: true, value: mode, size: "small", color: "primary", "aria-label": "text button group", sx: { mt: .2, mr: 1.3, display: "contents" }, onChange: function (e, newMode) {
-                                    setMode(newMode);
+                                    if (null !== newMode)
+                                        setMode(newMode);
                                 } }, [
                                 toolbarProps.showSwitchModeButtons.showMonthButton ?
                                     { label: t("month"), value: types_1.Mode.MONTH } : null,

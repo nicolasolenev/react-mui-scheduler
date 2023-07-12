@@ -179,36 +179,34 @@ const WeekModeView: FC<WeekModeViewProps> = ({
     onCellClick && onCellClick(event, row, day);
   };
 
-  const renderTask = (tasks: Event[], rowLabel?: string, rowIndex?: number, dayIndex?: number) => {
-    return tasks?.map((task, itemIndex: number) => {
-      let condition = (
-        searchResult ?
-          (
-            task?.groupLabel === searchResult?.groupLabel ||
-            task?.user === searchResult?.user
-          ) : !searchResult
-      );
-      return (
-        condition &&
-        <EventItem
-          rowId={ rowIndex as number }
-          event={ task }
-          elevation={ 0 }
-          boxSx={ { px: 0.3 } }
-          onClick={ e => handleTaskClick(e, task) }
-          key={ `item_id-${ itemIndex }_r-${ rowIndex }_d-${ dayIndex }` }
-          onDragStart={ e => onCellDragStart(
-            e, { ...task, itemIndex }, rowLabel, rowIndex, dayIndex,
-          ) }
-          sx={ {
-            py: 0,
-            color: theme.palette.common.white,
-            backgroundColor: task?.color || theme.palette.primary.light,
-          } }
-        />
-      );
-    });
-  };
+  const renderTask = (tasks: Event[], rowLabel?: string, rowIndex?: number, dayIndex?: number) => tasks?.map((task, itemIndex: number) => {
+    let condition = (
+      searchResult ?
+        (
+          task?.groupLabel === searchResult?.groupLabel ||
+          task?.user === searchResult?.user
+        ) : !searchResult
+    );
+    return (
+      condition &&
+      <EventItem
+        rowId={ rowIndex as number }
+        event={ task }
+        elevation={ 0 }
+        boxSx={ { px: 0.3 } }
+        onClick={ e => handleTaskClick(e, task) }
+        key={ `item_id-${ itemIndex }_r-${ rowIndex }_d-${ dayIndex }` }
+        onDragStart={ e => onCellDragStart(
+          e, { ...task, itemIndex }, rowLabel, rowIndex, dayIndex,
+        ) }
+        sx={ {
+          py: 0,
+          color: theme.palette.common.white,
+          backgroundColor: task?.color || theme.palette.primary.light,
+        } }
+      />
+    );
+  });
 
   const handleTaskClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: Event): void => {
     event.preventDefault();
