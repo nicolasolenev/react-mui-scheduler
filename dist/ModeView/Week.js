@@ -119,7 +119,7 @@ var WeekModeView = function (_a) {
         setState(__assign(__assign({}, state), { transferTarget: { rowLabel: rowLabel, rowIndex: rowIndex, dayIndex: dayIndex } }));
     };
     var onCellDragEnd = function (e) {
-        var _a, _b, _c, _d, _e, _f;
+        var _a, _b, _c, _d;
         e.preventDefault();
         if (!state.itemTransfer || !state.transferTarget) {
             return;
@@ -132,8 +132,8 @@ var WeekModeView = function (_a) {
             var hourRegExp = /[0-9]{2}:[0-9]{2}/;
             var foundEventIndex = day.data.findIndex(function (e) {
                 return e.id === transfer.item.id &&
-                    e.startHour === transfer.item.startHour &&
-                    e.endHour === transfer.item.endHour;
+                    e.startDate === transfer.item.startDate &&
+                    e.endDate === transfer.item.endDate;
             });
             // Task already exists in the data array of the chosen cell
             if (foundEventIndex !== -1) {
@@ -145,11 +145,9 @@ var WeekModeView = function (_a) {
             var label = (_b = transferTarget.rowLabel) === null || _b === void 0 ? void 0 : _b.toUpperCase();
             var hourLabel = (_c = hourRegExp.exec(label)) === null || _c === void 0 ? void 0 : _c[0];
             // Event's end hour
-            var endHour = (_d = hourRegExp.exec(transfer.item.endHour)) === null || _d === void 0 ? void 0 : _d[0];
-            var endHourDate = (0, date_fns_1.parse)(endHour, "HH:mm", day.date);
+            var endHourDate = transfer.item.endDate;
             // Event start hour
-            var startHour = (_e = hourRegExp.exec(transfer.item.startHour)) === null || _e === void 0 ? void 0 : _e[0];
-            var startHourDate = (0, date_fns_1.parse)(startHour, "HH:mm", day.date);
+            var startHourDate = transfer.item.startDate;
             // Minutes difference between end and start event hours
             var minutesDiff = (0, date_fns_1.differenceInMinutes)(endHourDate, startHourDate);
             // New event end hour according to it new cell
@@ -159,7 +157,7 @@ var WeekModeView = function (_a) {
                 minutesDiff = (0, date_fns_1.differenceInMinutes)(endHourDate, startHourDate);
                 newEndHour = (0, date_fns_1.add)((0, date_fns_1.parse)(hourLabel, "HH:mm", day.date), { minutes: minutesDiff });
             }
-            (_f = prevEventCell === null || prevEventCell === void 0 ? void 0 : prevEventCell.data) === null || _f === void 0 ? void 0 : _f.splice(transfer.item.itemIndex, 1);
+            (_d = prevEventCell === null || prevEventCell === void 0 ? void 0 : prevEventCell.data) === null || _d === void 0 ? void 0 : _d.splice(transfer.item.itemIndex, 1);
             transfer.item.startHour = label;
             transfer.item.endHour = (0, date_fns_1.format)(newEndHour, "HH:mm aaa");
             transfer.item.date = day.date;

@@ -108,10 +108,6 @@ const Scheduler: FC<SchedulerProps> = ({
       t("sat"),
     ] : weeks, weeks);
 
-  const isDayMode = mode.toLowerCase() === Mode.DAY;
-  const isWeekMode = mode.toLowerCase() === Mode.WEEK;
-  const isMonthMode = mode.toLowerCase() === Mode.MONTH;
-  const isTimelineMode = mode.toLowerCase() === Mode.TIMELINE;
   const TransitionModeComponent = (
     options.transitionMode === TransitionMode.ZOOM ? Zoom :
       options.transitionMode === TransitionMode.FADE ? Fade : Slide
@@ -188,7 +184,7 @@ const Scheduler: FC<SchedulerProps> = ({
           { days: monthStartDay - i + (startOnSunday ? 1 : 0) },
         );
         let day = parseInt(format(subDate, "dd"));
-        let data = events.filter((event) => isSameDay(subDate, event?.date));
+        let data = events.filter((event) => isSameDay(subDate, event?.startDate));
         daysBefore.push({
           id: `day_-${ day }`,
           day: day,
@@ -200,7 +196,7 @@ const Scheduler: FC<SchedulerProps> = ({
       for (let i = 6; i > 0; i--) {
         let subDate = sub(monthStartDate, { days: i });
         let day = parseInt(format(subDate, "dd"));
-        let data = events.filter((event) => isSameDay(subDate, event?.date));
+        let data = events.filter((event) => isSameDay(subDate, event?.startDate));
         daysBefore.push({
           id: `day_-${ day }`,
           day: day,
@@ -231,7 +227,7 @@ const Scheduler: FC<SchedulerProps> = ({
           "dd-MMMM-yyyy",
           new Date(),
         );
-        let data = events.filter((event) => isSameDay(date, event?.date));
+        let data = events.filter((event) => isSameDay(date, event?.startDate));
         obj.push({
           id: `day_-${ dateDay }`,
           date,
@@ -257,11 +253,11 @@ const Scheduler: FC<SchedulerProps> = ({
 
     if (lastRowDaysDiff > 0) {
       let day = lastRow.days[lastRow?.days?.length - 1];
-      let addDate = day.date as number | Date;
+      let addDate = day.date as Date;
       for (let i = dateDay; i < (dateDay + lastRowDaysDiff); i++) {
         addDate = add(addDate, { days: 1 });
         let d = format(addDate, "dd");
-        let data = events.filter((event) => isSameDay(addDate, event?.date));
+        let data = events.filter((event) => isSameDay(addDate, event?.startDate));
         lastDaysData.push({
           id: `day_-${ d }`,
           date: addDate,
@@ -328,8 +324,8 @@ const Scheduler: FC<SchedulerProps> = ({
         // eslint-disable-next-line
         columns.map((column, index) => {
           let data = events.filter((event) => (
-            isSameDay(column?.date, event?.date) &&
-            event?.startHour?.toUpperCase() === label?.toUpperCase()
+            isSameDay(column?.date, event?.startDate) &&
+            format(event?.startDate, "HH:mm")?.toUpperCase() === label?.toUpperCase()
           ));
           obj.days.push({
             id: `column-${ index }_m-${ column.month }_d-${ column.day }_${ id }`,
@@ -371,8 +367,8 @@ const Scheduler: FC<SchedulerProps> = ({
         let columns = getDayHeader();
         let column = columns[0];
         let matchedEvents = events.filter((event) => (
-          isSameDay(column?.date, event?.date) &&
-          event?.startHour?.toUpperCase() === label?.toUpperCase()
+          isSameDay(column?.date, event?.startDate) &&
+          format(event?.startDate, "HH:mm")?.toUpperCase() === label?.toUpperCase()
         ));
         obj.days.push({
           id: `column-_m-${ column?.month }_d-${ column?.day }_${ id }`,
@@ -387,8 +383,6 @@ const Scheduler: FC<SchedulerProps> = ({
     return data;
   };
 
-  const getTimeLineRows = () => events;
-
   const handleDateChange = (day: number, date: Date): void => {
     setDaysInMonth(day);
     setSelectedDay(date);
@@ -396,8 +390,8 @@ const Scheduler: FC<SchedulerProps> = ({
     onDateChange && onDateChange(day, date);
   };
 
-  const handleModeChange = (newMode: Mode): void => {
-    setMode(newMode);
+  const handleModeChange = (mode: Mode): void => {
+    setMode(mode);
   };
 
   const onSearchResult = (item: Event): void => {
@@ -414,8 +408,8 @@ const Scheduler: FC<SchedulerProps> = ({
           ...alertState,
           open: true,
           message: `
-            ${ item?.label } successfully moved from ${ oldObject?.date }
-            ${ oldObject?.startHour } to ${ item?.date } ${ item?.startHour }
+            ${ item?.label } successfully moved from ${ oldObject?.startDate }
+            ${ format(oldObject?.startDate, "HH:mm") } to ${ format(item?.endDate, "yyyy-mm-dd") } ${ format(item?.startDate, "HH:mm") }
           `,
         });
         setTimeout(() => {
@@ -426,33 +420,35 @@ const Scheduler: FC<SchedulerProps> = ({
   };
 
   useEffect(() => {
-    if (isMonthMode) {
-      setState({
-        ...state,
-        columns: getMonthHeader(),
-        rows: getMonthRows(),
-      });
-    }
-    if (isWeekMode) {
-      setState({
-        ...state,
-        columns: getWeekHeader(),
-        rows: getWeekRows(),
-      });
-    }
-    if (isDayMode) {
-      setState({
-        ...state,
-        columns: getDayHeader(),
-        rows: getDayRows(),
-      });
-    }
-    if (isTimelineMode) {
-      setState({
-        ...state,
-        columns: getDayHeader(),
-        rows: getTimeLineRows(),
-      });
+    switch (mode) {
+      case Mode.DAY:
+        setState({
+          ...state,
+          columns: getDayHeader(),
+          rows: getDayRows(),
+        });
+        break;
+      case Mode.WEEK:
+        setState({
+          ...state,
+          columns: getWeekHeader(),
+          rows: getWeekRows(),
+        });
+        break;
+      case Mode.MONTH:
+        setState({
+          ...state,
+          columns: getMonthHeader(),
+          rows: getMonthRows(),
+        });
+        break;
+      case Mode.TIMELINE:
+        setState({
+          ...state,
+          columns: getDayHeader(),
+          rows: events,
+        });
+        break;
     }
   }, [
     mode,
@@ -503,9 +499,8 @@ const Scheduler: FC<SchedulerProps> = ({
           container
           spacing={ 0 }
           alignItems="center"
-          justifyContent="start"
-        >
-          { isMonthMode &&
+          justifyContent="start">
+          { mode === Mode.MONTH &&
             <TransitionModeComponent in>
               <Grid item xs={ 12 }>
                 <MonthModeView
@@ -519,8 +514,9 @@ const Scheduler: FC<SchedulerProps> = ({
                   onEventsChange={ handleEventsChange }
                 />
               </Grid>
-            </TransitionModeComponent> }
-          { isWeekMode &&
+            </TransitionModeComponent>
+          }
+          { mode === Mode.WEEK &&
             <TransitionModeComponent in>
               <Grid item xs={ 12 }>
                 <WeekModeView
@@ -533,8 +529,9 @@ const Scheduler: FC<SchedulerProps> = ({
                   onEventsChange={ handleEventsChange }
                 />
               </Grid>
-            </TransitionModeComponent> }
-          { isDayMode &&
+            </TransitionModeComponent>
+          }
+          { mode === Mode.DAY &&
             <TransitionModeComponent in>
               <Grid item xs={ 12 }>
                 <DayModeView
@@ -548,9 +545,10 @@ const Scheduler: FC<SchedulerProps> = ({
                   onEventsChange={ handleEventsChange }
                 />
               </Grid>
-            </TransitionModeComponent> }
+            </TransitionModeComponent>
+          }
         </Grid>
-        { isTimelineMode &&
+        { mode === Mode.TIMELINE &&
           <TransitionModeComponent in>
             <Grid container spacing={ 2 } alignItems="start">
               <Grid item xs={ 12 }>
@@ -562,7 +560,8 @@ const Scheduler: FC<SchedulerProps> = ({
                 />
               </Grid>
             </Grid>
-          </TransitionModeComponent> }
+          </TransitionModeComponent>
+        }
       </DateFnsLocaleContext.Provider>
     </Paper>
   );

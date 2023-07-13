@@ -29,11 +29,11 @@ export interface Event {
   id: number | string;
   label: string;
   groupLabel: string;
-  startHour: string;
-  endHour: string;
-  date: Date;
+  startDate: Date;
+  endDate: Date;
   color?: string;
   user?: string;
+  icon?: string | React.JSX.Element;
 
   [key: string]: any;
 }

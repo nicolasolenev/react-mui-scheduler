@@ -124,9 +124,8 @@ var Toolbar = function (_a) {
         onAlertCloseButtonClicked && onAlertCloseButtonClicked(e);
     };
     (0, react_1.useEffect)(function () {
-        if (mode && onModeChange) {
+        if (mode && onModeChange)
             onModeChange(mode);
-        }
     }, [mode]);
     (0, react_1.useEffect)(function () {
         onDateChange && onDateChange(daysInMonth, selectedDate);
@@ -177,8 +176,8 @@ var Toolbar = function (_a) {
                         (toolbarProps === null || toolbarProps === void 0 ? void 0 : toolbarProps.showSearchBar) &&
                             react_1.default.createElement(ToolbarSearchBar_1.default, { events: events, onInputChange: function (value) {
                                     var newDate = new Date();
-                                    if (value instanceof Event && (value === null || value === void 0 ? void 0 : value.date))
-                                        newDate = value.date;
+                                    if (value instanceof Event && (value === null || value === void 0 ? void 0 : value.startDate))
+                                        newDate = value.startDate;
                                     setDaysInMonth((0, date_fns_1.getDaysInMonth)(newDate));
                                     setSelectedDate(newDate);
                                     setSearchResult(value);
@@ -187,9 +186,9 @@ var Toolbar = function (_a) {
                             react_1.default.createElement(IconButton_1.default, __assign({ sx: { mr: 0, "aria-label": "menu" } }, commonIconButtonProps, { size: "small", onClick: handleOpenDateSelector }),
                                 react_1.default.createElement(GridView_1.default, null))),
                         react_1.default.createElement(Hidden_1.default, { mdDown: true }, Object.values(toolbarProps.showSwitchModeButtons).some(function (val) { return val; }) &&
-                            react_1.default.createElement(ToggleButtonGroup_1.default, { exclusive: true, value: mode, size: "small", color: "primary", "aria-label": "text button group", sx: { mt: .2, mr: 1.3, display: "contents" }, onChange: function (e, newMode) {
-                                    if (null !== newMode)
-                                        setMode(newMode);
+                            react_1.default.createElement(ToggleButtonGroup_1.default, { exclusive: true, value: mode, size: "small", color: "primary", "aria-label": "text button group", sx: { mt: .2, mr: 1.3, display: "contents" }, onChange: function (e, mode) {
+                                    if (null !== mode)
+                                        setMode(mode);
                                 } }, [
                                 toolbarProps.showSwitchModeButtons.showMonthButton ?
                                     { label: t("month"), value: types_1.Mode.MONTH } : null,

@@ -36,7 +36,7 @@ const ToolbarSearchBar: FC<ToolbarSearchBarProps> = ({ events, onInputChange }):
 
   const handleOnChange = (event: React.SyntheticEvent, value: Event | null): void => {
     setValue(value);
-    if (onInputChange) onInputChange(`${ value?.groupLabel || "" } | (${ value?.startHour || "" } - ${ value?.endHour || "" })`);
+    if (onInputChange) onInputChange(`${ value?.groupLabel || "" } | (${ format(value?.startDate as Date, "HH:mm") } - ${ value?.endDate || "" })`);
   };
 
   return (
@@ -50,7 +50,7 @@ const ToolbarSearchBar: FC<ToolbarSearchBarProps> = ({ events, onInputChange }):
       groupBy={ (option: Event) => option ? option?.groupLabel : "" }
       getOptionLabel={ (option: Event): string => (
         option ?
-          `${ option.groupLabel || "" } | ${ option.date } | (${ option.startHour || "" } - ${ option.endHour || "" })` : ""
+          `${ option.groupLabel || "" } | ${ option.startDate } | (${ format(option.startDate, "HH:mm") || "" } - ${ format(option.endDate, "HH:mm") || "" })` : ""
       ) }
       isOptionEqualToValue={ (option: Event, value: Event): boolean => option.id === value.id }
       onInputChange={ (event, newInputValue) => {
@@ -59,7 +59,7 @@ const ToolbarSearchBar: FC<ToolbarSearchBarProps> = ({ events, onInputChange }):
       } }
       renderOption={ (props, option: Event) => (
         <Box component="li" sx={ { fontSize: 12 } } { ...props }>
-          { `${ format(option?.date, "dd-MMMM-yyyy", { locale: dateFnsLocale }) } (${ option?.startHour || "" } - ${ option?.endHour || "" })` }
+          { `${ format(option?.startDate, "dd-MMMM-yyyy", { locale: dateFnsLocale }) } (${ format(option?.startDate, "HH:mm") || "" } - ${ format(option?.endDate, "HH:mm") || "" })` }
         </Box>
       ) }
       renderInput={ (params) => (

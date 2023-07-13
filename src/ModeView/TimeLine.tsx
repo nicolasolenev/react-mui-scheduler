@@ -48,7 +48,7 @@ const TimeLineModeView: FC<TimeLineModeViewProps> = ({ options, rows, searchResu
     onTaskClick && onTaskClick(event, task);
   };
 
-  let filteredEvents = options.reverseTimelineOrder ? rows?.sort((a, b) => -b?.startHour?.localeCompare(a?.startHour)) : rows;
+  let filteredEvents = options.reverseTimelineOrder ? rows?.sort((a, b) => -b?.startDate?.toString()?.localeCompare(a?.startDate.toString())) : rows;
   if (searchResult) {
     filteredEvents = filteredEvents?.filter(
       event => event?.groupLabel === searchResult?.groupLabel,
@@ -65,40 +65,43 @@ const TimeLineModeView: FC<TimeLineModeViewProps> = ({ options, rows, searchResu
       } }
     >
       <Timeline position="alternate">
-        { filteredEvents?.map((task, index) => {
-          return (
-            <TimelineItem
-              key={ `timeline-${ index }` }
-              sx={ { cursor: "pointer" } }
-              onClick={ event => handleTaskClick(event, task) }
-            >
-              <TimelineOppositeContent
-                sx={ { m: "auto 0" } }
-                align="right"
-                variant="body2"
-                color="text.secondary"
+        { filteredEvents?.map((event: Event, index) => {
+          console.log(event);
+          if (undefined !== event.startDate)
+            return (
+              <TimelineItem
+                key={ `timeline-${ index }` }
+                sx={ { cursor: "pointer" } }
+                onClick={ e => handleTaskClick(e, event) }
               >
-                { task?.date && format(task?.date, "PPP", { locale: dateFnsLocale }) }
-                <br/>
-                <Typography variant="caption">
-                  { task?.startHour } - { task?.endHour }
-                </Typography>
-              </TimelineOppositeContent>
-              <TimelineSeparator>
-                <TimelineConnector/>
-                <TimelineDot color="secondary" sx={ { backgroundColor: task?.color } }>
-                  { task?.icon || <ScheduleIcon/> }
-                </TimelineDot>
-                <TimelineConnector/>
-              </TimelineSeparator>
-              <TimelineContent sx={ { py: "12px", px: 2 } }>
-                <Typography variant="body1" component="span">
-                  { task?.label }
-                </Typography>
-                <Typography>{ task?.groupLabel }</Typography>
-              </TimelineContent>
-            </TimelineItem>
-          );
+                <TimelineOppositeContent
+                  sx={ { m: "auto 0" } }
+                  align="right"
+                  variant="body2"
+                  color="text.secondary"
+                >
+                  { event.startDate && format(event.startDate, "PPP", { locale: dateFnsLocale }) }
+                  <br/>
+                  <Typography variant="caption">
+                    { event.startDate && format(event.startDate, "HH:mm") } - { format(event.endDate, "HH:mm") }
+                  </Typography>
+                </TimelineOppositeContent>
+                <TimelineSeparator>
+                  <TimelineConnector/>
+                  <TimelineDot color="secondary" sx={ { backgroundColor: event.color } }>
+                    { event.icon || <ScheduleIcon/> }
+                  </TimelineDot>
+                  <TimelineConnector/>
+                </TimelineSeparator>
+                <TimelineContent sx={ { py: "12px", px: 2 } }>
+                  <Typography variant="body1" component="span">
+                    { event.label }
+                  </Typography>
+                  <Typography>{ event.groupLabel }</Typography>
+                </TimelineContent>
+              </TimelineItem>
+            );
+          return <div/>;
         }) }
       </Timeline>
     </StyledContainer>

@@ -68,7 +68,7 @@ var TimeLineModeView = function (_a) {
         event.stopPropagation();
         onTaskClick && onTaskClick(event, task);
     };
-    var filteredEvents = options.reverseTimelineOrder ? rows === null || rows === void 0 ? void 0 : rows.sort(function (a, b) { var _a; return -((_a = b === null || b === void 0 ? void 0 : b.startHour) === null || _a === void 0 ? void 0 : _a.localeCompare(a === null || a === void 0 ? void 0 : a.startHour)); }) : rows;
+    var filteredEvents = options.reverseTimelineOrder ? rows === null || rows === void 0 ? void 0 : rows.sort(function (a, b) { var _a, _b; return -((_b = (_a = b === null || b === void 0 ? void 0 : b.startDate) === null || _a === void 0 ? void 0 : _a.toString()) === null || _b === void 0 ? void 0 : _b.localeCompare(a === null || a === void 0 ? void 0 : a.startDate.toString())); }) : rows;
     if (searchResult) {
         filteredEvents = filteredEvents === null || filteredEvents === void 0 ? void 0 : filteredEvents.filter(function (event) { return (event === null || event === void 0 ? void 0 : event.groupLabel) === (searchResult === null || searchResult === void 0 ? void 0 : searchResult.groupLabel); });
     }
@@ -77,22 +77,25 @@ var TimeLineModeView = function (_a) {
             minHeight: options.minHeight,
             maxHeight: options.maxHeight,
         } },
-        react_1.default.createElement(Timeline_1.default, { position: "alternate" }, filteredEvents === null || filteredEvents === void 0 ? void 0 : filteredEvents.map(function (task, index) {
-            return (react_1.default.createElement(TimelineItem_1.default, { key: "timeline-".concat(index), sx: { cursor: "pointer" }, onClick: function (event) { return handleTaskClick(event, task); } },
-                react_1.default.createElement(TimelineOppositeContent_1.default, { sx: { m: "auto 0" }, align: "right", variant: "body2", color: "text.secondary" },
-                    (task === null || task === void 0 ? void 0 : task.date) && (0, date_fns_1.format)(task === null || task === void 0 ? void 0 : task.date, "PPP", { locale: dateFnsLocale }),
-                    react_1.default.createElement("br", null),
-                    react_1.default.createElement(Typography_1.default, { variant: "caption" }, task === null || task === void 0 ? void 0 :
-                        task.startHour,
-                        " - ", task === null || task === void 0 ? void 0 :
-                        task.endHour)),
-                react_1.default.createElement(TimelineSeparator_1.default, null,
-                    react_1.default.createElement(TimelineConnector_1.default, null),
-                    react_1.default.createElement(TimelineDot_1.default, { color: "secondary", sx: { backgroundColor: task === null || task === void 0 ? void 0 : task.color } }, (task === null || task === void 0 ? void 0 : task.icon) || react_1.default.createElement(Schedule_1.default, null)),
-                    react_1.default.createElement(TimelineConnector_1.default, null)),
-                react_1.default.createElement(TimelineContent_1.default, { sx: { py: "12px", px: 2 } },
-                    react_1.default.createElement(Typography_1.default, { variant: "body1", component: "span" }, task === null || task === void 0 ? void 0 : task.label),
-                    react_1.default.createElement(Typography_1.default, null, task === null || task === void 0 ? void 0 : task.groupLabel))));
+        react_1.default.createElement(Timeline_1.default, { position: "alternate" }, filteredEvents === null || filteredEvents === void 0 ? void 0 : filteredEvents.map(function (event, index) {
+            console.log(event);
+            if (undefined !== event.startDate)
+                return (react_1.default.createElement(TimelineItem_1.default, { key: "timeline-".concat(index), sx: { cursor: "pointer" }, onClick: function (e) { return handleTaskClick(e, event); } },
+                    react_1.default.createElement(TimelineOppositeContent_1.default, { sx: { m: "auto 0" }, align: "right", variant: "body2", color: "text.secondary" },
+                        event.startDate && (0, date_fns_1.format)(event.startDate, "PPP", { locale: dateFnsLocale }),
+                        react_1.default.createElement("br", null),
+                        react_1.default.createElement(Typography_1.default, { variant: "caption" },
+                            event.startDate && (0, date_fns_1.format)(event.startDate, "HH:mm"),
+                            " - ",
+                            (0, date_fns_1.format)(event.endDate, "HH:mm"))),
+                    react_1.default.createElement(TimelineSeparator_1.default, null,
+                        react_1.default.createElement(TimelineConnector_1.default, null),
+                        react_1.default.createElement(TimelineDot_1.default, { color: "secondary", sx: { backgroundColor: event.color } }, event.icon || react_1.default.createElement(Schedule_1.default, null)),
+                        react_1.default.createElement(TimelineConnector_1.default, null)),
+                    react_1.default.createElement(TimelineContent_1.default, { sx: { py: "12px", px: 2 } },
+                        react_1.default.createElement(Typography_1.default, { variant: "body1", component: "span" }, event.label),
+                        react_1.default.createElement(Typography_1.default, null, event.groupLabel))));
+            return react_1.default.createElement("div", null);
         }))));
 };
 exports.default = TimeLineModeView;

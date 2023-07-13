@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import { SxProps } from "@mui/system";
 import { Theme } from "@mui/material/styles";
 import { Event } from "./types";
+import { format } from "date-fns";
 
 interface EventItemProps {
   event: Event;
@@ -38,7 +39,7 @@ const EventItem: FC<EventItemProps> = ({
     <Box sx={ boxSx }>
       { isMonthMode &&
         <Typography variant="caption" sx={ { fontSize: 8 } }>
-          { event?.startHour } - { event?.endHour }
+          { format(event?.startDate, "HH:mm") } - { format(event?.endDate, "HH:mm") }
         </Typography>
       }
       <Typography variant="body2" sx={ { fontSize: 11 } }>

@@ -122,7 +122,7 @@ var MonthModeView = function (_a) {
                 var day = (_c = rowsCopy[rowInd]) === null || _c === void 0 ? void 0 : _c.days[dayInd];
                 // Get day of the date (DD)
                 if (!((_d = transfer === null || transfer === void 0 ? void 0 : transfer.item) === null || _d === void 0 ? void 0 : _d.day))
-                    transfer.item.day = (_e = transfer === null || transfer === void 0 ? void 0 : transfer.item) === null || _e === void 0 ? void 0 : _e.date.getDay();
+                    transfer.item.day = (_e = transfer === null || transfer === void 0 ? void 0 : transfer.item) === null || _e === void 0 ? void 0 : _e.startDate.getDay();
                 if (((_f = transfer === null || transfer === void 0 ? void 0 : transfer.item) === null || _f === void 0 ? void 0 : _f.day) !== (day === null || day === void 0 ? void 0 : day.day)) {
                     var itemCheck = day.data.findIndex(function (item) { return (item.day === transfer.item.day && item.label === transfer.item.label); });
                     if (itemCheck === -1) {

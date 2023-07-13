@@ -1,7 +1,7 @@
 import React, { FC, JSX, useContext, useEffect, useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
-import { add, format, getDaysInMonth, parse, sub } from "date-fns";
+import { add, format, getDaysInMonth, sub } from "date-fns";
 import DateFnsLocaleContext from "./locales/dateFnsContext";
 import { AlertProps, DateView, Event, Mode, ToolbarProps as SchedulerToolbarProps } from "./types";
 import Grid from "@mui/material/Grid";
@@ -113,9 +113,8 @@ const Toolbar: FC<ToolbarProps> = ({
   };
 
   useEffect(() => {
-    if (mode && onModeChange) {
+    if (mode && onModeChange)
       onModeChange(mode);
-    }
   }, [mode]);
 
   useEffect(() => {
@@ -236,8 +235,8 @@ const Toolbar: FC<ToolbarProps> = ({
                   events={ events }
                   onInputChange={ (value: string | Event) => {
                     let newDate = new Date();
-                    if (value instanceof Event && (value as Event)?.date)
-                      newDate = (value as Event).date;
+                    if (value instanceof Event && (value as Event)?.startDate)
+                      newDate = (value as Event).startDate;
                     setDaysInMonth(getDaysInMonth(newDate));
                     setSelectedDate(newDate);
                     setSearchResult(value);
@@ -262,8 +261,8 @@ const Toolbar: FC<ToolbarProps> = ({
                     color="primary"
                     aria-label="text button group"
                     sx={ { mt: .2, mr: 1.3, display: "contents" } }
-                    onChange={ (e: React.MouseEvent<HTMLElement>, newMode: Mode | null) => {
-                      if (null !== newMode) setMode(newMode);
+                    onChange={ (e: React.MouseEvent<HTMLElement>, mode: Mode | null) => {
+                      if (null !== mode) setMode(mode);
                     } }
                   >
                     { [

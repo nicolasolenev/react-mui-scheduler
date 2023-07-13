@@ -134,10 +134,6 @@ var Scheduler = function (_a) {
             t("sat"),
         ] : weeks;
     }, weeks), weekDays = _q[0], updateWeekDays = _q[1];
-    var isDayMode = mode.toLowerCase() === types_1.Mode.DAY;
-    var isWeekMode = mode.toLowerCase() === types_1.Mode.WEEK;
-    var isMonthMode = mode.toLowerCase() === types_1.Mode.MONTH;
-    var isTimelineMode = mode.toLowerCase() === types_1.Mode.TIMELINE;
     var TransitionModeComponent = (options.transitionMode === types_1.TransitionMode.ZOOM ? Zoom_1.default :
         options.transitionMode === types_1.TransitionMode.FADE ? Fade_1.default : Slide_1.default);
     var dateFnsLocale;
@@ -201,7 +197,7 @@ var Scheduler = function (_a) {
             var _loop_1 = function (i) {
                 var subDate = (0, date_fns_1.sub)(monthStartDate, { days: monthStartDay - i + (startOnSunday ? 1 : 0) });
                 var day = parseInt((0, date_fns_1.format)(subDate, "dd"));
-                var data = events.filter(function (event) { return (0, date_fns_1.isSameDay)(subDate, event === null || event === void 0 ? void 0 : event.date); });
+                var data = events.filter(function (event) { return (0, date_fns_1.isSameDay)(subDate, event === null || event === void 0 ? void 0 : event.startDate); });
                 daysBefore.push({
                     id: "day_-".concat(day),
                     day: day,
@@ -220,7 +216,7 @@ var Scheduler = function (_a) {
             var _loop_2 = function (i) {
                 var subDate = (0, date_fns_1.sub)(monthStartDate, { days: i });
                 var day = parseInt((0, date_fns_1.format)(subDate, "dd"));
-                var data = events.filter(function (event) { return (0, date_fns_1.isSameDay)(subDate, event === null || event === void 0 ? void 0 : event.date); });
+                var data = events.filter(function (event) { return (0, date_fns_1.isSameDay)(subDate, event === null || event === void 0 ? void 0 : event.startDate); });
                 daysBefore.push({
                     id: "day_-".concat(day),
                     day: day,
@@ -240,7 +236,7 @@ var Scheduler = function (_a) {
             var obj = [];
             var _loop_3 = function (j) {
                 var date = (0, date_fns_1.parse)("".concat(dateDay, "-").concat(selectedDate), "dd-MMMM-yyyy", new Date());
-                var data = events.filter(function (event) { return (0, date_fns_1.isSameDay)(date, event === null || event === void 0 ? void 0 : event.date); });
+                var data = events.filter(function (event) { return (0, date_fns_1.isSameDay)(date, event === null || event === void 0 ? void 0 : event.startDate); });
                 obj.push({
                     id: "day_-".concat(dateDay),
                     date: date,
@@ -274,7 +270,7 @@ var Scheduler = function (_a) {
             for (var i = dateDay; i < (dateDay + lastRowDaysDiff); i++) {
                 addDate_1 = (0, date_fns_1.add)(addDate_1, { days: 1 });
                 var d = (0, date_fns_1.format)(addDate_1, "dd");
-                var data = events.filter(function (event) { return (0, date_fns_1.isSameDay)(addDate_1, event === null || event === void 0 ? void 0 : event.date); });
+                var data = events.filter(function (event) { return (0, date_fns_1.isSameDay)(addDate_1, event === null || event === void 0 ? void 0 : event.startDate); });
                 lastDaysData.push({
                     id: "day_-".concat(d),
                     date: addDate_1,
@@ -321,8 +317,8 @@ var Scheduler = function (_a) {
                 columns.map(function (column, index) {
                     var data = events.filter(function (event) {
                         var _a;
-                        return ((0, date_fns_1.isSameDay)(column === null || column === void 0 ? void 0 : column.date, event === null || event === void 0 ? void 0 : event.date) &&
-                            ((_a = event === null || event === void 0 ? void 0 : event.startHour) === null || _a === void 0 ? void 0 : _a.toUpperCase()) === (label === null || label === void 0 ? void 0 : label.toUpperCase()));
+                        return ((0, date_fns_1.isSameDay)(column === null || column === void 0 ? void 0 : column.date, event === null || event === void 0 ? void 0 : event.startDate) &&
+                            ((_a = (0, date_fns_1.format)(event === null || event === void 0 ? void 0 : event.startDate, "HH:mm")) === null || _a === void 0 ? void 0 : _a.toUpperCase()) === (label === null || label === void 0 ? void 0 : label.toUpperCase()));
                     });
                     obj_1.days.push({
                         id: "column-".concat(index, "_m-").concat(column.month, "_d-").concat(column.day, "_").concat(id),
@@ -361,8 +357,8 @@ var Scheduler = function (_a) {
                 var column_1 = columns[0];
                 var matchedEvents = events.filter(function (event) {
                     var _a;
-                    return ((0, date_fns_1.isSameDay)(column_1 === null || column_1 === void 0 ? void 0 : column_1.date, event === null || event === void 0 ? void 0 : event.date) &&
-                        ((_a = event === null || event === void 0 ? void 0 : event.startHour) === null || _a === void 0 ? void 0 : _a.toUpperCase()) === (label === null || label === void 0 ? void 0 : label.toUpperCase()));
+                    return ((0, date_fns_1.isSameDay)(column_1 === null || column_1 === void 0 ? void 0 : column_1.date, event === null || event === void 0 ? void 0 : event.startDate) &&
+                        ((_a = (0, date_fns_1.format)(event === null || event === void 0 ? void 0 : event.startDate, "HH:mm")) === null || _a === void 0 ? void 0 : _a.toUpperCase()) === (label === null || label === void 0 ? void 0 : label.toUpperCase()));
                 });
                 obj.days.push({
                     id: "column-_m-".concat(column_1 === null || column_1 === void 0 ? void 0 : column_1.month, "_d-").concat(column_1 === null || column_1 === void 0 ? void 0 : column_1.day, "_").concat(id),
@@ -378,15 +374,14 @@ var Scheduler = function (_a) {
         }
         return data;
     };
-    var getTimeLineRows = function () { return events; };
     var handleDateChange = function (day, date) {
         setDaysInMonth(day);
         setSelectedDay(date);
         setSelectedDate((0, date_fns_1.format)(date, "MMMM-yyyy"));
         onDateChange && onDateChange(day, date);
     };
-    var handleModeChange = function (newMode) {
-        setMode(newMode);
+    var handleModeChange = function (mode) {
+        setMode(mode);
     };
     var onSearchResult = function (item) {
         setSearchResult(item);
@@ -399,7 +394,7 @@ var Scheduler = function (_a) {
             if (eventIndex !== -1) {
                 oldObject = Object.assign({}, events[eventIndex]);
                 if ((alertState === null || alertState === void 0 ? void 0 : alertState.showNotification) && !alertState.open) {
-                    setAlertState(__assign(__assign({}, alertState), { open: true, message: "\n            ".concat(item === null || item === void 0 ? void 0 : item.label, " successfully moved from ").concat(oldObject === null || oldObject === void 0 ? void 0 : oldObject.date, "\n            ").concat(oldObject === null || oldObject === void 0 ? void 0 : oldObject.startHour, " to ").concat(item === null || item === void 0 ? void 0 : item.date, " ").concat(item === null || item === void 0 ? void 0 : item.startHour, "\n          ") }));
+                    setAlertState(__assign(__assign({}, alertState), { open: true, message: "\n            ".concat(item === null || item === void 0 ? void 0 : item.label, " successfully moved from ").concat(oldObject === null || oldObject === void 0 ? void 0 : oldObject.startDate, "\n            ").concat((0, date_fns_1.format)(oldObject === null || oldObject === void 0 ? void 0 : oldObject.startDate, "HH:mm"), " to ").concat((0, date_fns_1.format)(item === null || item === void 0 ? void 0 : item.endDate, "yyyy-mm-dd"), " ").concat((0, date_fns_1.format)(item === null || item === void 0 ? void 0 : item.startDate, "HH:mm"), "\n          ") }));
                     setTimeout(function () {
                         setAlertState(__assign(__assign({}, alertState), { open: false, message: "" }));
                     }, alertState.delay);
@@ -409,17 +404,19 @@ var Scheduler = function (_a) {
         });
     }); };
     (0, react_1.useEffect)(function () {
-        if (isMonthMode) {
-            setState(__assign(__assign({}, state), { columns: getMonthHeader(), rows: getMonthRows() }));
-        }
-        if (isWeekMode) {
-            setState(__assign(__assign({}, state), { columns: getWeekHeader(), rows: getWeekRows() }));
-        }
-        if (isDayMode) {
-            setState(__assign(__assign({}, state), { columns: getDayHeader(), rows: getDayRows() }));
-        }
-        if (isTimelineMode) {
-            setState(__assign(__assign({}, state), { columns: getDayHeader(), rows: getTimeLineRows() }));
+        switch (mode) {
+            case types_1.Mode.DAY:
+                setState(__assign(__assign({}, state), { columns: getDayHeader(), rows: getDayRows() }));
+                break;
+            case types_1.Mode.WEEK:
+                setState(__assign(__assign({}, state), { columns: getWeekHeader(), rows: getWeekRows() }));
+                break;
+            case types_1.Mode.MONTH:
+                setState(__assign(__assign({}, state), { columns: getMonthHeader(), rows: getMonthRows() }));
+                break;
+            case types_1.Mode.TIMELINE:
+                setState(__assign(__assign({}, state), { columns: getDayHeader(), rows: events }));
+                break;
         }
     }, [
         mode,
@@ -453,19 +450,19 @@ var Scheduler = function (_a) {
         react_1.default.createElement(dateFnsContext_1.default.Provider, { value: dateFnsLocale },
             react_1.default.createElement(Toolbar_1.default, { events: events, switchMode: mode, alertProps: alertState, toolbarProps: toolbarProps, onDateChange: handleDateChange, onModeChange: handleModeChange, onSearchResult: onSearchResult, onAlertCloseButtonClicked: onAlertCloseButtonClicked }),
             react_1.default.createElement(Grid_1.default, { container: true, spacing: 0, alignItems: "center", justifyContent: "start" },
-                isMonthMode &&
+                mode === types_1.Mode.MONTH &&
                     react_1.default.createElement(TransitionModeComponent, { in: true },
                         react_1.default.createElement(Grid_1.default, { item: true, xs: 12 },
                             react_1.default.createElement(Month_1.default, { options: options, rows: state === null || state === void 0 ? void 0 : state.rows, columns: state === null || state === void 0 ? void 0 : state.columns, legacyStyle: legacyStyle, onTaskClick: onTaskClick, onCellClick: onCellClick, searchResult: searchResult, onEventsChange: handleEventsChange }))),
-                isWeekMode &&
+                mode === types_1.Mode.WEEK &&
                     react_1.default.createElement(TransitionModeComponent, { in: true },
                         react_1.default.createElement(Grid_1.default, { item: true, xs: 12 },
                             react_1.default.createElement(Week_1.default, { options: options, rows: state === null || state === void 0 ? void 0 : state.rows, columns: state === null || state === void 0 ? void 0 : state.columns, onTaskClick: onTaskClick, onCellClick: onCellClick, searchResult: searchResult, onEventsChange: handleEventsChange }))),
-                isDayMode &&
+                mode === types_1.Mode.DAY &&
                     react_1.default.createElement(TransitionModeComponent, { in: true },
                         react_1.default.createElement(Grid_1.default, { item: true, xs: 12 },
                             react_1.default.createElement(Day_1.default, { options: options, date: selectedDate, rows: state === null || state === void 0 ? void 0 : state.rows, columns: state === null || state === void 0 ? void 0 : state.columns, onTaskClick: onTaskClick, onCellClick: onCellClick, searchResult: searchResult, onEventsChange: handleEventsChange })))),
-            isTimelineMode &&
+            mode === types_1.Mode.TIMELINE &&
                 react_1.default.createElement(TransitionModeComponent, { in: true },
                     react_1.default.createElement(Grid_1.default, { container: true, spacing: 2, alignItems: "start" },
                         react_1.default.createElement(Grid_1.default, { item: true, xs: 12 },

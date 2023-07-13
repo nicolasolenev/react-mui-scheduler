@@ -117,8 +117,8 @@ const WeekModeView: FC<WeekModeViewProps> = ({
       let hourRegExp = /[0-9]{2}:[0-9]{2}/;
       let foundEventIndex = day.data.findIndex((e) =>
         e.id === transfer.item.id &&
-        e.startHour === transfer.item.startHour &&
-        e.endHour === transfer.item.endHour,
+        e.startDate === transfer.item.startDate &&
+        e.endDate === transfer.item.endDate,
       );
       // Task already exists in the data array of the chosen cell
       if (foundEventIndex !== -1) {
@@ -131,32 +131,27 @@ const WeekModeView: FC<WeekModeViewProps> = ({
       let label = transferTarget.rowLabel?.toUpperCase();
       let hourLabel = hourRegExp.exec(label as string)?.[0];
       // Event's end hour
-      let endHour = hourRegExp.exec(transfer.item.endHour)?.[0];
-      let endHourDate = parse(endHour as string, "HH:mm", day.date as number | Date);
+      let endHourDate = transfer.item.endDate;
       // Event start hour
-      let startHour = hourRegExp.exec(transfer.item.startHour)?.[0];
-      let startHourDate = parse(startHour as string, "HH:mm", day.date as number | Date);
+      let startHourDate = transfer.item.startDate;
       // Minutes difference between end and start event hours
       let minutesDiff = differenceInMinutes(endHourDate, startHourDate);
       // New event end hour according to it new cell
       let newEndHour = add(
-        parse(hourLabel as string, "HH:mm", day.date as number | Date), { minutes: minutesDiff },
+        parse(hourLabel as string, "HH:mm", day.date as Date), { minutes: minutesDiff },
       );
 
       if (!isValid(startHourDate)) {
-        startHourDate = day.date as Date;
+        startHourDate = day.date;
         minutesDiff = differenceInMinutes(endHourDate, startHourDate);
         newEndHour = add(
-          parse(hourLabel as string, "HH:mm", day.date as number | Date), { minutes: minutesDiff },
+          parse(hourLabel as string, "HH:mm", day.date as Date), { minutes: minutesDiff },
         );
       }
 
       prevEventCell?.data?.splice(transfer.item.itemIndex, 1);
       transfer.item.startHour = label as string;
-      transfer.item.endHour = format(
-        newEndHour,
-        "HH:mm aaa",
-      );
+      transfer.item.endHour = format(newEndHour, "HH:mm aaa");
       transfer.item.date = day.date;
       day.data.push(transfer.item);
       setState({ ...state, rows: rowsData });

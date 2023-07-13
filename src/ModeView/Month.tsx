@@ -108,10 +108,10 @@ const MonthModeView: FC<MonthModeViewProps> = ({
         ?.days
         ?.findIndex((d: Day) => d.id === transferTarget?.elementId);
       if (dayInd !== -1) {
-        let day = rowsCopy[rowInd]?.days[dayInd];
+        let day: Day = rowsCopy[rowInd]?.days[dayInd];
         // Get day of the date (DD)
         if (!transfer?.item?.day)
-          transfer.item.day = transfer?.item?.date.getDay();
+          transfer.item.day = transfer?.item?.startDate.getDay();
         if (transfer?.item?.day !== day?.day) {
           let itemCheck = day.data.findIndex((item: Event) => (
             item.day === transfer.item.day && item.label === transfer.item.label
@@ -214,7 +214,7 @@ const MonthModeView: FC<MonthModeViewProps> = ({
             <TableRow key={ `row-${ row.id }-${ index }` }>
               { row?.days?.map((day: Day, indexD: number) => {
                 const currentDay = (
-                  day.day === today.getUTCDate() && isSameMonth(day.date as number | Date, today)
+                  day.day === today.getUTCDate() && isSameMonth(day.date, today)
                 );
                 return (
                   <StyledTableCell
