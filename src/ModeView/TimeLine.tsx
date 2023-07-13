@@ -65,44 +65,39 @@ const TimeLineModeView: FC<TimeLineModeViewProps> = ({ options, rows, searchResu
       } }
     >
       <Timeline position="alternate">
-        { filteredEvents?.map((event: Event, index) => {
-          console.log(event);
-          if (undefined !== event.startDate)
-            return (
-              <TimelineItem
-                key={ `timeline-${ index }` }
-                sx={ { cursor: "pointer" } }
-                onClick={ e => handleTaskClick(e, event) }
-              >
-                <TimelineOppositeContent
-                  sx={ { m: "auto 0" } }
-                  align="right"
-                  variant="body2"
-                  color="text.secondary"
-                >
-                  { event.startDate && format(event.startDate, "PPP", { locale: dateFnsLocale }) }
-                  <br/>
-                  <Typography variant="caption">
-                    { event.startDate && format(event.startDate, "HH:mm") } - { format(event.endDate, "HH:mm") }
-                  </Typography>
-                </TimelineOppositeContent>
-                <TimelineSeparator>
-                  <TimelineConnector/>
-                  <TimelineDot color="secondary" sx={ { backgroundColor: event.color } }>
-                    { event.icon || <ScheduleIcon/> }
-                  </TimelineDot>
-                  <TimelineConnector/>
-                </TimelineSeparator>
-                <TimelineContent sx={ { py: "12px", px: 2 } }>
-                  <Typography variant="body1" component="span">
-                    { event.label }
-                  </Typography>
-                  <Typography>{ event.groupLabel }</Typography>
-                </TimelineContent>
-              </TimelineItem>
-            );
-          return <div/>;
-        }) }
+        { filteredEvents?.map((event: Event, index) => undefined !== event.startDate ? (
+          <TimelineItem
+            key={ `timeline-${ index }` }
+            sx={ { cursor: "pointer" } }
+            onClick={ e => handleTaskClick(e, event) }
+          >
+            <TimelineOppositeContent
+              sx={ { m: "auto 0" } }
+              align="right"
+              variant="body2"
+              color="text.secondary"
+            >
+              { event.startDate && format(event.startDate, "PPP", { locale: dateFnsLocale }) }
+              <br/>
+              <Typography variant="caption">
+                { event.startDate && format(event.startDate, "HH:mm") } - { format(event.endDate, "HH:mm") }
+              </Typography>
+            </TimelineOppositeContent>
+            <TimelineSeparator>
+              <TimelineConnector/>
+              <TimelineDot color="secondary" sx={ { backgroundColor: event.color } }>
+                { event.icon || <ScheduleIcon/> }
+              </TimelineDot>
+              <TimelineConnector/>
+            </TimelineSeparator>
+            <TimelineContent sx={ { py: "12px", px: 2 } }>
+              <Typography variant="body1" component="span">
+                { event.label }
+              </Typography>
+              <Typography>{ event.groupLabel }</Typography>
+            </TimelineContent>
+          </TimelineItem>
+        ) : <div/>) }
       </Timeline>
     </StyledContainer>
   );
