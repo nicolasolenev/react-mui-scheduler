@@ -97,7 +97,7 @@ const TimeLineModeView: FC<TimeLineModeViewProps> = ({ options, rows, searchResu
               <Typography>{ event.groupLabel }</Typography>
             </TimelineContent>
           </TimelineItem>
-        ) : <div/>) }
+        ) : <div key={ `timeline-${ index }` }/>) }
       </Timeline>
     </StyledContainer>
   );
