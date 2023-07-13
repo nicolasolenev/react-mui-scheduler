@@ -165,34 +165,35 @@ const WeekModeView: FC<WeekModeViewProps> = ({
     onCellClick && onCellClick(event, row, day);
   };
 
-  const renderTask = (tasks: Event[], rowLabel?: string, rowIndex?: number, dayIndex?: number) => tasks?.map((task, itemIndex: number) => {
-    let condition = (
-      searchResult ?
-        (
-          task?.groupLabel === searchResult?.groupLabel ||
-          task?.user === searchResult?.user
-        ) : !searchResult
-    );
-    return (
-      condition &&
-      <EventItem
-        rowId={ rowIndex as number }
-        event={ task }
-        elevation={ 0 }
-        boxSx={ { px: 0.3 } }
-        onClick={ e => handleTaskClick(e, task) }
-        key={ `item_id-${ itemIndex }_r-${ rowIndex }_d-${ dayIndex }` }
-        onDragStart={ e => onCellDragStart(
-          e, { ...task, itemIndex }, rowLabel, rowIndex, dayIndex,
-        ) }
-        sx={ {
-          py: 0,
-          color: theme.palette.common.white,
-          backgroundColor: task?.color || theme.palette.primary.light,
-        } }
-      />
-    );
-  });
+  const renderEvents = (events: Event[], rowLabel?: string, rowIndex?: number, dayIndex?: number) =>
+    events?.map((event: Event, itemIndex: number) => {
+      let condition = (
+        searchResult ?
+          (
+            event?.groupLabel === searchResult?.groupLabel ||
+            event?.user === searchResult?.user
+          ) : !searchResult
+      );
+      return (
+        condition &&
+        <EventItem
+          rowId={ rowIndex as number }
+          event={ event }
+          elevation={ 0 }
+          boxSx={ { px: 0.3 } }
+          onClick={ e => handleTaskClick(e, event) }
+          key={ `item_id-${ itemIndex }_r-${ rowIndex }_d-${ dayIndex }` }
+          onDragStart={ e => onCellDragStart(
+            e, { ...event, itemIndex }, rowLabel, rowIndex, dayIndex,
+          ) }
+          sx={ {
+            py: 0,
+            color: theme.palette.common.white,
+            backgroundColor: event?.color || theme.palette.primary.light,
+          } }
+        />
+      );
+    });
 
   const handleTaskClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: Event): void => {
     event.preventDefault();
@@ -238,7 +239,7 @@ const WeekModeView: FC<WeekModeViewProps> = ({
                   onClick={ (event) => handleCellClick(event, row) }
                 >
                   <Typography variant="body2">{ row?.label }</Typography>
-                  { Number(row?.data?.length) > 0 && renderTask(row?.data as Event[], row.id as string) }
+                  { Number(row?.data?.length) > 0 && renderEvents(row?.data as Event[], row.id as string) }
                 </StyledTableCell>
               </Tooltip>
               { row?.days?.map((day, dayIndex: number) => (
@@ -255,13 +256,7 @@ const WeekModeView: FC<WeekModeViewProps> = ({
                     event, { rowIndex, ...row }, { dayIndex, ...day },
                   ) }
                 >
-                  { day?.data?.length > 0 &&
-                    renderTask(
-                      day?.data,
-                      row?.label,
-                      rowIndex,
-                      dayIndex,
-                    ) }
+                  { day?.data?.length > 0 && renderEvents(day?.data, row?.label, rowIndex, dayIndex) }
                 </StyledTableCell>
               )) }
             </TableRow>

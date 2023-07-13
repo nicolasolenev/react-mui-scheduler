@@ -151,32 +151,32 @@ const MonthModeView: FC<MonthModeViewProps> = ({
     }
   };
 
-  const renderTask = (tasks: Event[] = [], rowId: number) => {
-    return tasks?.map((task) => {
+  const renderEvents = (events: Event[] = [], rowId: number) => {
+    return events?.map((event: Event) => {
       let condition = (
         searchResult ?
           (
-            task?.groupLabel === searchResult?.groupLabel ||
-            task?.user === searchResult?.user
+            event?.groupLabel === searchResult?.groupLabel ||
+            event?.user === searchResult?.user
           ) : !searchResult
       );
       return (
         condition &&
         <EventItem
           isMonthMode
-          event={ task }
+          event={ event }
           rowId={ rowId }
           elevation={ 0 }
           boxSx={ { px: 0.5 } }
-          key={ `item-d-${ task?.id }-${ rowId }` }
-          onClick={ e => handleTaskClick(e, task) }
-          onDragStart={ e => onCellDragStart(e, task, rowId) }
+          key={ `item-d-${ event?.id }-${ rowId }` }
+          onClick={ e => handleTaskClick(e, event) }
+          onDragStart={ e => onCellDragStart(e, event, rowId) }
           sx={ {
             width: "100%",
             py: 0,
             my: .3,
             color: theme.palette.common.white,
-            backgroundColor: task?.color || theme.palette.primary.light,
+            backgroundColor: event?.color || theme.palette.primary.light,
             textAlign: "left",
           } }
         />
@@ -244,7 +244,7 @@ const MonthModeView: FC<MonthModeViewProps> = ({
                       >
                         { day.day }
                       </Typography>
-                      { (day?.data?.length > 0 && renderTask(day?.data, row.id)) }
+                      { (day?.data?.length > 0 && renderEvents(day?.data, row.id)) }
                       { legacyStyle && day?.data?.length === 0 &&
                         <EventNoteRoundedIcon
                           fontSize="small"
