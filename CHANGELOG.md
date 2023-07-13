@@ -26,7 +26,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Change type from `string` to `Date` for `startDate` and `endDate`
 - Update `toolbarProps.showSwitchModeButtons` from `boolean` to `object`
 
-### Deleted
+### Removed
 
 - Remove field `event.date`, replaced by `startDate` and `endDate`
 
@@ -40,7 +40,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
-- Fix #5, Fix current day display in month view mode
+- Fix current day display in month view mode
 
 ## [2.0.1] - 2022-05-03
 
@@ -52,8 +52,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
-- Add Internationalization. Languages availables are `ar`, `de`, `en`, `es`, `fr`, `ja`, `ko`, `zh`
-- Resolves #2
+- Add Internationalization. Languages available are `ar`, `de`, `en`, `es`, `fr`, `ja`, `ko`, `zh`
+- Resolves [#2](https://github.com/rouftom/react-mui-scheduler/issues/2)
 
 ### Changed
 
@@ -65,7 +65,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
-- 📢 Update denpencies versions.
+- 📢 Update dependencies versions.
 
 ### Fixed
 
