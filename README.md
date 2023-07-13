@@ -192,7 +192,7 @@ For more details about date formats, see [date-fns docs](https://date-fns.org/v2
 | Name                      | Type         | Default | Description                                                      | Values                                                 |
 |---------------------------|--------------|---------|------------------------------------------------------------------|--------------------------------------------------------|
 | locale                    | string       | `enUS`  | This prop is used to set the locale of the scheduler             | `ar`, `br`, `de`, `enUS`, `es`, `fr`, `ja`, `ko`, `zh` |
-| events                    | Event[]      |         | This prop sets event events                                        |                                                        |
+| events                    | Event[]      |         | This prop sets event events                                      |                                                        |
 | legacyStyle               | boolean      | `false` | This prop allows to use the old display style                    | `false`, `true`                                        |
 | options                   | Option       |         | This prop is used to set scheduler properties                    |                                                        |
 | alertProps                | AlertProps   |         | This prop is used to set scheduler properties                    |                                                        |
