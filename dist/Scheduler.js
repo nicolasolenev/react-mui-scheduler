@@ -202,7 +202,7 @@ var Scheduler = function (_a) {
                     id: "day_-".concat(day),
                     day: day,
                     date: subDate,
-                    data: data,
+                    events: data,
                 });
             };
             // Add days of precedent month
@@ -221,7 +221,7 @@ var Scheduler = function (_a) {
                     id: "day_-".concat(day),
                     day: day,
                     date: subDate,
-                    data: data,
+                    events: data,
                 });
             };
             for (var i = 6; i > 0; i--) {
@@ -231,7 +231,7 @@ var Scheduler = function (_a) {
         if (daysBefore.length > 0) {
             rows.push({ id: 0, days: daysBefore });
         }
-        // Add days and events data
+        // Add days and events events
         for (var i = 0; i < iteration; i++) {
             var obj = [];
             var _loop_3 = function (j) {
@@ -240,7 +240,7 @@ var Scheduler = function (_a) {
                 obj.push({
                     id: "day_-".concat(dateDay),
                     date: date,
-                    data: data,
+                    events: data,
                     day: dateDay,
                 });
                 dateDay++;
@@ -275,7 +275,7 @@ var Scheduler = function (_a) {
                     id: "day_-".concat(d),
                     date: addDate_1,
                     day: d,
-                    data: data,
+                    events: data,
                 });
             }
             rows[iteration - 1].days = rows[iteration - 1].days.concat(lastDaysData);
@@ -323,7 +323,7 @@ var Scheduler = function (_a) {
                     obj_1.days.push({
                         id: "column-".concat(index, "_m-").concat(column.month, "_d-").concat(column.day, "_").concat(id),
                         date: column === null || column === void 0 ? void 0 : column.date,
-                        data: data,
+                        events: data,
                     });
                 });
                 // Label affectation
@@ -363,7 +363,7 @@ var Scheduler = function (_a) {
                 obj.days.push({
                     id: "column-_m-".concat(column_1 === null || column_1 === void 0 ? void 0 : column_1.month, "_d-").concat(column_1 === null || column_1 === void 0 ? void 0 : column_1.day, "_").concat(id),
                     date: column_1 === null || column_1 === void 0 ? void 0 : column_1.date,
-                    data: matchedEvents,
+                    events: matchedEvents,
                 });
                 data.push(obj);
                 dayStartHour = (0, date_fns_1.add)(dayStartHour, { minutes: 60 });

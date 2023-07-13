@@ -189,7 +189,7 @@ const Scheduler: FC<SchedulerProps> = ({
           id: `day_-${ day }`,
           day: day,
           date: subDate,
-          data: data,
+          events: data,
         });
       }
     } else if (!startOnSunday) {
@@ -201,7 +201,7 @@ const Scheduler: FC<SchedulerProps> = ({
           id: `day_-${ day }`,
           day: day,
           date: subDate,
-          data: data,
+          events: data,
         });
       }
     }
@@ -210,7 +210,7 @@ const Scheduler: FC<SchedulerProps> = ({
       rows.push({ id: 0, days: daysBefore });
     }
 
-    // Add days and events data
+    // Add days and events events
     for (let i = 0; i < iteration; i++) {
       let obj: Day[] = [];
 
@@ -231,7 +231,7 @@ const Scheduler: FC<SchedulerProps> = ({
         obj.push({
           id: `day_-${ dateDay }`,
           date,
-          data,
+          events: data,
           day: dateDay,
         });
         dateDay++;
@@ -262,7 +262,7 @@ const Scheduler: FC<SchedulerProps> = ({
           id: `day_-${ d }`,
           date: addDate,
           day: d,
-          data,
+          events: data,
         });
       }
       rows[iteration - 1].days = rows[iteration - 1].days.concat(lastDaysData);
@@ -330,7 +330,7 @@ const Scheduler: FC<SchedulerProps> = ({
           obj.days.push({
             id: `column-${ index }_m-${ column.month }_d-${ column.day }_${ id }`,
             date: column?.date,
-            data: data,
+            events: data,
           });
         });
         // Label affectation
@@ -373,7 +373,7 @@ const Scheduler: FC<SchedulerProps> = ({
         obj.days.push({
           id: `column-_m-${ column?.month }_d-${ column?.day }_${ id }`,
           date: column?.date,
-          data: matchedEvents,
+          events: matchedEvents,
         });
 
         data.push(obj);

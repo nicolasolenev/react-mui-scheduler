@@ -14,7 +14,7 @@
 
 ---
 
-React mui scheduler is a react component based on @mui v5 that allows you to manage data in a calendar.
+React mui scheduler is a react component based on @mui v5 that allows you to manage events in a calendar.
 <p><a href="https://rouftom.github.io/react-mui-scheduler-demo/" target="_blank">Demo here</a></p>
 
 ## 🚀 Installation
@@ -192,7 +192,7 @@ For more details about date formats, see [date-fns docs](https://date-fns.org/v2
 | Name                      | Type         | Default | Description                                                      | Values                                                 |
 |---------------------------|--------------|---------|------------------------------------------------------------------|--------------------------------------------------------|
 | locale                    | string       | `enUS`  | This prop is used to set the locale of the scheduler             | `ar`, `br`, `de`, `enUS`, `es`, `fr`, `ja`, `ko`, `zh` |
-| events                    | Event[]      |         | This prop sets event data                                        |                                                        |
+| events                    | Event[]      |         | This prop sets event events                                        |                                                        |
 | legacyStyle               | boolean      | `false` | This prop allows to use the old display style                    | `false`, `true`                                        |
 | options                   | Option       |         | This prop is used to set scheduler properties                    |                                                        |
 | alertProps                | AlertProps   |         | This prop is used to set scheduler properties                    |                                                        |
@@ -225,7 +225,7 @@ For more details about date formats, see [date-fns docs](https://date-fns.org/v2
 | severity         | AlertColor | `info`                                                     | Alert notification severity                                                     | `info`, `success`, `warning`, `error` |
 | message          | string     | `🚀 Let's start with awesome react-mui-scheduler 🔥 🔥 🔥` | Alert notification message to display                                           | `string`                              |
 | showActionButton | boolean    | `true`                                                     | This option displays or not the action button on the Alert                      | `true`, `false`                       |
-| showNotification | boolean    | `true`                                                     | This option allows to display or not a notification when data change            | `true`, `false`                       |
+| showNotification | boolean    | `true`                                                     | This option allows to display or not a notification when events change            | `true`, `false`                       |
 | delay            | number     | `1500`                                                     | This option allows you to define the display delay in milliseconds of the Alert |                                       |
 
 ## toolbarProps

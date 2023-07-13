@@ -34,12 +34,6 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     ["&:nth-of-type(7n+1)"]: {
       borderLeft: 0,
     },
-    ["&:nth-of-type(even)"]: {
-      //backgroundColor: theme.palette.action.hover
-    },
-  },
-  [`&.${ tableCellClasses.body }:hover`]: {
-    //backgroundColor: "#eee"
   },
 }));
 
@@ -113,23 +107,23 @@ const MonthModeView: FC<MonthModeViewProps> = ({
         if (!transfer?.item?.day)
           transfer.item.day = transfer?.item?.startDate.getDay();
         if (transfer?.item?.day !== day?.day) {
-          let itemCheck = day.data.findIndex((item: Event) => (
+          let itemCheck = day.events.findIndex((item: Event) => (
             item.day === transfer.item.day && item.label === transfer.item.label
           ));
           if (itemCheck === -1) {
-            let prevDayEvents = rowsCopy[transfer.rowIndex as number]
+            let prevDay = rowsCopy[transfer.rowIndex as number]
               .days
               .find((d: Day) => d.day === transfer.item.day);
-            let itemIndexToRemove = prevDayEvents
-              ?.data
+            let itemIndexToRemove = prevDay
+              ?.events
               ?.findIndex((i: Event) => i.id === transfer.item.id);
             if (itemIndexToRemove === undefined || itemIndexToRemove === -1) {
               return;
             }
-            prevDayEvents?.data?.splice(itemIndexToRemove, 1);
+            prevDay?.events?.splice(itemIndexToRemove, 1);
             transfer.item.day = day?.day;
             transfer.item.date = day?.date;
-            day.data.push(transfer.item);
+            day.events.push(transfer.item);
             setState({
               ...state,
               rows: rowsCopy,
@@ -146,7 +140,7 @@ const MonthModeView: FC<MonthModeViewProps> = ({
   const handleCellClick = (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, row: RowHeader, day: Day) => {
     event.preventDefault();
     event.stopPropagation();
-    if (day?.data?.length === 0 && onCellClick) {
+    if (day?.events?.length === 0 && onCellClick) {
       onCellClick(event, row, day);
     }
   };
@@ -244,8 +238,8 @@ const MonthModeView: FC<MonthModeViewProps> = ({
                       >
                         { day.day }
                       </Typography>
-                      { (day?.data?.length > 0 && renderEvents(day?.data, row.id)) }
-                      { legacyStyle && day?.data?.length === 0 &&
+                      { (day?.events?.length > 0 && renderEvents(day?.events, row.id)) }
+                      { legacyStyle && day?.events?.length === 0 &&
                         <EventNoteRoundedIcon
                           fontSize="small"
                           htmlColor={ theme.palette.mode === "light" ? theme.palette.divider : lighten(theme.palette.common.white, .5) }

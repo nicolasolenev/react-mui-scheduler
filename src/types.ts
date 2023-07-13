@@ -88,7 +88,7 @@ export interface Row {
 export interface Day {
   id: number | string;
   date: Date;
-  data: Event[];
+  events: Event[];
   day?: number | string;
   dayIndex?: number;
 }

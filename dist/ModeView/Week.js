@@ -130,12 +130,12 @@ var WeekModeView = function (_a) {
         var day = (_a = rowsData[transferTarget.rowIndex]) === null || _a === void 0 ? void 0 : _a.days[transferTarget.dayIndex];
         if (day) {
             var hourRegExp = /[0-9]{2}:[0-9]{2}/;
-            var foundEventIndex = day.data.findIndex(function (e) {
+            var foundEventIndex = day.events.findIndex(function (e) {
                 return e.id === transfer.item.id &&
                     e.startDate === transfer.item.startDate &&
                     e.endDate === transfer.item.endDate;
             });
-            // Task already exists in the data array of the chosen cell
+            // Task already exists in the events array of the chosen cell
             if (foundEventIndex !== -1) {
                 return;
             }
@@ -157,11 +157,11 @@ var WeekModeView = function (_a) {
                 minutesDiff = (0, date_fns_1.differenceInMinutes)(endHourDate, startHourDate);
                 newEndHour = (0, date_fns_1.add)((0, date_fns_1.parse)(hourLabel, "HH:mm", day.date), { minutes: minutesDiff });
             }
-            (_d = prevEventCell === null || prevEventCell === void 0 ? void 0 : prevEventCell.data) === null || _d === void 0 ? void 0 : _d.splice(transfer.item.itemIndex, 1);
+            (_d = prevEventCell === null || prevEventCell === void 0 ? void 0 : prevEventCell.events) === null || _d === void 0 ? void 0 : _d.splice(transfer.item.itemIndex, 1);
             transfer.item.startHour = label;
             transfer.item.endHour = (0, date_fns_1.format)(newEndHour, "HH:mm aaa");
             transfer.item.date = day.date;
-            day.data.push(transfer.item);
+            day.events.push(transfer.item);
             setState(__assign(__assign({}, state), { rows: rowsData }));
             onEventsChange && onEventsChange(transfer.item);
         }
@@ -171,17 +171,19 @@ var WeekModeView = function (_a) {
         event.stopPropagation();
         onCellClick && onCellClick(event, row, day);
     };
-    var renderTask = function (tasks, rowLabel, rowIndex, dayIndex) { return tasks === null || tasks === void 0 ? void 0 : tasks.map(function (task, itemIndex) {
-        var condition = (searchResult ?
-            ((task === null || task === void 0 ? void 0 : task.groupLabel) === (searchResult === null || searchResult === void 0 ? void 0 : searchResult.groupLabel) ||
-                (task === null || task === void 0 ? void 0 : task.user) === (searchResult === null || searchResult === void 0 ? void 0 : searchResult.user)) : !searchResult);
-        return (condition &&
-            react_1.default.createElement(EventItem_1.default, { rowId: rowIndex, event: task, elevation: 0, boxSx: { px: 0.3 }, onClick: function (e) { return handleTaskClick(e, task); }, key: "item_id-".concat(itemIndex, "_r-").concat(rowIndex, "_d-").concat(dayIndex), onDragStart: function (e) { return onCellDragStart(e, __assign(__assign({}, task), { itemIndex: itemIndex }), rowLabel, rowIndex, dayIndex); }, sx: {
-                    py: 0,
-                    color: theme.palette.common.white,
-                    backgroundColor: (task === null || task === void 0 ? void 0 : task.color) || theme.palette.primary.light,
-                } }));
-    }); };
+    var renderEvents = function (events, rowLabel, rowIndex, dayIndex) {
+        return events === null || events === void 0 ? void 0 : events.map(function (event, itemIndex) {
+            var condition = (searchResult ?
+                ((event === null || event === void 0 ? void 0 : event.groupLabel) === (searchResult === null || searchResult === void 0 ? void 0 : searchResult.groupLabel) ||
+                    (event === null || event === void 0 ? void 0 : event.user) === (searchResult === null || searchResult === void 0 ? void 0 : searchResult.user)) : !searchResult);
+            return (condition &&
+                react_1.default.createElement(EventItem_1.default, { rowId: rowIndex, event: event, elevation: 0, boxSx: { px: 0.3 }, onClick: function (e) { return handleTaskClick(e, event); }, key: "item_id-".concat(itemIndex, "_r-").concat(rowIndex, "_d-").concat(dayIndex), onDragStart: function (e) { return onCellDragStart(e, __assign(__assign({}, event), { itemIndex: itemIndex }), rowLabel, rowIndex, dayIndex); }, sx: {
+                        py: 0,
+                        color: theme.palette.common.white,
+                        backgroundColor: (event === null || event === void 0 ? void 0 : event.color) || theme.palette.primary.light,
+                    } }));
+        });
+    };
     var handleTaskClick = function (event, task) {
         event.preventDefault();
         event.stopPropagation();
@@ -201,14 +203,13 @@ var WeekModeView = function (_a) {
             react_1.default.createElement(TableBody_1.default, null, rows === null || rows === void 0 ? void 0 : rows.map(function (row, rowIndex) {
                 var _a, _b, _c;
                 return (react_1.default.createElement(TableRow_1.default, { key: "timeline-".concat(rowIndex) },
-                    react_1.default.createElement(Tooltip_1.default, { placement: "right", title: t("eventWeekTimelineCount", { count: (_a = row.days) === null || _a === void 0 ? void 0 : _a.reduce(function (prev, curr) { var _a; return prev + ((_a = curr === null || curr === void 0 ? void 0 : curr.data) === null || _a === void 0 ? void 0 : _a.length); }, 0) }) },
+                    react_1.default.createElement(Tooltip_1.default, { placement: "right", title: t("eventWeekTimelineCount", { count: (_a = row.days) === null || _a === void 0 ? void 0 : _a.reduce(function (prev, curr) { var _a; return prev + ((_a = curr === null || curr === void 0 ? void 0 : curr.events) === null || _a === void 0 ? void 0 : _a.length); }, 0) }) },
                         react_1.default.createElement(StyledTableCell, { scope: "row", align: "center", component: "th", sx: { px: 1 }, onClick: function (event) { return handleCellClick(event, row); } },
                             react_1.default.createElement(Typography_1.default, { variant: "body2" }, row === null || row === void 0 ? void 0 : row.label),
-                            Number((_b = row === null || row === void 0 ? void 0 : row.data) === null || _b === void 0 ? void 0 : _b.length) > 0 && renderTask(row === null || row === void 0 ? void 0 : row.data, row.id))), (_c = row === null || row === void 0 ? void 0 : row.days) === null || _c === void 0 ? void 0 :
+                            Number((_b = row === null || row === void 0 ? void 0 : row.data) === null || _b === void 0 ? void 0 : _b.length) > 0 && renderEvents(row === null || row === void 0 ? void 0 : row.data, row.id))), (_c = row === null || row === void 0 ? void 0 : row.days) === null || _c === void 0 ? void 0 :
                     _c.map(function (day, dayIndex) {
                         var _a;
-                        return (react_1.default.createElement(StyledTableCell, { key: day === null || day === void 0 ? void 0 : day.id, scope: "row", align: "center", component: "th", sx: { px: .3, py: .5 }, onDragEnd: onCellDragEnd, onDragOver: onCellDragOver, onDragEnter: function (e) { return onCellDragEnter(e, row === null || row === void 0 ? void 0 : row.label, rowIndex, dayIndex); }, onClick: function (event) { return handleCellClick(event, __assign({ rowIndex: rowIndex }, row), __assign({ dayIndex: dayIndex }, day)); } }, ((_a = day === null || day === void 0 ? void 0 : day.data) === null || _a === void 0 ? void 0 : _a.length) > 0 &&
-                            renderTask(day === null || day === void 0 ? void 0 : day.data, row === null || row === void 0 ? void 0 : row.label, rowIndex, dayIndex)));
+                        return (react_1.default.createElement(StyledTableCell, { key: day === null || day === void 0 ? void 0 : day.id, scope: "row", align: "center", component: "th", sx: { px: .3, py: .5 }, onDragEnd: onCellDragEnd, onDragOver: onCellDragOver, onDragEnter: function (e) { return onCellDragEnter(e, row === null || row === void 0 ? void 0 : row.label, rowIndex, dayIndex); }, onClick: function (event) { return handleCellClick(event, __assign({ rowIndex: rowIndex }, row), __assign({ dayIndex: dayIndex }, day)); } }, ((_a = day === null || day === void 0 ? void 0 : day.events) === null || _a === void 0 ? void 0 : _a.length) > 0 && renderEvents(day === null || day === void 0 ? void 0 : day.events, row === null || row === void 0 ? void 0 : row.label, rowIndex, dayIndex)));
                     })));
             })))));
 };

@@ -112,12 +112,12 @@ const DayModeView: FC<DayModeViewProps> = ({
 
     if (day) {
       let hourRegExp = /[0-9]{2}:[0-9]{2}/;
-      let foundEventIndex = day.data.findIndex((e: Event) =>
+      let foundEventIndex = day.events.findIndex((e: Event) =>
         e.id === transfer.item.id &&
         e.startDate === transfer.item.startDate &&
         e.endDate === transfer.item.endDate,
       );
-      // Task already exists in the data array of the chosen cell
+      // Task already exists in the events array of the chosen cell
       if (foundEventIndex !== -1) {
         return;
       }
@@ -146,11 +146,11 @@ const DayModeView: FC<DayModeViewProps> = ({
         );
       }
 
-      prevEventCell?.data?.splice(transfer.item?.itemIndex, 1);
+      prevEventCell?.events?.splice(transfer.item?.itemIndex, 1);
       // transfer.item.startHour = label as string;
       // transfer.item.endHour = format(newEndHour, "HH:mm aaa");
       transfer.item.startDate = day.date;
-      day.data.push(transfer.item);
+      day.events.push(transfer.item);
       setState({ ...state, rows: rowsData });
       onEventsChange && onEventsChange(transfer.item);
     }
@@ -225,7 +225,7 @@ const DayModeView: FC<DayModeViewProps> = ({
             <TableRow key={ `timeline-${ rowIndex }` }>
               <Tooltip
                 placement="right"
-                title={ t("eventDayTimelineCount", { count: row.days?.reduce((prev, curr) => prev + curr?.data?.length, 0) }) }
+                title={ t("eventDayTimelineCount", { count: row.days?.reduce((prev, curr) => prev + curr?.events?.length, 0) }) }
               >
                 <StyledTableCell
                   scope="row"
@@ -253,7 +253,7 @@ const DayModeView: FC<DayModeViewProps> = ({
                     event, { rowIndex, ...row }, { dayIndex, ...day },
                   ) }
                 >
-                  { day?.data?.length > 0 && renderEvents(day?.data, row?.label as string, rowIndex, dayIndex) }
+                  { day?.events?.length > 0 && renderEvents(day?.events, row?.label as string, rowIndex, dayIndex) }
                 </StyledTableCell>
               )) }
             </TableRow>

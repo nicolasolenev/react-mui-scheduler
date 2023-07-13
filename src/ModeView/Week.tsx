@@ -115,12 +115,12 @@ const WeekModeView: FC<WeekModeViewProps> = ({
 
     if (day) {
       let hourRegExp = /[0-9]{2}:[0-9]{2}/;
-      let foundEventIndex = day.data.findIndex((e) =>
+      let foundEventIndex = day.events.findIndex((e) =>
         e.id === transfer.item.id &&
         e.startDate === transfer.item.startDate &&
         e.endDate === transfer.item.endDate,
       );
-      // Task already exists in the data array of the chosen cell
+      // Task already exists in the events array of the chosen cell
       if (foundEventIndex !== -1) {
         return;
       }
@@ -149,11 +149,11 @@ const WeekModeView: FC<WeekModeViewProps> = ({
         );
       }
 
-      prevEventCell?.data?.splice(transfer.item.itemIndex, 1);
+      prevEventCell?.events?.splice(transfer.item.itemIndex, 1);
       transfer.item.startHour = label as string;
       transfer.item.endHour = format(newEndHour, "HH:mm aaa");
       transfer.item.date = day.date;
-      day.data.push(transfer.item);
+      day.events.push(transfer.item);
       setState({ ...state, rows: rowsData });
       onEventsChange && onEventsChange(transfer.item);
     }
@@ -229,7 +229,7 @@ const WeekModeView: FC<WeekModeViewProps> = ({
             <TableRow key={ `timeline-${ rowIndex }` }>
               <Tooltip
                 placement="right"
-                title={ t("eventWeekTimelineCount", { count: row.days?.reduce((prev, curr) => prev + curr?.data?.length, 0) }) }
+                title={ t("eventWeekTimelineCount", { count: row.days?.reduce((prev, curr) => prev + curr?.events?.length, 0) }) }
               >
                 <StyledTableCell
                   scope="row"
@@ -256,7 +256,7 @@ const WeekModeView: FC<WeekModeViewProps> = ({
                     event, { rowIndex, ...row }, { dayIndex, ...day },
                   ) }
                 >
-                  { day?.data?.length > 0 && renderEvents(day?.data, row?.label, rowIndex, dayIndex) }
+                  { day?.events?.length > 0 && renderEvents(day?.events, row?.label, rowIndex, dayIndex) }
                 </StyledTableCell>
               )) }
             </TableRow>
