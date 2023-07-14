@@ -145,19 +145,10 @@ const MonthModeView: FC<MonthModeViewProps> = ({
     }
   };
 
-  const renderEvents = (events: Event[] = [], rowId: number) => {
-    return events?.map((event: Event) => {
-      let condition = (
-        searchResult ?
-          (
-            event?.groupLabel === searchResult?.groupLabel ||
-            event?.user === searchResult?.user
-          ) : !searchResult
-      );
-      return (
-        condition &&
+  const renderEvents = (events: Event[] = [], rowId: number) => (
+    events?.map((event: Event) => (
+      searchResult ? (event?.groupLabel === searchResult?.groupLabel || event?.user === searchResult?.user) : !searchResult &&
         <EventItem
-          isMonthMode
           event={ event }
           rowId={ rowId }
           elevation={ 0 }
@@ -174,9 +165,7 @@ const MonthModeView: FC<MonthModeViewProps> = ({
             textAlign: "left",
           } }
         />
-      );
-    });
-  };
+    )));
 
   const handleTaskClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: Event) => {
     event.preventDefault();
@@ -213,7 +202,6 @@ const MonthModeView: FC<MonthModeViewProps> = ({
                 return (
                   <StyledTableCell
                     scope="row"
-                    align="center"
                     component="th"
                     sx={ { px: 0.5, position: "relative" } }
                     key={ `day-${ day.id }` }

@@ -41,6 +41,7 @@ const Typography_1 = __importDefault(require("@mui/material/Typography"));
 const date_fns_1 = require("date-fns");
 const EventItem_1 = __importDefault(require("../EventItem"));
 const react_i18next_1 = require("react-i18next");
+const Box_1 = __importDefault(require("@mui/material/Box"));
 const StyledTableCell = (0, system_1.styled)(TableCell_1.default)(() => ({
     [`&.${TableCell_1.tableCellClasses.head}`]: {
         paddingLeft: 4,
@@ -149,16 +150,11 @@ const DayModeView = ({ options, columns, rows, searchResult, onTaskClick, onCell
         event.stopPropagation();
         onCellClick && onCellClick(event, row, day);
     };
-    const renderEvents = (events, rowLabel, rowIndex, dayIndex) => events?.map((event, itemIndex) => {
-        let condition = (searchResult ?
-            (event?.groupLabel === searchResult?.groupLabel ||
-                event?.user === searchResult?.user) : !searchResult);
-        return (condition &&
-            react_1.default.createElement(EventItem_1.default, { rowId: itemIndex, event: event, elevation: 0, boxSx: { px: 0.3 }, onClick: e => handleTaskClick(e, event), key: `iti18nem_id-${itemIndex}_r-${rowIndex}_d-${dayIndex}`, onDragStart: e => onCellDragStart(e, { ...event, itemIndex }, rowLabel, rowIndex, dayIndex), sx: {
-                    py: 0, mb: .5, color: theme.palette.common.white,
-                    backgroundColor: event?.color || theme.palette.primary.light,
-                } }));
-    });
+    const renderEvents = (events, rowLabel, rowIndex, dayIndex) => (react_1.default.createElement(Box_1.default, { display: "flex" }, events?.map((event, itemIndex) => (searchResult ? (event?.groupLabel === searchResult?.groupLabel || event?.user === searchResult?.user) : !searchResult &&
+        react_1.default.createElement(EventItem_1.default, { rowId: itemIndex, event: event, elevation: 0, boxSx: { px: 0.3 }, onClick: e => handleTaskClick(e, event), key: `iti18nem_id-${itemIndex}_r-${rowIndex}_d-${dayIndex}`, onDragStart: e => onCellDragStart(e, { ...event, itemIndex }, rowLabel, rowIndex, dayIndex), sx: {
+                py: 0, mb: .5, color: theme.palette.common.white,
+                backgroundColor: event?.color || theme.palette.primary.light,
+            } })))));
     const handleTaskClick = (event, task) => {
         event.preventDefault();
         event.stopPropagation();
@@ -180,7 +176,7 @@ const DayModeView = ({ options, columns, rows, searchResult, onTaskClick, onCell
                     react_1.default.createElement(StyledTableCell, { scope: "row", align: "center", component: "th", sx: { px: 1 }, onClick: (event) => handleCellClick(event, row) },
                         react_1.default.createElement(Typography_1.default, { variant: "body2" }, row?.label),
                         Number(row?.data?.length) > 0 && renderEvents(row?.data, row.id))),
-                row?.days?.map((day, dayIndex) => (react_1.default.createElement(StyledTableCell, { key: day?.id, scope: "row", align: "center", component: "th", colSpan: 2, sx: { px: .3, py: .5 }, onDragEnd: onCellDragEnd, onDragOver: onCellDragOver, onDragEnter: e => onCellDragEnter(e, row?.label, rowIndex, dayIndex), onClick: (event) => handleCellClick(event, { rowIndex, ...row }, { dayIndex, ...day }) }, day?.events?.length > 0 && renderEvents(day?.events, row?.label, rowIndex, dayIndex)))))))))));
+                row?.days?.map((day, dayIndex) => (react_1.default.createElement(StyledTableCell, { key: day?.id, scope: "row", component: "th", colSpan: 2, sx: { px: .3, py: .5 }, onDragEnd: onCellDragEnd, onDragOver: onCellDragOver, onDragEnter: e => onCellDragEnter(e, row?.label, rowIndex, dayIndex), onClick: (event) => handleCellClick(event, { rowIndex, ...row }, { dayIndex, ...day }) }, day?.events?.length > 0 && renderEvents(day?.events, row?.label, rowIndex, dayIndex)))))))))));
 };
 exports.default = DayModeView;
 //# sourceMappingURL=Day.js.map

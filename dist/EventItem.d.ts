@@ -7,7 +7,6 @@ interface EventItemProps {
     rowId: string | number;
     sx?: SxProps<Theme>;
     boxSx?: SxProps;
-    isMonthMode?: boolean;
     elevation?: number;
     onClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
     onDragStart?: (event: React.DragEvent<HTMLDivElement>) => void;

@@ -183,10 +183,10 @@ const WeekModeView = ({ options, columns, rows, searchResult, onTaskClick, onCel
                         column?.day))))),
             react_1.default.createElement(TableBody_1.default, null, rows?.map((row, rowIndex) => (react_1.default.createElement(TableRow_1.default, { key: `timeline-${rowIndex}` },
                 react_1.default.createElement(Tooltip_1.default, { placement: "right", title: t("eventWeekTimelineCount", { count: row.days?.reduce((prev, curr) => prev + curr?.events?.length, 0) }) },
-                    react_1.default.createElement(StyledTableCell, { scope: "row", align: "center", component: "th", sx: { px: 1 }, onClick: (event) => handleCellClick(event, row) },
+                    react_1.default.createElement(StyledTableCell, { scope: "row", component: "th", sx: { px: 1 }, onClick: (event) => handleCellClick(event, row) },
                         react_1.default.createElement(Typography_1.default, { variant: "body2" }, row?.label),
                         Number(row?.data?.length) > 0 && renderEvents(row?.data, row.id))),
-                row?.days?.map((day, dayIndex) => (react_1.default.createElement(StyledTableCell, { key: day?.id, scope: "row", align: "center", component: "th", sx: { px: .3, py: .5 }, onDragEnd: onCellDragEnd, onDragOver: onCellDragOver, onDragEnter: e => onCellDragEnter(e, row?.label, rowIndex, dayIndex), onClick: (event) => handleCellClick(event, { rowIndex, ...row }, { dayIndex, ...day }) }, day?.events?.length > 0 && renderEvents(day?.events, row?.label, rowIndex, dayIndex)))))))))));
+                row?.days?.map((day, dayIndex) => (react_1.default.createElement(StyledTableCell, { key: day?.id, scope: "row", component: "th", sx: { px: .3, py: .5 }, onDragEnd: onCellDragEnd, onDragOver: onCellDragOver, onDragEnter: e => onCellDragEnter(e, row?.label, rowIndex, dayIndex), onClick: (event) => handleCellClick(event, { rowIndex, ...row }, { dayIndex, ...day }) }, day?.events?.length > 0 && renderEvents(day?.events, row?.label, rowIndex, dayIndex)))))))))));
 };
 exports.default = WeekModeView;
 //# sourceMappingURL=Week.js.map

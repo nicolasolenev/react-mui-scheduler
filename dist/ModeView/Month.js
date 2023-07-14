@@ -141,22 +141,15 @@ const MonthModeView = ({ rows = [], options, columns = [], legacyStyle, searchRe
             onCellClick(event, row, day);
         }
     };
-    const renderEvents = (events = [], rowId) => {
-        return events?.map((event) => {
-            let condition = (searchResult ?
-                (event?.groupLabel === searchResult?.groupLabel ||
-                    event?.user === searchResult?.user) : !searchResult);
-            return (condition &&
-                react_1.default.createElement(EventItem_1.default, { isMonthMode: true, event: event, rowId: rowId, elevation: 0, boxSx: { px: 0.5 }, key: `item-d-${event?.id}-${rowId}`, onClick: e => handleTaskClick(e, event), onDragStart: e => onCellDragStart(e, event, rowId), sx: {
-                        width: "100%",
-                        py: 0,
-                        my: .3,
-                        color: theme.palette.common.white,
-                        backgroundColor: event?.color || theme.palette.primary.light,
-                        textAlign: "left",
-                    } }));
-        });
-    };
+    const renderEvents = (events = [], rowId) => (events?.map((event) => (searchResult ? (event?.groupLabel === searchResult?.groupLabel || event?.user === searchResult?.user) : !searchResult &&
+        react_1.default.createElement(EventItem_1.default, { event: event, rowId: rowId, elevation: 0, boxSx: { px: 0.5 }, key: `item-d-${event?.id}-${rowId}`, onClick: e => handleTaskClick(e, event), onDragStart: e => onCellDragStart(e, event, rowId), sx: {
+                width: "100%",
+                py: 0,
+                my: .3,
+                color: theme.palette.common.white,
+                backgroundColor: event?.color || theme.palette.primary.light,
+                textAlign: "left",
+            } }))));
     const handleTaskClick = (event, task) => {
         event.preventDefault();
         event.stopPropagation();
@@ -168,7 +161,7 @@ const MonthModeView = ({ rows = [], options, columns = [], legacyStyle, searchRe
                 react_1.default.createElement(material_1.TableRow, null, columns?.map((column, index) => (react_1.default.createElement(StyledTableCell, { align: "center", key: column?.headerName + "-" + index }, column?.headerName))))),
             react_1.default.createElement(TableBody_1.default, null, rows?.map((row, index) => (react_1.default.createElement(material_1.TableRow, { key: `row-${row.id}-${index}` }, row?.days?.map((day, indexD) => {
                 const currentDay = (day.day === today.getUTCDate() && (0, date_fns_1.isSameMonth)(day.date, today));
-                return (react_1.default.createElement(StyledTableCell, { scope: "row", align: "center", component: "th", sx: { px: 0.5, position: "relative" }, key: `day-${day.id}`, onDragEnd: onCellDragEnd, onDragOver: onCellDragOver, onDragEnter: e => onCellDragEnter(e, day.id, row.id), onClick: (event) => handleCellClick(event, row, day) },
+                return (react_1.default.createElement(StyledTableCell, { scope: "row", component: "th", sx: { px: 0.5, position: "relative" }, key: `day-${day.id}`, onDragEnd: onCellDragEnd, onDragOver: onCellDragOver, onDragEnter: e => onCellDragEnter(e, day.id, row.id), onClick: (event) => handleCellClick(event, row, day) },
                     react_1.default.createElement(Box_1.default, { sx: { height: "100%", overflowY: "visible" } },
                         !legacyStyle &&
                             index === 0 && columns[indexD]?.headerName?.toUpperCase(),

@@ -12,7 +12,6 @@ interface EventItemProps {
   rowId: string | number;
   sx?: SxProps<Theme>;
   boxSx?: SxProps;
-  isMonthMode?: boolean;
   elevation?: number;
   onClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   onDragStart?: (event: React.DragEvent<HTMLDivElement>) => void;
@@ -24,7 +23,6 @@ const EventItem: FC<EventItemProps> = ({
   sx,
   boxSx,
   elevation,
-  isMonthMode,
   onClick,
   onDragStart,
 }): JSX.Element => (
@@ -37,13 +35,11 @@ const EventItem: FC<EventItemProps> = ({
     key={ `item-d-${ event?.id }-${ rowId }` }
   >
     <Box sx={ boxSx }>
-      { isMonthMode &&
-        <Typography variant="caption" sx={ { fontSize: 8 } }>
-          { format(event?.startDate, "HH:mm") } - { format(event?.endDate, "HH:mm") }
-        </Typography>
-      }
       <Typography variant="body2" sx={ { fontSize: 11 } }>
         { event?.label }
+      </Typography>
+      <Typography variant="caption" sx={ { fontSize: 8 } }>
+        { format(event?.startDate, "HH:mm") } - { format(event?.endDate, "HH:mm") }
       </Typography>
     </Box>
   </Paper>

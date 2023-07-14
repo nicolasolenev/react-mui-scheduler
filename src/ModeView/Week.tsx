@@ -183,9 +183,7 @@ const WeekModeView: FC<WeekModeViewProps> = ({
           boxSx={ { px: 0.3 } }
           onClick={ e => handleTaskClick(e, event) }
           key={ `item_id-${ itemIndex }_r-${ rowIndex }_d-${ dayIndex }` }
-          onDragStart={ e => onCellDragStart(
-            e, { ...event, itemIndex }, rowLabel, rowIndex, dayIndex,
-          ) }
+          onDragStart={ e => onCellDragStart(e, { ...event, itemIndex }, rowLabel, rowIndex, dayIndex) }
           sx={ {
             py: 0,
             color: theme.palette.common.white,
@@ -233,7 +231,6 @@ const WeekModeView: FC<WeekModeViewProps> = ({
               >
                 <StyledTableCell
                   scope="row"
-                  align="center"
                   component="th"
                   sx={ { px: 1 } }
                   onClick={ (event) => handleCellClick(event, row) }
@@ -246,7 +243,6 @@ const WeekModeView: FC<WeekModeViewProps> = ({
                 <StyledTableCell
                   key={ day?.id }
                   scope="row"
-                  align="center"
                   component="th"
                   sx={ { px: .3, py: .5 } }
                   onDragEnd={ onCellDragEnd }

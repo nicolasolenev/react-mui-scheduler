@@ -14,6 +14,7 @@ import { format, parse, add, differenceInMinutes, isValid } from "date-fns";
 import EventItem from "../EventItem";
 import { ColumnHeader, Day, Event, ItemTransfer, ModeState, Option, Row, TransferTarget } from "../types";
 import { useTranslation } from "react-i18next";
+import Box from "@mui/material/Box";
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${ tableCellClasses.head }`]: {
@@ -162,34 +163,26 @@ const DayModeView: FC<DayModeViewProps> = ({
     onCellClick && onCellClick(event, row, day);
   };
 
-  const renderEvents = (events: Event[], rowLabel: string, rowIndex?: number, dayIndex?: number) =>
-    events?.map((event: Event, itemIndex: number) => {
-      let condition = (
-        searchResult ?
-          (
-            event?.groupLabel === searchResult?.groupLabel ||
-            event?.user === searchResult?.user
-          ) : !searchResult
-      );
-      return (
-        condition &&
-        <EventItem
-          rowId={ itemIndex }
-          event={ event }
-          elevation={ 0 }
-          boxSx={ { px: 0.3 } }
-          onClick={ e => handleTaskClick(e, event) }
-          key={ `iti18nem_id-${ itemIndex }_r-${ rowIndex }_d-${ dayIndex }` }
-          onDragStart={ e => onCellDragStart(
-            e, { ...event, itemIndex }, rowLabel, rowIndex, dayIndex,
-          ) }
-          sx={ {
-            py: 0, mb: .5, color: theme.palette.common.white,
-            backgroundColor: event?.color || theme.palette.primary.light,
-          } }
-        />
-      );
-    });
+  const renderEvents = (events: Event[], rowLabel: string, rowIndex?: number, dayIndex?: number) => (
+    <Box display="flex">
+      { events?.map((event: Event, itemIndex: number) => (
+        searchResult ? (event?.groupLabel === searchResult?.groupLabel || event?.user === searchResult?.user) : !searchResult &&
+          <EventItem
+            rowId={ itemIndex }
+            event={ event }
+            elevation={ 0 }
+            boxSx={ { px: 0.3 } }
+            onClick={ e => handleTaskClick(e, event) }
+            key={ `iti18nem_id-${ itemIndex }_r-${ rowIndex }_d-${ dayIndex }` }
+            onDragStart={ e => onCellDragStart(e, { ...event, itemIndex }, rowLabel, rowIndex, dayIndex) }
+            sx={ {
+              py: 0, mb: .5, color: theme.palette.common.white,
+              backgroundColor: event?.color || theme.palette.primary.light,
+            } }
+          />
+      )) }
+    </Box>
+  );
 
   const handleTaskClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: Event): void => {
     event.preventDefault();
@@ -242,7 +235,6 @@ const DayModeView: FC<DayModeViewProps> = ({
                 <StyledTableCell
                   key={ day?.id }
                   scope="row"
-                  align="center"
                   component="th"
                   colSpan={ 2 }
                   sx={ { px: .3, py: .5 } }
