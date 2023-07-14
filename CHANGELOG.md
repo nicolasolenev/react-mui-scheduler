@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Adding new option `toolbarProps.showTodayAction` when opening DatePicker
 - Adding new option `reverseTimelineOrder` to reverse order of timeline events from latest to older
 - Adding new option `displayTimelineByGroupLabel` to display multiple timelines by group label
+- Adding eslint config
 
 ### Fixed
 
