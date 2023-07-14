@@ -48,7 +48,9 @@ const TimeLineModeView: FC<TimeLineModeViewProps> = ({ options, rows, searchResu
     onTaskClick && onTaskClick(event, task);
   };
 
-  let filteredEvents = options.reverseTimelineOrder ? rows?.sort((a, b) => -b?.startDate?.toString()?.localeCompare(a?.startDate.toString())) : rows;
+  let filteredEvents = options.reverseTimelineOrder ?
+    rows?.sort((a, b) => -b?.startDate?.toString()?.localeCompare(a?.startDate.toString())) :
+    rows;
   if (searchResult) {
     filteredEvents = filteredEvents?.filter(
       event => event?.groupLabel === searchResult?.groupLabel,
