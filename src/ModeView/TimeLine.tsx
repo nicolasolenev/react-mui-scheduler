@@ -13,6 +13,7 @@ import ScheduleIcon from "@mui/icons-material/Schedule";
 import TimelineContent from "@mui/lab/TimelineContent";
 import { Event, Option } from "../types";
 import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
 
 const StyledContainer = styled(Box)(() => ({
   display: "flex",
@@ -101,13 +102,15 @@ const TimeLineModeView: FC<TimeLineModeViewProps> = ({ options, rows, searchResu
       } }
     >
       { options.displayTimelineByGroupLabel && groupLabels.map((label, index) => (
-        <Box display="flex" alignItems="center" flexDirection="column" key={ `timeline-${ index }` }>
-          <Typography fontWeight={ 700 }>{ label }</Typography>
-          <Timeline position="alternate">
-            { filteredEvents?.filter((event: Event) => label === event.groupLabel)?.map((event: Event, index) =>
-              undefined !== event.startDate ? renderEvent(event, index) : <div key={ `timeline-item-${ index }` }/>) }
-          </Timeline>
-        </Box>
+        <Grid container spacing={ 2 } key={ `timeline-${ index }` }>
+          <Grid sx={ { display: "flex", flexDirection: "column", alignItems: "center" } } xs={ 6 } sm md item>
+            <Typography fontWeight={ 700 }>{ label }</Typography>
+            <Timeline position="alternate">
+              { filteredEvents?.filter((event: Event) => label === event.groupLabel)?.map((event: Event, index) =>
+                undefined !== event.startDate ? renderEvent(event, index) : <div key={ `timeline-item-${ index }` }/>) }
+            </Timeline>
+          </Grid>
+        </Grid>
       )) }
       { !options.displayTimelineByGroupLabel && (
         <Timeline position="alternate">
