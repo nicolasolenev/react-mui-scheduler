@@ -213,6 +213,7 @@ const Toolbar: FC<ToolbarProps> = ({
                         [DateView.MONTH, DateView.YEAR] :
                         [DateView.DAY, DateView.MONTH, DateView.YEAR]
                     }
+                    slotProps={ toolbarProps.showTodayAction ? { actionBar: { actions: ["today"] } } : {} }
                     onChange={ (value: Date | null): void => {
                       setDaysInMonth(getDaysInMonth(value as Date));
                       setSelectedDate(value as Date);
@@ -253,7 +254,7 @@ const Toolbar: FC<ToolbarProps> = ({
                 </IconButton>
               </Hidden>
               <Hidden mdDown>
-                { Object.values(toolbarProps.showSwitchModeButtons).some(val => val) &&
+                { Object.values(toolbarProps.showSwitchModeButtons as object).some(val => val) &&
                   <ToggleButtonGroup
                     exclusive
                     value={ mode }
@@ -266,13 +267,13 @@ const Toolbar: FC<ToolbarProps> = ({
                     } }
                   >
                     { [
-                      toolbarProps.showSwitchModeButtons.showMonthButton ?
+                      toolbarProps.showSwitchModeButtons?.showMonthButton ?
                         { label: t("month"), value: Mode.MONTH } : null,
-                      toolbarProps.showSwitchModeButtons.showWeekButton ?
+                      toolbarProps.showSwitchModeButtons?.showWeekButton ?
                         { label: t("week"), value: Mode.WEEK } : null,
-                      toolbarProps.showSwitchModeButtons.showDayButton ?
+                      toolbarProps.showSwitchModeButtons?.showDayButton ?
                         { label: t("day"), value: Mode.DAY } : null,
-                      toolbarProps.showSwitchModeButtons.showTimelineButton ?
+                      toolbarProps.showSwitchModeButtons?.showTimelineButton ?
                         { label: t("timeline"), value: Mode.TIMELINE } : null,
                     ].filter(Boolean).map(tb => (
                       <ToggleButton sx={ { mt: .5 } } key={ tb?.value } value={ tb?.value as string }>

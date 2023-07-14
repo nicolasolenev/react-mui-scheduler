@@ -65,16 +65,17 @@ export interface OptionMenu {
 }
 
 export interface ToolbarProps {
-  showSearchBar: boolean;
-  showSwitchModeButtons: {
+  showSearchBar?: boolean;
+  showSwitchModeButtons?: {
     showMonthButton: boolean;
     showWeekButton: boolean;
     showDayButton: boolean;
     showTimelineButton: boolean;
   };
-  showDatePicker: boolean;
-  showOptions: boolean;
+  showDatePicker?: boolean;
+  showOptions?: boolean;
   optionMenus?: OptionMenu[];
+  showTodayAction?: boolean;
 }
 
 export interface Row {

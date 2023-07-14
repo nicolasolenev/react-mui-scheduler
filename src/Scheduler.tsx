@@ -81,6 +81,7 @@ const Scheduler: FC<SchedulerProps> = ({
     showDatePicker: true,
     showOptions: true,
     optionMenus: [],
+    showTodayAction: true,
   } as ToolbarProps,
   onEventsChange,
   onAlertCloseButtonClicked,

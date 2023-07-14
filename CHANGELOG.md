@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Adding new option `toolbarProps.showOptions` as boolean type
 - Adding new option `toolbarProps.optionMenus` to custom menu items
 - Adding new locale `pt-BR` [#14](https://github.com/rouftom/react-mui-scheduler/pull/14)
+- Adding new option `toolbarProps.showTodayAction` when opening DatePicker
 
 ### Fixed
 

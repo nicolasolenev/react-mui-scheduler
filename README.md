@@ -64,6 +64,7 @@ const App = () => {
         showTimelineButton: true,
       },
       showDatePicker: true,
+      showTodayAction: true,
       showOptions: true,
       optionMenus: [
         {
@@ -239,6 +240,9 @@ For more details about date formats, see [date-fns docs](https://date-fns.org/v2
 | showSwitchModeButtons.showDayButton      | boolean | `true`  | Show or hide the view mode button day      | `true`, `false` |
 | showSwitchModeButtons.showTimelineButton | boolean | `true`  | Show or hide the view mode button timeline | `true`, `false` |
 | showDatePicker                           | boolean | `true`  | Show or hide the date picker buttons       | `true`, `false` |
+| showTodayAction                          | boolean | `true`  | Show Today button when opening DatePicker  | `true`, `false` |
+| showOptions                              | boolean | `true`  | Show options menu                          | `true`, `false` |
+| optionMenus                              | object  |         | Options to display when opening menu       |                 |
 
 ## Methods
 
