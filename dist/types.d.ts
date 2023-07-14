@@ -32,14 +32,15 @@ export interface Event {
     [key: string]: any;
 }
 export interface Option {
-    transitionMode: TransitionMode;
-    startWeekOn: StartWeek;
-    defaultMode: Mode;
-    minWidth: number;
-    maxWidth: number;
-    minHeight: number;
-    maxHeight: number;
-    reverseTimelineOrder: boolean;
+    transitionMode?: TransitionMode;
+    startWeekOn?: StartWeek;
+    defaultMode?: Mode;
+    minWidth?: number;
+    maxWidth?: number;
+    minHeight?: number;
+    maxHeight?: number;
+    reverseTimelineOrder?: boolean;
+    displayTimelineByGroupLabel?: boolean;
 }
 export interface AlertProps {
     open: boolean;
@@ -55,16 +56,17 @@ export interface OptionMenu {
     icon: string | React.JSX.Element;
 }
 export interface ToolbarProps {
-    showSearchBar: boolean;
-    showSwitchModeButtons: {
+    showSearchBar?: boolean;
+    showSwitchModeButtons?: {
         showMonthButton: boolean;
         showWeekButton: boolean;
         showDayButton: boolean;
         showTimelineButton: boolean;
     };
-    showDatePicker: boolean;
-    showOptions: boolean;
+    showDatePicker?: boolean;
+    showOptions?: boolean;
     optionMenus?: OptionMenu[];
+    showTodayAction?: boolean;
 }
 export interface Row {
     id: number | string;

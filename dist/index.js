@@ -18,8 +18,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.i18n = void 0;
-var Scheduler_1 = __importDefault(require("./Scheduler"));
-var i18n_1 = __importDefault(require("./locales/i18n"));
+const Scheduler_1 = __importDefault(require("./Scheduler"));
+const i18n_1 = __importDefault(require("./locales/i18n"));
 exports.i18n = i18n_1.default;
 __exportStar(require("./types"), exports);
 exports.default = Scheduler_1.default;

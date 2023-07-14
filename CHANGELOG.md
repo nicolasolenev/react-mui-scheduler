@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Adding new locale `pt-BR` [#14](https://github.com/rouftom/react-mui-scheduler/pull/14)
 - Adding new option `toolbarProps.showTodayAction` when opening DatePicker
 - Adding new option `reverseTimelineOrder` to reverse order of timeline events from latest to older
+- Adding new option `displayTimelineByGroupLabel` to display multiple timelines by group label
 
 ### Fixed
 

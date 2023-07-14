@@ -206,16 +206,17 @@ For more details about date formats, see [date-fns docs](https://date-fns.org/v2
 
 ## Options
 
-| Name                 | Type           | Default               | Description                                                                     | Values                                                               |
-|----------------------|----------------|-----------------------|---------------------------------------------------------------------------------|----------------------------------------------------------------------|
-| transitionMode       | TransitionMode | `TransitionMode.ZOOM` | This option is used to define the type of scheduler transition                  | `TransitionMode.ZOOM`, `TransitionMode.FADE`, `TransitionMode.SLIDE` |
-| startWeekOn          | StartWeek      | `StartWeek.MON`       | This option is used to set the start of the calendar week to Monday or Sunday   | `StartWeek.MON`, `StartWeek.SUN`                                     |
-| defaultMode          | Mode           | `Mode.WEEK`           | This option allows you to define the type of view to display                    | `Mode.MONTH`, `Mode.WEEK`, `Mode.DAY`, `Mode.TIMELINE`               |
-| minWidth             | number         | `540`                 | This option allows you to define the minimum width of the container             | `number`                                                             |
-| maxWidth             | number         | `540`                 | This option allows you to define the maximum width of the container             | `number`                                                             |
-| minHeight            | number         | `540`                 | This option allows you to define the minimum height of the container            | `number`                                                             |
-| maxHeight            | number         | `540`                 | This option allows you to define the maximum height of the container            | `number`                                                             |
-| reverseTimelineOrder | boolean        | `false`               | This option allows you to define the order of events displayed in Timeline view | `false`, `true`                                                      |
+| Name                        | Type           | Default               | Description                                                                            | Values                                                               |
+|-----------------------------|----------------|-----------------------|----------------------------------------------------------------------------------------|----------------------------------------------------------------------|
+| transitionMode              | TransitionMode | `TransitionMode.ZOOM` | This option is used to define the type of scheduler transition                         | `TransitionMode.ZOOM`, `TransitionMode.FADE`, `TransitionMode.SLIDE` |
+| startWeekOn                 | StartWeek      | `StartWeek.MON`       | This option is used to set the start of the calendar week to Monday or Sunday          | `StartWeek.MON`, `StartWeek.SUN`                                     |
+| defaultMode                 | Mode           | `Mode.WEEK`           | This option allows you to define the type of view to display                           | `Mode.MONTH`, `Mode.WEEK`, `Mode.DAY`, `Mode.TIMELINE`               |
+| minWidth                    | number         | `540`                 | This option allows you to define the minimum width of the container                    | `number`                                                             |
+| maxWidth                    | number         | `540`                 | This option allows you to define the maximum width of the container                    | `number`                                                             |
+| minHeight                   | number         | `540`                 | This option allows you to define the minimum height of the container                   | `number`                                                             |
+| maxHeight                   | number         | `540`                 | This option allows you to define the maximum height of the container                   | `number`                                                             |
+| reverseTimelineOrder        | boolean        | `false`               | This option allows you to define the order of events displayed in Timeline view        | `false`, `true`                                                      |
+| displayTimelineByGroupLabel | boolean        | `false`               | This option allows you to display multiple timelines to display events by group labels | `false`, `true`                                                      |
 
 ## alertProps
 
@@ -226,7 +227,7 @@ For more details about date formats, see [date-fns docs](https://date-fns.org/v2
 | severity         | AlertColor | `info`                                                     | Alert notification severity                                                     | `info`, `success`, `warning`, `error` |
 | message          | string     | `🚀 Let's start with awesome react-mui-scheduler 🔥 🔥 🔥` | Alert notification message to display                                           | `string`                              |
 | showActionButton | boolean    | `true`                                                     | This option displays or not the action button on the Alert                      | `true`, `false`                       |
-| showNotification | boolean    | `true`                                                     | This option allows to display or not a notification when events change            | `true`, `false`                       |
+| showNotification | boolean    | `true`                                                     | This option allows to display or not a notification when events change          | `true`, `false`                       |
 | delay            | number     | `1500`                                                     | This option allows you to define the display delay in milliseconds of the Alert |                                       |
 
 ## toolbarProps

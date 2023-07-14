@@ -40,6 +40,17 @@ import DayModeView from "./ModeView/Day";
 import TimeLineModeView from "./ModeView/TimeLine";
 import { deepmerge } from "@mui/utils";
 
+const defaultOptions: Option = {
+  transitionMode: TransitionMode.ZOOM,
+  startWeekOn: StartWeek.MON,
+  defaultMode: Mode.WEEK,
+  minWidth: 540,
+  maxWidth: 540,
+  minHeight: 540,
+  maxHeight: 540,
+  reverseTimelineOrder: false,
+  displayTimelineByGroupLabel: false,
+};
 const defaultToolbarProps: ToolbarProps = {
   showSearchBar: true,
   showSwitchModeButtons: {
@@ -71,26 +82,20 @@ interface SchedulerProps {
 const Scheduler: FC<SchedulerProps> = ({
   events,
   locale = "en",
-  options = {
-    transitionMode: TransitionMode.ZOOM,
-    startWeekOn: StartWeek.MON,
-    defaultMode: Mode.WEEK,
-    minWidth: 540,
-    maxWidth: 540,
-    minHeight: 540,
-    maxHeight: 540,
-    reverseTimelineOrder: false,
-  },
+  options,
   alertProps,
   onCellClick,
   legacyStyle = false,
   onTaskClick,
-  toolbarProps = {},
+  toolbarProps,
   onEventsChange,
   onAlertCloseButtonClicked,
   onDateChange,
 }): JSX.Element => {
   useTheme();
+  options = deepmerge(defaultOptions, options) as Option;
+  toolbarProps = deepmerge(defaultToolbarProps, toolbarProps) as ToolbarProps;
+
   const { t, i18n } = useTranslation(["common"]);
   const weeks = [
     t("mon"), t("tue"), t("wed"),
@@ -103,10 +108,10 @@ const Scheduler: FC<SchedulerProps> = ({
   const [alertState, setAlertState] = useState<AlertProps | undefined>(alertProps);
   const [mode, setMode] = useState(options.defaultMode);
   const [daysInMonth, setDaysInMonth] = useState(getDaysInMonth(new Date()));
-  const [startWeekOn, setStartWeekOn] = useState<StartWeek>(options.startWeekOn);
+  const [startWeekOn, setStartWeekOn] = useState<StartWeek | undefined>(options.startWeekOn);
   const [selectedDate, setSelectedDate] = useState(format(new Date(), "MMMM-yyyy"));
   const [weekDays, updateWeekDays] = useReducer(() =>
-    options.startWeekOn.toUpperCase() === "SUN" ? [
+    options?.startWeekOn?.toUpperCase() === "SUN" ? [
       t("sun"), t("mon"), t("tue"),
       t("wed"), t("thu"), t("fri"),
       t("sat"),
@@ -474,14 +479,14 @@ const Scheduler: FC<SchedulerProps> = ({
   }, [locale]);
 
   useEffect(() => {
-    if (options.defaultMode !== mode) {
-      setMode(options.defaultMode as Mode);
+    if (options?.defaultMode !== mode) {
+      setMode(options?.defaultMode as Mode);
     }
   }, [options.defaultMode]);
 
   useEffect(() => {
-    if (options.startWeekOn !== startWeekOn) {
-      setStartWeekOn(options.startWeekOn);
+    if (options?.startWeekOn !== startWeekOn) {
+      setStartWeekOn(options?.startWeekOn);
     }
     updateWeekDays();
   }, [options.startWeekOn]);
@@ -491,9 +496,9 @@ const Scheduler: FC<SchedulerProps> = ({
       <DateFnsLocaleContext.Provider value={ dateFnsLocale }>
         <SchedulerToolbar
           events={ events }
-          switchMode={ mode }
+          switchMode={ mode as Mode }
           alertProps={ alertState }
-          toolbarProps={ deepmerge(toolbarProps, defaultToolbarProps) }
+          toolbarProps={ toolbarProps }
           onDateChange={ handleDateChange }
           onModeChange={ handleModeChange }
           onSearchResult={ onSearchResult }

@@ -39,14 +39,15 @@ export interface Event {
 }
 
 export interface Option {
-  transitionMode: TransitionMode;
-  startWeekOn: StartWeek;
-  defaultMode: Mode;
-  minWidth: number;
-  maxWidth: number;
-  minHeight: number;
-  maxHeight: number;
-  reverseTimelineOrder: boolean;
+  transitionMode?: TransitionMode;
+  startWeekOn?: StartWeek;
+  defaultMode?: Mode;
+  minWidth?: number;
+  maxWidth?: number;
+  minHeight?: number;
+  maxHeight?: number;
+  reverseTimelineOrder?: boolean;
+  displayTimelineByGroupLabel?: boolean;
 }
 
 export interface AlertProps {
