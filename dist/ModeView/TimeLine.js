@@ -40,6 +40,7 @@ const TimelineDot_1 = __importDefault(require("@mui/lab/TimelineDot"));
 const Schedule_1 = __importDefault(require("@mui/icons-material/Schedule"));
 const TimelineContent_1 = __importDefault(require("@mui/lab/TimelineContent"));
 const Box_1 = __importDefault(require("@mui/material/Box"));
+const Grid_1 = __importDefault(require("@mui/material/Grid"));
 const StyledContainer = (0, styles_1.styled)(Box_1.default)(() => ({
     display: "flex",
     ["&::-webkit-scrollbar"]: {
@@ -92,9 +93,10 @@ const TimeLineModeView = ({ options, rows, searchResult, onTaskClick }) => {
             minHeight: options.minHeight,
             maxHeight: options.maxHeight,
         } },
-        options.displayTimelineByGroupLabel && groupLabels.map((label, index) => (react_1.default.createElement(Box_1.default, { display: "flex", alignItems: "center", flexDirection: "column", key: `timeline-${index}` },
-            react_1.default.createElement(Typography_1.default, { fontWeight: 700 }, label),
-            react_1.default.createElement(Timeline_1.default, { position: "alternate" }, filteredEvents?.filter((event) => label === event.groupLabel)?.map((event, index) => undefined !== event.startDate ? renderEvent(event, index) : react_1.default.createElement("div", { key: `timeline-item-${index}` })))))),
+        options.displayTimelineByGroupLabel && groupLabels.map((label, index) => (react_1.default.createElement(Grid_1.default, { container: true, spacing: 2, key: `timeline-${index}` },
+            react_1.default.createElement(Grid_1.default, { sx: { display: "flex", flexDirection: "column", alignItems: "center" }, xs: 6, sm: true, md: true, item: true },
+                react_1.default.createElement(Typography_1.default, { fontWeight: 700 }, label),
+                react_1.default.createElement(Timeline_1.default, { position: "alternate" }, filteredEvents?.filter((event) => label === event.groupLabel)?.map((event, index) => undefined !== event.startDate ? renderEvent(event, index) : react_1.default.createElement("div", { key: `timeline-item-${index}` }))))))),
         !options.displayTimelineByGroupLabel && (react_1.default.createElement(Timeline_1.default, { position: "alternate" }, filteredEvents?.map((event, index) => undefined !== event.startDate ? renderEvent(event, index) : react_1.default.createElement("div", { key: `timeline-item-${index}` }))))));
 };
 exports.default = TimeLineModeView;
