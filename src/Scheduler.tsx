@@ -38,6 +38,21 @@ import MonthModeView from "./ModeView/Month";
 import WeekModeView from "./ModeView/Week";
 import DayModeView from "./ModeView/Day";
 import TimeLineModeView from "./ModeView/TimeLine";
+import { deepmerge } from "@mui/utils";
+
+const defaultToolbarProps: ToolbarProps = {
+  showSearchBar: true,
+  showSwitchModeButtons: {
+    showMonthButton: true,
+    showWeekButton: true,
+    showDayButton: true,
+    showTimelineButton: true,
+  },
+  showDatePicker: true,
+  showOptions: true,
+  optionMenus: [],
+  showTodayAction: true,
+};
 
 interface SchedulerProps {
   events: Event[];
@@ -70,19 +85,7 @@ const Scheduler: FC<SchedulerProps> = ({
   onCellClick,
   legacyStyle = false,
   onTaskClick,
-  toolbarProps = {
-    showSearchBar: true,
-    showSwitchModeButtons: {
-      showMonthButton: true,
-      showWeekButton: true,
-      showDayButton: true,
-      showTimelineButton: true,
-    },
-    showDatePicker: true,
-    showOptions: true,
-    optionMenus: [],
-    showTodayAction: true,
-  } as ToolbarProps,
+  toolbarProps = {},
   onEventsChange,
   onAlertCloseButtonClicked,
   onDateChange,
@@ -490,7 +493,7 @@ const Scheduler: FC<SchedulerProps> = ({
           events={ events }
           switchMode={ mode }
           alertProps={ alertState }
-          toolbarProps={ toolbarProps }
+          toolbarProps={ deepmerge(toolbarProps, defaultToolbarProps) }
           onDateChange={ handleDateChange }
           onModeChange={ handleModeChange }
           onSearchResult={ onSearchResult }
