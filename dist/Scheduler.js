@@ -74,8 +74,12 @@ const Scheduler = ({ events, locale = "en", options, alertProps, onCellClick, le
     toolbarProps = (0, utils_1.deepmerge)(defaultToolbarProps, toolbarProps);
     const { t, i18n } = (0, react_i18next_1.useTranslation)(["common"]);
     const weeks = [
-        t("mon"), t("tue"), t("wed"),
-        t("thu"), t("fri"), t("sat"),
+        t("mon"),
+        t("tue"),
+        t("wed"),
+        t("thu"),
+        t("fri"),
+        t("sat"),
         t("sun"),
     ];
     const [state, setState] = (0, react_1.useState)({});
@@ -86,13 +90,14 @@ const Scheduler = ({ events, locale = "en", options, alertProps, onCellClick, le
     const [daysInMonth, setDaysInMonth] = (0, react_1.useState)((0, date_fns_1.getDaysInMonth)(new Date()));
     const [startWeekOn, setStartWeekOn] = (0, react_1.useState)(options.startWeekOn);
     const [selectedDate, setSelectedDate] = (0, react_1.useState)((0, date_fns_1.format)(new Date(), "MMMM-yyyy"));
-    const [weekDays, updateWeekDays] = (0, react_1.useReducer)(() => options?.startWeekOn?.toUpperCase() === "SUN" ? [
-        t("sun"), t("mon"), t("tue"),
-        t("wed"), t("thu"), t("fri"),
-        t("sat"),
-    ] : weeks, weeks);
-    const TransitionModeComponent = (options.transitionMode === types_1.TransitionMode.ZOOM ? Zoom_1.default :
-        options.transitionMode === types_1.TransitionMode.FADE ? Fade_1.default : Slide_1.default);
+    const [weekDays, updateWeekDays] = (0, react_1.useReducer)(() => options?.startWeekOn?.toUpperCase() === "SUN"
+        ? [t("sun"), t("mon"), t("tue"), t("wed"), t("thu"), t("fri"), t("sat")]
+        : weeks, weeks);
+    const TransitionModeComponent = options.transitionMode === types_1.TransitionMode.ZOOM
+        ? Zoom_1.default
+        : options.transitionMode === types_1.TransitionMode.FADE
+            ? Fade_1.default
+            : Slide_1.default;
     let dateFnsLocale;
     switch (locale) {
         case "fr":
@@ -137,24 +142,26 @@ const Scheduler = ({ events, locale = "en", options, alertProps, onCellClick, le
         headerClassName: "scheduler-theme--header",
     }));
     const getMonthRows = () => {
-        let rows = [];
-        let daysBefore = [];
-        let iteration = (0, date_fns_1.getWeeksInMonth)(selectedDay);
-        let startOnSunday = (startWeekOn?.toUpperCase() === "SUN" &&
-            t("sun").toUpperCase() === weekDays[0].toUpperCase());
-        let monthStartDate = (0, date_fns_1.startOfMonth)(selectedDay); // First day of month
-        let monthStartDay = (0, date_fns_1.getDay)(monthStartDate); // Index of the day in week
+        const rows = [];
+        const daysBefore = [];
+        const iteration = (0, date_fns_1.getWeeksInMonth)(selectedDay);
+        const startOnSunday = startWeekOn?.toUpperCase() === "SUN" &&
+            t("sun").toUpperCase() === weekDays[0].toUpperCase();
+        const monthStartDate = (0, date_fns_1.startOfMonth)(selectedDay); // First day of month
+        const monthStartDay = (0, date_fns_1.getDay)(monthStartDate); // Index of the day in week
         let dateDay = parseInt((0, date_fns_1.format)(monthStartDate, "dd")); // Month start day
         // Condition check helper
-        const checkCondition = (v) => (startOnSunday ? v <= monthStartDay : v < monthStartDay);
+        const checkCondition = (v) => startOnSunday ? v <= monthStartDay : v < monthStartDay;
         if (monthStartDay >= 1) {
             // Add days of precedent month
             // If Sunday is the first day of week, apply b <= monthStartDay
             // and days: (monthStartDay-b) + 1
             for (let i = 1; checkCondition(i); i++) {
-                let subDate = (0, date_fns_1.sub)(monthStartDate, { days: monthStartDay - i + (startOnSunday ? 1 : 0) });
-                let day = parseInt((0, date_fns_1.format)(subDate, "dd"));
-                let data = events.filter((event) => (0, date_fns_1.isSameDay)(subDate, event?.startDate));
+                const subDate = (0, date_fns_1.sub)(monthStartDate, {
+                    days: monthStartDay - i + (startOnSunday ? 1 : 0),
+                });
+                const day = parseInt((0, date_fns_1.format)(subDate, "dd"));
+                const data = events.filter((event) => (0, date_fns_1.isSameDay)(subDate, event?.startDate));
                 daysBefore.push({
                     id: `day_-${day}`,
                     day: day,
@@ -165,9 +172,9 @@ const Scheduler = ({ events, locale = "en", options, alertProps, onCellClick, le
         }
         else if (!startOnSunday) {
             for (let i = 6; i > 0; i--) {
-                let subDate = (0, date_fns_1.sub)(monthStartDate, { days: i });
-                let day = parseInt((0, date_fns_1.format)(subDate, "dd"));
-                let data = events.filter((event) => (0, date_fns_1.isSameDay)(subDate, event?.startDate));
+                const subDate = (0, date_fns_1.sub)(monthStartDate, { days: i });
+                const day = parseInt((0, date_fns_1.format)(subDate, "dd"));
+                const data = events.filter((event) => (0, date_fns_1.isSameDay)(subDate, event?.startDate));
                 daysBefore.push({
                     id: `day_-${day}`,
                     day: day,
@@ -181,14 +188,14 @@ const Scheduler = ({ events, locale = "en", options, alertProps, onCellClick, le
         }
         // Add days and events events
         for (let i = 0; i < iteration; i++) {
-            let obj = [];
+            const obj = [];
             for (let j = 0; 
             // This condition ensure that days will not exceed 31
             // i === 0 ? 7 - daysBefore?.length means that we subtract inserted days
             // in the first line to 7
-            j < (i === 0 ? 7 - daysBefore.length : 7) && (dateDay <= daysInMonth); j++) {
-                let date = (0, date_fns_1.parse)(`${dateDay}-${selectedDate}`, "dd-MMMM-yyyy", new Date());
-                let data = events.filter((event) => (0, date_fns_1.isSameDay)(date, event?.startDate));
+            j < (i === 0 ? 7 - daysBefore.length : 7) && dateDay <= daysInMonth; j++) {
+                const date = (0, date_fns_1.parse)(`${dateDay}-${selectedDate}`, "dd-MMMM-yyyy", new Date());
+                const data = events.filter((event) => (0, date_fns_1.isSameDay)(date, event?.startDate));
                 obj.push({
                     id: `day_-${dateDay}`,
                     date,
@@ -206,16 +213,16 @@ const Scheduler = ({ events, locale = "en", options, alertProps, onCellClick, le
             }
         }
         // Check if last row is not fully filled
-        let lastRow = rows[iteration - 1];
-        let lastRowDaysDiff = 7 - lastRow?.days?.length;
-        let lastDaysData = [];
+        const lastRow = rows[iteration - 1];
+        const lastRowDaysDiff = 7 - lastRow?.days?.length;
+        const lastDaysData = [];
         if (lastRowDaysDiff > 0) {
-            let day = lastRow.days[lastRow?.days?.length - 1];
+            const day = lastRow.days[lastRow?.days?.length - 1];
             let addDate = day.date;
-            for (let i = dateDay; i < (dateDay + lastRowDaysDiff); i++) {
+            for (let i = dateDay; i < dateDay + lastRowDaysDiff; i++) {
                 addDate = (0, date_fns_1.add)(addDate, { days: 1 });
-                let d = (0, date_fns_1.format)(addDate, "dd");
-                let data = events.filter((event) => (0, date_fns_1.isSameDay)(addDate, event?.startDate));
+                const d = (0, date_fns_1.format)(addDate, "dd");
+                const data = events.filter((event) => (0, date_fns_1.isSameDay)(addDate, event?.startDate));
                 lastDaysData.push({
                     id: `day_-${d}`,
                     date: addDate,
@@ -228,10 +235,12 @@ const Scheduler = ({ events, locale = "en", options, alertProps, onCellClick, le
         return rows;
     };
     const getWeekHeader = () => {
-        let data = [];
-        let weekStart = (0, date_fns_1.startOfWeek)(selectedDay, { weekStartsOn: startWeekOn === types_1.StartWeek.MON ? 1 : 0 });
+        const data = [];
+        const weekStart = (0, date_fns_1.startOfWeek)(selectedDay, {
+            weekStartsOn: startWeekOn === types_1.StartWeek.MON ? 1 : 0,
+        });
         for (let i = 0; i < 7; i++) {
-            let date = (0, date_fns_1.add)(weekStart, { days: i });
+            const date = (0, date_fns_1.add)(weekStart, { days: i });
             data.push({
                 date: date,
                 weekDay: (0, date_fns_1.format)(date, "iii", { locale: dateFnsLocale }),
@@ -243,11 +252,11 @@ const Scheduler = ({ events, locale = "en", options, alertProps, onCellClick, le
     };
     const getWeekRows = () => {
         const HOURS = 24; //* 2
-        let data = [];
+        const data = [];
         let dayStartHour = (0, date_fns_1.startOfDay)(selectedDay);
         for (let i = 0; i <= HOURS; i++) {
-            let id = `line_${i}`;
-            let label = (0, date_fns_1.format)(dayStartHour, "HH:mm");
+            const id = `line_${i}`;
+            const label = (0, date_fns_1.format)(dayStartHour, "HH:mm");
             //TODO Add everyday event capability
             //if (i === 0) {
             //id = `line_everyday`; label = 'Everyday'
@@ -256,12 +265,13 @@ const Scheduler = ({ events, locale = "en", options, alertProps, onCellClick, le
             // ...
             if (i > 0) {
                 //Start processing bloc
-                let obj = { id, label, days: [] };
-                let columns = getWeekHeader();
+                const obj = { id, label, days: [] };
+                const columns = getWeekHeader();
                 // eslint-disable-next-line
                 columns.map((column, index) => {
-                    let data = events.filter((event) => ((0, date_fns_1.isSameDay)(column?.date, event?.startDate) &&
-                        (0, date_fns_1.format)(event?.startDate, "HH:mm")?.toUpperCase() === label?.toUpperCase()));
+                    const data = events.filter((event) => (0, date_fns_1.isSameDay)(column?.date, event?.startDate) &&
+                        (0, date_fns_1.format)(event?.startDate, "HH:mm")?.toUpperCase() ===
+                            label?.toUpperCase());
                     obj.days.push({
                         id: `column-${index}_m-${column.month}_d-${column.day}_${id}`,
                         date: column?.date,
@@ -278,27 +288,28 @@ const Scheduler = ({ events, locale = "en", options, alertProps, onCellClick, le
         }
         return data;
     };
-    const getDayHeader = () => ([
+    const getDayHeader = () => [
         {
             date: selectedDay,
             weekDay: (0, date_fns_1.format)(selectedDay, "iii", { locale: dateFnsLocale }),
             day: (0, date_fns_1.format)(selectedDay, "dd", { locale: dateFnsLocale }),
             month: (0, date_fns_1.format)(selectedDay, "MM", { locale: dateFnsLocale }),
         },
-    ]);
+    ];
     const getDayRows = () => {
         const HOURS = 24;
-        let data = [];
+        const data = [];
         let dayStartHour = (0, date_fns_1.startOfDay)(selectedDay);
         for (let i = 0; i <= HOURS; i++) {
-            let id = `line_${i}`;
-            let label = (0, date_fns_1.format)(dayStartHour, "HH:mm");
+            const id = `line_${i}`;
+            const label = (0, date_fns_1.format)(dayStartHour, "HH:mm");
             if (i > 0) {
-                let obj = { id, label, days: [] };
-                let columns = getDayHeader();
-                let column = columns[0];
-                let matchedEvents = events.filter((event) => ((0, date_fns_1.isSameDay)(column?.date, event?.startDate) &&
-                    (0, date_fns_1.format)(event?.startDate, "HH:mm")?.toUpperCase() === label?.toUpperCase()));
+                const obj = { id, label, days: [] };
+                const columns = getDayHeader();
+                const column = columns[0];
+                const matchedEvents = events.filter((event) => (0, date_fns_1.isSameDay)(column?.date, event?.startDate) &&
+                    (0, date_fns_1.format)(event?.startDate, "HH:mm")?.toUpperCase() ===
+                        label?.toUpperCase());
                 obj.days.push({
                     id: `column-_m-${column?.month}_d-${column?.day}_${id}`,
                     date: column?.date,
@@ -324,9 +335,9 @@ const Scheduler = ({ events, locale = "en", options, alertProps, onCellClick, le
     };
     const handleEventsChange = async (item) => {
         onEventsChange && onEventsChange(item);
-        let eventIndex = events.findIndex(e => e.id === item?.id);
+        const eventIndex = events.findIndex((e) => e.id === item?.id);
         if (eventIndex !== -1) {
-            let oldObject = Object.assign({}, events[eventIndex]);
+            const oldObject = Object.assign({}, events[eventIndex]);
             if (alertState?.showNotification && !alertState.open) {
                 setAlertState({
                     ...alertState,
@@ -405,23 +416,19 @@ const Scheduler = ({ events, locale = "en", options, alertProps, onCellClick, le
         react_1.default.createElement(dateFnsContext_1.default.Provider, { value: dateFnsLocale },
             react_1.default.createElement(Toolbar_1.default, { events: events, switchMode: mode, alertProps: alertState, toolbarProps: toolbarProps, onDateChange: handleDateChange, onModeChange: handleModeChange, onSearchResult: onSearchResult, onAlertCloseButtonClicked: onAlertCloseButtonClicked }),
             react_1.default.createElement(Grid_1.default, { container: true, spacing: 0, alignItems: "center", justifyContent: "start" },
-                mode === types_1.Mode.MONTH &&
-                    react_1.default.createElement(TransitionModeComponent, { in: true },
-                        react_1.default.createElement(Grid_1.default, { item: true, xs: 12 },
-                            react_1.default.createElement(Month_1.default, { options: options, rows: state?.rows, columns: state?.columns, legacyStyle: legacyStyle, onTaskClick: onTaskClick, onCellClick: onCellClick, searchResult: searchResult, onEventsChange: handleEventsChange }))),
-                mode === types_1.Mode.WEEK &&
-                    react_1.default.createElement(TransitionModeComponent, { in: true },
-                        react_1.default.createElement(Grid_1.default, { item: true, xs: 12 },
-                            react_1.default.createElement(Week_1.default, { options: options, rows: state?.rows, columns: state?.columns, onTaskClick: onTaskClick, onCellClick: onCellClick, searchResult: searchResult, onEventsChange: handleEventsChange }))),
-                mode === types_1.Mode.DAY &&
-                    react_1.default.createElement(TransitionModeComponent, { in: true },
-                        react_1.default.createElement(Grid_1.default, { item: true, xs: 12 },
-                            react_1.default.createElement(Day_1.default, { options: options, date: selectedDate, rows: state?.rows, columns: state?.columns, onTaskClick: onTaskClick, onCellClick: onCellClick, searchResult: searchResult, onEventsChange: handleEventsChange })))),
-            mode === types_1.Mode.TIMELINE &&
-                react_1.default.createElement(TransitionModeComponent, { in: true },
-                    react_1.default.createElement(Grid_1.default, { container: true, spacing: 2, alignItems: "start" },
-                        react_1.default.createElement(Grid_1.default, { item: true, xs: 12 },
-                            react_1.default.createElement(TimeLine_1.default, { options: options, rows: state?.rows, onTaskClick: onTaskClick, searchResult: searchResult })))))));
+                mode === types_1.Mode.MONTH && (react_1.default.createElement(TransitionModeComponent, { in: true },
+                    react_1.default.createElement(Grid_1.default, { item: true, xs: 12 },
+                        react_1.default.createElement(Month_1.default, { options: options, rows: state?.rows, columns: state?.columns, legacyStyle: legacyStyle, onTaskClick: onTaskClick, onCellClick: onCellClick, searchResult: searchResult, onEventsChange: handleEventsChange })))),
+                mode === types_1.Mode.WEEK && (react_1.default.createElement(TransitionModeComponent, { in: true },
+                    react_1.default.createElement(Grid_1.default, { item: true, xs: 12 },
+                        react_1.default.createElement(Week_1.default, { options: options, rows: state?.rows, columns: state?.columns, onTaskClick: onTaskClick, onCellClick: onCellClick, searchResult: searchResult, onEventsChange: handleEventsChange })))),
+                mode === types_1.Mode.DAY && (react_1.default.createElement(TransitionModeComponent, { in: true },
+                    react_1.default.createElement(Grid_1.default, { item: true, xs: 12 },
+                        react_1.default.createElement(Day_1.default, { options: options, date: selectedDate, rows: state?.rows, columns: state?.columns, onTaskClick: onTaskClick, onCellClick: onCellClick, searchResult: searchResult, onEventsChange: handleEventsChange }))))),
+            mode === types_1.Mode.TIMELINE && (react_1.default.createElement(TransitionModeComponent, { in: true },
+                react_1.default.createElement(Grid_1.default, { container: true, spacing: 2, alignItems: "start" },
+                    react_1.default.createElement(Grid_1.default, { item: true, xs: 12 },
+                        react_1.default.createElement(TimeLine_1.default, { options: options, rows: state?.rows, onTaskClick: onTaskClick, searchResult: searchResult }))))))));
 };
 exports.default = Scheduler;
 //# sourceMappingURL=Scheduler.js.map

@@ -9,7 +9,8 @@ import {
   Mode,
   ModeState,
   Option,
-  Row, RowHeader,
+  Row,
+  RowHeader,
   StartWeek,
   ToolbarProps,
   TransitionMode,
@@ -21,7 +22,8 @@ import {
   getDaysInMonth,
   getWeeksInMonth,
   isSameDay,
-  parse, startOfDay,
+  parse,
+  startOfDay,
   startOfMonth,
   startOfWeek,
   sub,
@@ -72,10 +74,19 @@ interface SchedulerProps {
   alertProps?: AlertProps;
   legacyStyle?: boolean;
   toolbarProps?: ToolbarProps;
-  onCellClick?: (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, row: Row, day?: Day) => void;
-  onTaskClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: Event) => void;
+  onCellClick?: (
+    event: React.MouseEvent<HTMLTableCellElement, MouseEvent>,
+    row: Row,
+    day?: Day,
+  ) => void;
+  onTaskClick?: (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    task: Event,
+  ) => void;
   onEventsChange?: (item: Event) => void;
-  onAlertCloseButtonClicked?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onAlertCloseButtonClicked?: (
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => void;
   onDateChange?: (day: number, date: number | Date | null) => void;
 }
 
@@ -98,29 +109,42 @@ const Scheduler: FC<SchedulerProps> = ({
 
   const { t, i18n } = useTranslation(["common"]);
   const weeks = [
-    t("mon"), t("tue"), t("wed"),
-    t("thu"), t("fri"), t("sat"),
+    t("mon"),
+    t("tue"),
+    t("wed"),
+    t("thu"),
+    t("fri"),
+    t("sat"),
     t("sun"),
   ];
   const [state, setState] = useState<ModeState>({});
   const [searchResult, setSearchResult] = useState<Event>();
   const [selectedDay, setSelectedDay] = useState<Date>(new Date());
-  const [alertState, setAlertState] = useState<AlertProps | undefined>(alertProps);
+  const [alertState, setAlertState] = useState<AlertProps | undefined>(
+    alertProps,
+  );
   const [mode, setMode] = useState(options.defaultMode);
   const [daysInMonth, setDaysInMonth] = useState(getDaysInMonth(new Date()));
-  const [startWeekOn, setStartWeekOn] = useState<StartWeek | undefined>(options.startWeekOn);
-  const [selectedDate, setSelectedDate] = useState(format(new Date(), "MMMM-yyyy"));
-  const [weekDays, updateWeekDays] = useReducer(() =>
-    options?.startWeekOn?.toUpperCase() === "SUN" ? [
-      t("sun"), t("mon"), t("tue"),
-      t("wed"), t("thu"), t("fri"),
-      t("sat"),
-    ] : weeks, weeks);
-
-  const TransitionModeComponent = (
-    options.transitionMode === TransitionMode.ZOOM ? Zoom :
-      options.transitionMode === TransitionMode.FADE ? Fade : Slide
+  const [startWeekOn, setStartWeekOn] = useState<StartWeek | undefined>(
+    options.startWeekOn,
   );
+  const [selectedDate, setSelectedDate] = useState(
+    format(new Date(), "MMMM-yyyy"),
+  );
+  const [weekDays, updateWeekDays] = useReducer(
+    () =>
+      options?.startWeekOn?.toUpperCase() === "SUN"
+        ? [t("sun"), t("mon"), t("tue"), t("wed"), t("thu"), t("fri"), t("sat")]
+        : weeks,
+    weeks,
+  );
+
+  const TransitionModeComponent =
+    options.transitionMode === TransitionMode.ZOOM
+      ? Zoom
+      : options.transitionMode === TransitionMode.FADE
+      ? Fade
+      : Slide;
 
   let dateFnsLocale: Locale;
   switch (locale) {
@@ -157,45 +181,44 @@ const Scheduler: FC<SchedulerProps> = ({
 
   const getMonthHeader = (): ColumnHeader[] =>
     weekDays.map((day, i) => ({
-      id: `row-day-header-${ i + 1 }`,
+      id: `row-day-header-${i + 1}`,
       flex: 1,
       sortable: false,
       editable: false,
       align: "center",
       headerName: day,
       headerAlign: "center",
-      field: `rowday${ i + 1 }`,
+      field: `rowday${i + 1}`,
       headerClassName: "scheduler-theme--header",
     }));
 
   const getMonthRows = () => {
-    let rows: Row[] = [];
-    let daysBefore: Day[] = [];
-    let iteration = getWeeksInMonth(selectedDay);
-    let startOnSunday = (
+    const rows: Row[] = [];
+    const daysBefore: Day[] = [];
+    const iteration = getWeeksInMonth(selectedDay);
+    const startOnSunday =
       startWeekOn?.toUpperCase() === "SUN" &&
-      t("sun").toUpperCase() === weekDays[0].toUpperCase()
-    );
-    let monthStartDate = startOfMonth(selectedDay);        // First day of month
-    let monthStartDay = getDay(monthStartDate);            // Index of the day in week
-    let dateDay = parseInt(format(monthStartDate, "dd"));  // Month start day
+      t("sun").toUpperCase() === weekDays[0].toUpperCase();
+    const monthStartDate = startOfMonth(selectedDay); // First day of month
+    const monthStartDay = getDay(monthStartDate); // Index of the day in week
+    let dateDay = parseInt(format(monthStartDate, "dd")); // Month start day
     // Condition check helper
-    const checkCondition = (v: number): boolean => (
-      startOnSunday ? v <= monthStartDay : v < monthStartDay
-    );
+    const checkCondition = (v: number): boolean =>
+      startOnSunday ? v <= monthStartDay : v < monthStartDay;
     if (monthStartDay >= 1) {
       // Add days of precedent month
       // If Sunday is the first day of week, apply b <= monthStartDay
       // and days: (monthStartDay-b) + 1
       for (let i = 1; checkCondition(i); i++) {
-        let subDate = sub(
-          monthStartDate,
-          { days: monthStartDay - i + (startOnSunday ? 1 : 0) },
+        const subDate = sub(monthStartDate, {
+          days: monthStartDay - i + (startOnSunday ? 1 : 0),
+        });
+        const day = parseInt(format(subDate, "dd"));
+        const data = events.filter((event) =>
+          isSameDay(subDate, event?.startDate),
         );
-        let day = parseInt(format(subDate, "dd"));
-        let data = events.filter((event) => isSameDay(subDate, event?.startDate));
         daysBefore.push({
-          id: `day_-${ day }`,
+          id: `day_-${day}`,
           day: day,
           date: subDate,
           events: data,
@@ -203,11 +226,13 @@ const Scheduler: FC<SchedulerProps> = ({
       }
     } else if (!startOnSunday) {
       for (let i = 6; i > 0; i--) {
-        let subDate = sub(monthStartDate, { days: i });
-        let day = parseInt(format(subDate, "dd"));
-        let data = events.filter((event) => isSameDay(subDate, event?.startDate));
+        const subDate = sub(monthStartDate, { days: i });
+        const day = parseInt(format(subDate, "dd"));
+        const data = events.filter((event) =>
+          isSameDay(subDate, event?.startDate),
+        );
         daysBefore.push({
-          id: `day_-${ day }`,
+          id: `day_-${day}`,
           day: day,
           date: subDate,
           events: data,
@@ -221,24 +246,26 @@ const Scheduler: FC<SchedulerProps> = ({
 
     // Add days and events events
     for (let i = 0; i < iteration; i++) {
-      let obj: Day[] = [];
+      const obj: Day[] = [];
 
       for (
         let j = 0;
         // This condition ensure that days will not exceed 31
         // i === 0 ? 7 - daysBefore?.length means that we subtract inserted days
         // in the first line to 7
-        j < (i === 0 ? 7 - daysBefore.length : 7) && (dateDay <= daysInMonth);
+        j < (i === 0 ? 7 - daysBefore.length : 7) && dateDay <= daysInMonth;
         j++
       ) {
-        let date = parse(
-          `${ dateDay }-${ selectedDate }`,
+        const date = parse(
+          `${dateDay}-${selectedDate}`,
           "dd-MMMM-yyyy",
           new Date(),
         );
-        let data = events.filter((event) => isSameDay(date, event?.startDate));
+        const data = events.filter((event) =>
+          isSameDay(date, event?.startDate),
+        );
         obj.push({
-          id: `day_-${ dateDay }`,
+          id: `day_-${dateDay}`,
           date,
           events: data,
           day: dateDay,
@@ -256,19 +283,21 @@ const Scheduler: FC<SchedulerProps> = ({
     }
 
     // Check if last row is not fully filled
-    let lastRow = rows[iteration - 1];
-    let lastRowDaysDiff = 7 - lastRow?.days?.length;
-    let lastDaysData: Day[] = [];
+    const lastRow = rows[iteration - 1];
+    const lastRowDaysDiff = 7 - lastRow?.days?.length;
+    const lastDaysData: Day[] = [];
 
     if (lastRowDaysDiff > 0) {
-      let day = lastRow.days[lastRow?.days?.length - 1];
+      const day = lastRow.days[lastRow?.days?.length - 1];
       let addDate = day.date as Date;
-      for (let i = dateDay; i < (dateDay + lastRowDaysDiff); i++) {
+      for (let i = dateDay; i < dateDay + lastRowDaysDiff; i++) {
         addDate = add(addDate, { days: 1 });
-        let d = format(addDate, "dd");
-        let data = events.filter((event) => isSameDay(addDate, event?.startDate));
+        const d = format(addDate, "dd");
+        const data = events.filter((event) =>
+          isSameDay(addDate, event?.startDate),
+        );
         lastDaysData.push({
-          id: `day_-${ d }`,
+          id: `day_-${d}`,
           date: addDate,
           day: d,
           events: data,
@@ -281,30 +310,17 @@ const Scheduler: FC<SchedulerProps> = ({
   };
 
   const getWeekHeader = () => {
-    let data = [];
-    let weekStart = startOfWeek(
-      selectedDay,
-      { weekStartsOn: startWeekOn === StartWeek.MON ? 1 : 0 },
-    );
+    const data = [];
+    const weekStart = startOfWeek(selectedDay, {
+      weekStartsOn: startWeekOn === StartWeek.MON ? 1 : 0,
+    });
     for (let i = 0; i < 7; i++) {
-      let date = add(weekStart, { days: i });
+      const date = add(weekStart, { days: i });
       data.push({
         date: date,
-        weekDay: format(
-          date,
-          "iii",
-          { locale: dateFnsLocale },
-        ),
-        day: format(
-          date,
-          "dd",
-          { locale: dateFnsLocale },
-        ),
-        month: format(
-          date,
-          "MM",
-          { locale: dateFnsLocale },
-        ),
+        weekDay: format(date, "iii", { locale: dateFnsLocale }),
+        day: format(date, "dd", { locale: dateFnsLocale }),
+        month: format(date, "MM", { locale: dateFnsLocale }),
       });
     }
     return data;
@@ -312,12 +328,12 @@ const Scheduler: FC<SchedulerProps> = ({
 
   const getWeekRows = () => {
     const HOURS = 24; //* 2
-    let data = [];
+    const data = [];
     let dayStartHour = startOfDay(selectedDay);
 
     for (let i = 0; i <= HOURS; i++) {
-      let id = `line_${ i }`;
-      let label = format(dayStartHour, "HH:mm");
+      const id = `line_${i}`;
+      const label = format(dayStartHour, "HH:mm");
 
       //TODO Add everyday event capability
       //if (i === 0) {
@@ -328,16 +344,18 @@ const Scheduler: FC<SchedulerProps> = ({
 
       if (i > 0) {
         //Start processing bloc
-        let obj: Row = { id, label, days: [] };
-        let columns = getWeekHeader();
+        const obj: Row = { id, label, days: [] };
+        const columns = getWeekHeader();
         // eslint-disable-next-line
         columns.map((column, index) => {
-          let data = events.filter((event) => (
-            isSameDay(column?.date, event?.startDate) &&
-            format(event?.startDate, "HH:mm")?.toUpperCase() === label?.toUpperCase()
-          ));
+          const data = events.filter(
+            (event) =>
+              isSameDay(column?.date, event?.startDate) &&
+              format(event?.startDate, "HH:mm")?.toUpperCase() ===
+                label?.toUpperCase(),
+          );
           obj.days.push({
-            id: `column-${ index }_m-${ column.month }_d-${ column.day }_${ id }`,
+            id: `column-${index}_m-${column.month}_d-${column.day}_${id}`,
             date: column?.date,
             events: data,
           });
@@ -353,34 +371,36 @@ const Scheduler: FC<SchedulerProps> = ({
     return data;
   };
 
-  const getDayHeader = () => ([
+  const getDayHeader = () => [
     {
       date: selectedDay,
       weekDay: format(selectedDay, "iii", { locale: dateFnsLocale }),
       day: format(selectedDay, "dd", { locale: dateFnsLocale }),
       month: format(selectedDay, "MM", { locale: dateFnsLocale }),
     },
-  ]);
+  ];
 
   const getDayRows = () => {
     const HOURS = 24;
-    let data = [];
+    const data = [];
     let dayStartHour = startOfDay(selectedDay);
 
     for (let i = 0; i <= HOURS; i++) {
-      let id = `line_${ i }`;
-      let label = format(dayStartHour, "HH:mm");
+      const id = `line_${i}`;
+      const label = format(dayStartHour, "HH:mm");
 
       if (i > 0) {
-        let obj: Row = { id, label, days: [] };
-        let columns = getDayHeader();
-        let column = columns[0];
-        let matchedEvents = events.filter((event) => (
-          isSameDay(column?.date, event?.startDate) &&
-          format(event?.startDate, "HH:mm")?.toUpperCase() === label?.toUpperCase()
-        ));
+        const obj: Row = { id, label, days: [] };
+        const columns = getDayHeader();
+        const column = columns[0];
+        const matchedEvents = events.filter(
+          (event) =>
+            isSameDay(column?.date, event?.startDate) &&
+            format(event?.startDate, "HH:mm")?.toUpperCase() ===
+              label?.toUpperCase(),
+        );
         obj.days.push({
-          id: `column-_m-${ column?.month }_d-${ column?.day }_${ id }`,
+          id: `column-_m-${column?.month}_d-${column?.day}_${id}`,
           date: column?.date,
           events: matchedEvents,
         });
@@ -409,16 +429,19 @@ const Scheduler: FC<SchedulerProps> = ({
 
   const handleEventsChange = async (item: Event): Promise<void> => {
     onEventsChange && onEventsChange(item);
-    let eventIndex = events.findIndex(e => e.id === item?.id);
+    const eventIndex = events.findIndex((e) => e.id === item?.id);
     if (eventIndex !== -1) {
-      let oldObject = Object.assign({}, events[eventIndex]);
+      const oldObject = Object.assign({}, events[eventIndex]);
       if (alertState?.showNotification && !alertState.open) {
         setAlertState({
           ...alertState,
           open: true,
           message: `
-            ${ item?.label } successfully moved from ${ oldObject?.startDate }
-            ${ format(oldObject?.startDate, "HH:mm") } to ${ format(item?.endDate, "yyyy-mm-dd") } ${ format(item?.startDate, "HH:mm") }
+            ${item?.label} successfully moved from ${oldObject?.startDate}
+            ${format(oldObject?.startDate, "HH:mm")} to ${format(
+              item?.endDate,
+              "yyyy-mm-dd",
+            )} ${format(item?.startDate, "HH:mm")}
           `,
         });
         setTimeout(() => {
@@ -492,85 +515,81 @@ const Scheduler: FC<SchedulerProps> = ({
   }, [options.startWeekOn]);
 
   return (
-    <Paper variant="outlined" elevation={ 0 } sx={ { p: 0 } }>
-      <DateFnsLocaleContext.Provider value={ dateFnsLocale }>
+    <Paper variant="outlined" elevation={0} sx={{ p: 0 }}>
+      <DateFnsLocaleContext.Provider value={dateFnsLocale}>
         <SchedulerToolbar
-          events={ events }
-          switchMode={ mode as Mode }
-          alertProps={ alertState }
-          toolbarProps={ toolbarProps }
-          onDateChange={ handleDateChange }
-          onModeChange={ handleModeChange }
-          onSearchResult={ onSearchResult }
-          onAlertCloseButtonClicked={ onAlertCloseButtonClicked }
+          events={events}
+          switchMode={mode as Mode}
+          alertProps={alertState}
+          toolbarProps={toolbarProps}
+          onDateChange={handleDateChange}
+          onModeChange={handleModeChange}
+          onSearchResult={onSearchResult}
+          onAlertCloseButtonClicked={onAlertCloseButtonClicked}
         />
-        <Grid
-          container
-          spacing={ 0 }
-          alignItems="center"
-          justifyContent="start">
-          { mode === Mode.MONTH &&
+        <Grid container spacing={0} alignItems="center" justifyContent="start">
+          {mode === Mode.MONTH && (
             <TransitionModeComponent in>
-              <Grid item xs={ 12 }>
+              <Grid item xs={12}>
                 <MonthModeView
-                  options={ options }
-                  rows={ state?.rows as RowHeader[] }
-                  columns={ state?.columns }
-                  legacyStyle={ legacyStyle }
-                  onTaskClick={ onTaskClick }
-                  onCellClick={ onCellClick }
-                  searchResult={ searchResult }
-                  onEventsChange={ handleEventsChange }
+                  options={options}
+                  rows={state?.rows as RowHeader[]}
+                  columns={state?.columns}
+                  legacyStyle={legacyStyle}
+                  onTaskClick={onTaskClick}
+                  onCellClick={onCellClick}
+                  searchResult={searchResult}
+                  onEventsChange={handleEventsChange}
                 />
               </Grid>
             </TransitionModeComponent>
-          }
-          { mode === Mode.WEEK &&
+          )}
+          {mode === Mode.WEEK && (
             <TransitionModeComponent in>
-              <Grid item xs={ 12 }>
+              <Grid item xs={12}>
                 <WeekModeView
-                  options={ options }
-                  rows={ state?.rows as Row[] }
-                  columns={ state?.columns }
-                  onTaskClick={ onTaskClick }
-                  onCellClick={ onCellClick }
-                  searchResult={ searchResult as Event }
-                  onEventsChange={ handleEventsChange }
+                  options={options}
+                  rows={state?.rows as Row[]}
+                  columns={state?.columns}
+                  onTaskClick={onTaskClick}
+                  onCellClick={onCellClick}
+                  searchResult={searchResult as Event}
+                  onEventsChange={handleEventsChange}
                 />
               </Grid>
             </TransitionModeComponent>
-          }
-          { mode === Mode.DAY &&
+          )}
+          {mode === Mode.DAY && (
             <TransitionModeComponent in>
-              <Grid item xs={ 12 }>
+              <Grid item xs={12}>
                 <DayModeView
-                  options={ options }
-                  date={ selectedDate }
-                  rows={ state?.rows as Row[] }
-                  columns={ state?.columns }
-                  onTaskClick={ onTaskClick }
-                  onCellClick={ onCellClick }
-                  searchResult={ searchResult }
-                  onEventsChange={ handleEventsChange }
+                  options={options}
+                  date={selectedDate}
+                  rows={state?.rows as Row[]}
+                  columns={state?.columns}
+                  onTaskClick={onTaskClick}
+                  onCellClick={onCellClick}
+                  searchResult={searchResult}
+                  onEventsChange={handleEventsChange}
                 />
               </Grid>
             </TransitionModeComponent>
-          }
+          )}
         </Grid>
-        { mode === Mode.TIMELINE &&
+        {mode === Mode.TIMELINE && (
           <TransitionModeComponent in>
-            <Grid container spacing={ 2 } alignItems="start">
-              <Grid item xs={ 12 }>
+            <Grid container spacing={2} alignItems="start">
+              <Grid item xs={12}>
                 <TimeLineModeView
-                  options={ options }
-                  rows={ state?.rows as Event[] }
-                  onTaskClick={ onTaskClick }
-                  searchResult={ searchResult }
+                  options={options}
+                  rows={state?.rows as Event[]}
+                  onTaskClick={onTaskClick}
+                  searchResult={searchResult}
                 />
               </Grid>
             </Grid>
           </TransitionModeComponent>
-        }
+        )}
       </DateFnsLocaleContext.Provider>
     </Paper>
   );

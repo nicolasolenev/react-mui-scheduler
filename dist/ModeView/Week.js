@@ -109,26 +109,25 @@ const WeekModeView = ({ options, columns, rows, searchResult, onTaskClick, onCel
         if (!state.itemTransfer || !state.transferTarget) {
             return;
         }
-        let transfer = state.itemTransfer;
-        let transferTarget = state.transferTarget;
-        let rowsData = Array.from(rows);
-        let day = rowsData[transferTarget.rowIndex]?.days[transferTarget.dayIndex];
+        const transfer = state.itemTransfer;
+        const transferTarget = state.transferTarget;
+        const rowsData = Array.from(rows);
+        const day = rowsData[transferTarget.rowIndex]?.days[transferTarget.dayIndex];
         if (day) {
-            let hourRegExp = /[0-9]{2}:[0-9]{2}/;
-            let foundEventIndex = day.events.findIndex((e) => e.id === transfer.item.id &&
+            const hourRegExp = /[0-9]{2}:[0-9]{2}/;
+            const foundEventIndex = day.events.findIndex((e) => e.id === transfer.item.id &&
                 e.startDate === transfer.item.startDate &&
                 e.endDate === transfer.item.endDate);
             // Task already exists in the events array of the chosen cell
-            if (foundEventIndex !== -1) {
+            if (foundEventIndex !== -1)
                 return;
-            }
             // Event cell item to transfer
-            let prevEventCell = rowsData[transfer.rowIndex].days[transfer.dayIndex];
+            const prevEventCell = rowsData[transfer.rowIndex].days[transfer.dayIndex];
             // Timeline label (00:00 am, 01:00 am, etc.)
-            let label = transferTarget.rowLabel?.toUpperCase();
-            let hourLabel = hourRegExp.exec(label)?.[0];
+            const label = transferTarget.rowLabel?.toUpperCase();
+            const hourLabel = hourRegExp.exec(label)?.[0];
             // Event's end hour
-            let endHourDate = transfer.item.endDate;
+            const endHourDate = transfer.item.endDate;
             // Event start hour
             let startHourDate = transfer.item.startDate;
             // Minutes difference between end and start event hours
@@ -155,15 +154,15 @@ const WeekModeView = ({ options, columns, rows, searchResult, onTaskClick, onCel
         onCellClick && onCellClick(event, row, day);
     };
     const renderEvents = (events, rowLabel, rowIndex, dayIndex) => events?.map((event, itemIndex) => {
-        let condition = (searchResult ?
-            (event?.groupLabel === searchResult?.groupLabel ||
-                event?.user === searchResult?.user) : !searchResult);
-        return (condition &&
-            react_1.default.createElement(EventItem_1.default, { rowId: rowIndex, event: event, elevation: 0, boxSx: { px: 0.3 }, onClick: e => handleTaskClick(e, event), key: `item_id-${itemIndex}_r-${rowIndex}_d-${dayIndex}`, onDragStart: e => onCellDragStart(e, { ...event, itemIndex }, rowLabel, rowIndex, dayIndex), sx: {
-                    py: 0,
-                    color: theme.palette.common.white,
-                    backgroundColor: event?.color || theme.palette.primary.light,
-                } }));
+        const condition = searchResult
+            ? event?.groupLabel === searchResult?.groupLabel ||
+                event?.user === searchResult?.user
+            : !searchResult;
+        return (condition && (react_1.default.createElement(EventItem_1.default, { rowId: rowIndex, event: event, elevation: 0, boxSx: { px: 0.3 }, onClick: (e) => handleTaskClick(e, event), key: `item_id-${itemIndex}_r-${rowIndex}_d-${dayIndex}`, onDragStart: (e) => onCellDragStart(e, { ...event, itemIndex }, rowLabel, rowIndex, dayIndex), sx: {
+                py: 0,
+                color: theme.palette.common.white,
+                backgroundColor: event?.color || theme.palette.primary.light,
+            } })));
     });
     const handleTaskClick = (event, task) => {
         event.preventDefault();
@@ -182,11 +181,15 @@ const WeekModeView = ({ options, columns, rows, searchResult, onTaskClick, onCel
                         "/",
                         column?.day))))),
             react_1.default.createElement(TableBody_1.default, null, rows?.map((row, rowIndex) => (react_1.default.createElement(TableRow_1.default, { key: `timeline-${rowIndex}` },
-                react_1.default.createElement(Tooltip_1.default, { placement: "right", title: t("eventWeekTimelineCount", { count: row.days?.reduce((prev, curr) => prev + curr?.events?.length, 0) }) },
+                react_1.default.createElement(Tooltip_1.default, { placement: "right", title: t("eventWeekTimelineCount", {
+                        count: row.days?.reduce((prev, curr) => prev + curr?.events?.length, 0),
+                    }) },
                     react_1.default.createElement(StyledTableCell, { scope: "row", component: "th", sx: { px: 1 }, onClick: (event) => handleCellClick(event, row) },
                         react_1.default.createElement(Typography_1.default, { variant: "body2" }, row?.label),
-                        Number(row?.data?.length) > 0 && renderEvents(row?.data, row.id))),
-                row?.days?.map((day, dayIndex) => (react_1.default.createElement(StyledTableCell, { key: day?.id, scope: "row", component: "th", sx: { px: .3, py: .5 }, onDragEnd: onCellDragEnd, onDragOver: onCellDragOver, onDragEnter: e => onCellDragEnter(e, row?.label, rowIndex, dayIndex), onClick: (event) => handleCellClick(event, { rowIndex, ...row }, { dayIndex, ...day }) }, day?.events?.length > 0 && renderEvents(day?.events, row?.label, rowIndex, dayIndex)))))))))));
+                        Number(row?.data?.length) > 0 &&
+                            renderEvents(row?.data, row.id))),
+                row?.days?.map((day, dayIndex) => (react_1.default.createElement(StyledTableCell, { key: day?.id, scope: "row", component: "th", sx: { px: 0.3, py: 0.5 }, onDragEnd: onCellDragEnd, onDragOver: onCellDragOver, onDragEnter: (e) => onCellDragEnter(e, row?.label, rowIndex, dayIndex), onClick: (event) => handleCellClick(event, { rowIndex, ...row }, { dayIndex, ...day }) }, day?.events?.length > 0 &&
+                    renderEvents(day?.events, row?.label, rowIndex, dayIndex)))))))))));
 };
 exports.default = WeekModeView;
 //# sourceMappingURL=Week.js.map

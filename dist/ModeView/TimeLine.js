@@ -60,15 +60,17 @@ const StyledContainer = (0, styles_1.styled)(Box_1.default)(() => ({
         background: "rgba(125, 161, 196, 0.5)",
     },
 }));
-const TimeLineModeView = ({ options, rows, searchResult, onTaskClick }) => {
+const TimeLineModeView = ({ options, rows, searchResult, onTaskClick, }) => {
     const dateFnsLocale = (0, react_1.useContext)(dateFnsContext_1.default);
-    const renderEvent = (event, index) => (react_1.default.createElement(TimelineItem_1.default, { key: `timeline-item-${index}`, sx: { cursor: "pointer" }, onClick: e => handleTaskClick(e, event) },
+    const renderEvent = (event, index) => (react_1.default.createElement(TimelineItem_1.default, { key: `timeline-item-${index}`, sx: { cursor: "pointer" }, onClick: (e) => handleTaskClick(e, event) },
         react_1.default.createElement(TimelineOppositeContent_1.default, { sx: { m: "auto 0" }, align: "right", variant: "body2", color: "text.secondary" },
-            event.startDate && (0, date_fns_1.format)(event.startDate, "PPP", { locale: dateFnsLocale }),
+            event.startDate &&
+                (0, date_fns_1.format)(event.startDate, "PPP", { locale: dateFnsLocale }),
             react_1.default.createElement("br", null),
             react_1.default.createElement(Typography_1.default, { variant: "caption" },
                 event.startDate && (0, date_fns_1.format)(event.startDate, "HH:mm"),
-                " - ",
+                " -",
+                " ",
                 (0, date_fns_1.format)(event.endDate, "HH:mm"))),
         react_1.default.createElement(TimelineSeparator_1.default, null,
             react_1.default.createElement(TimelineConnector_1.default, null),
@@ -82,22 +84,31 @@ const TimeLineModeView = ({ options, rows, searchResult, onTaskClick }) => {
         event.stopPropagation();
         onTaskClick && onTaskClick(event, task);
     };
-    let filteredEvents = options.reverseTimelineOrder ?
-        rows?.sort((a, b) => -b?.startDate?.toString()?.localeCompare(a?.startDate.toString())) :
-        rows;
+    let filteredEvents = options.reverseTimelineOrder
+        ? rows?.sort((a, b) => -b?.startDate?.toString()?.localeCompare(a?.startDate.toString()))
+        : rows;
     if (searchResult)
         filteredEvents = filteredEvents?.filter((event) => event?.groupLabel === searchResult?.groupLabel);
-    const groupLabels = [...new Set(filteredEvents?.map((event) => event.groupLabel))];
+    const groupLabels = [
+        ...new Set(filteredEvents?.map((event) => event.groupLabel)),
+    ];
     return (react_1.default.createElement(StyledContainer, { component: "div", sx: {
             overflowY: "auto",
             minHeight: options.minHeight,
             maxHeight: options.maxHeight,
         } },
-        options.displayTimelineByGroupLabel && groupLabels.map((label, index) => (react_1.default.createElement(Grid_1.default, { container: true, spacing: 2, key: `timeline-${index}` },
-            react_1.default.createElement(Grid_1.default, { sx: { display: "flex", flexDirection: "column", alignItems: "center" }, xs: 6, sm: true, md: true, item: true },
-                react_1.default.createElement(Typography_1.default, { fontWeight: 700 }, label),
-                react_1.default.createElement(Timeline_1.default, { position: "alternate" }, filteredEvents?.filter((event) => label === event.groupLabel)?.map((event, index) => undefined !== event.startDate ? renderEvent(event, index) : react_1.default.createElement("div", { key: `timeline-item-${index}` }))))))),
-        !options.displayTimelineByGroupLabel && (react_1.default.createElement(Timeline_1.default, { position: "alternate" }, filteredEvents?.map((event, index) => undefined !== event.startDate ? renderEvent(event, index) : react_1.default.createElement("div", { key: `timeline-item-${index}` }))))));
+        options.displayTimelineByGroupLabel &&
+            groupLabels.map((label, index) => (react_1.default.createElement(Grid_1.default, { container: true, spacing: 2, key: `timeline-${index}` },
+                react_1.default.createElement(Grid_1.default, { sx: {
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                    }, xs: 6, sm: true, md: true, item: true },
+                    react_1.default.createElement(Typography_1.default, { fontWeight: 700 }, label),
+                    react_1.default.createElement(Timeline_1.default, { position: "alternate" }, filteredEvents
+                        ?.filter((event) => label === event.groupLabel)
+                        ?.map((event, index) => undefined !== event.startDate ? (renderEvent(event, index)) : (react_1.default.createElement("div", { key: `timeline-item-${index}` })))))))),
+        !options.displayTimelineByGroupLabel && (react_1.default.createElement(Timeline_1.default, { position: "alternate" }, filteredEvents?.map((event, index) => undefined !== event.startDate ? (renderEvent(event, index)) : (react_1.default.createElement("div", { key: `timeline-item-${index}` })))))));
 };
 exports.default = TimeLineModeView;
 //# sourceMappingURL=TimeLine.js.map

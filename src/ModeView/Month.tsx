@@ -1,6 +1,8 @@
 import React, { FC, JSX, useState } from "react";
 import { alpha, lighten, styled, Theme, useTheme } from "@mui/material/styles";
-import { TableCell, tableCellClasses, TableRow } from "@mui/material";
+import TableCell from "@mui/material/TableCell";
+import TableRow from "@mui/material/TableRow";
+import { tableCellClasses } from "@mui/material";
 import { isSameMonth } from "date-fns";
 import EventItem from "../EventItem";
 import TableContainer from "@mui/material/TableContainer";
@@ -12,25 +14,34 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import EventNoteRoundedIcon from "@mui/icons-material/EventNoteRounded";
 import { SxProps } from "@mui/system";
-import { ColumnHeader, Day, Event, ItemTransfer, ModeState, Option, RowHeader, TransferTarget } from "../types";
+import {
+  ColumnHeader,
+  Day,
+  Event,
+  ItemTransfer,
+  ModeState,
+  Option,
+  RowHeader,
+  TransferTarget,
+} from "../types";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${ tableCellClasses.head }`]: {
-    borderTop: `1px ${ theme.palette.divider } solid !important`,
-    borderBottom: `1px ${ theme.palette.divider } solid !important`,
-    borderLeft: `1px ${ theme.palette.divider } solid !important`,
+  [`&.${tableCellClasses.head}`]: {
+    borderTop: `1px ${theme.palette.divider} solid !important`,
+    borderBottom: `1px ${theme.palette.divider} solid !important`,
+    borderLeft: `1px ${theme.palette.divider} solid !important`,
     ["&:nth-of-type(1)"]: {
       borderLeft: `0px !important`,
     },
   },
-  [`&.${ tableCellClasses.body }`]: {
+  [`&.${tableCellClasses.body}`]: {
     fontSize: 12,
     height: 96,
     width: 64,
     maxWidth: 64,
     cursor: "pointer",
     verticalAlign: "top",
-    borderLeft: `1px ${ theme.palette.divider } solid`,
+    borderLeft: `1px ${theme.palette.divider} solid`,
     ["&:nth-of-type(7n+1)"]: {
       borderLeft: 0,
     },
@@ -43,8 +54,15 @@ interface MonthModeViewProps {
   columns: ColumnHeader[] | undefined;
   legacyStyle?: boolean;
   searchResult: Event | undefined;
-  onTaskClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: Event) => void;
-  onCellClick?: (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, row: RowHeader, day: Day) => void;
+  onTaskClick?: (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    task: Event,
+  ) => void;
+  onCellClick?: (
+    event: React.MouseEvent<HTMLTableCellElement, MouseEvent>,
+    row: RowHeader,
+    day: Day,
+  ) => void;
   onEventsChange: (item: Event) => void;
 }
 
@@ -61,7 +79,7 @@ const MonthModeView: FC<MonthModeViewProps> = ({
   const theme = useTheme();
   const [state, setState] = useState<ModeState>({});
   const today = new Date();
-  let currentDaySx: SxProps<Theme> = {
+  const currentDaySx: SxProps<Theme> = {
     width: 24,
     height: 22,
     margin: "auto",
@@ -74,14 +92,22 @@ const MonthModeView: FC<MonthModeViewProps> = ({
     e.preventDefault();
   };
 
-  const onCellDragStart = (e: React.DragEvent<HTMLDivElement>, item: Event, rowIndex: number) => {
+  const onCellDragStart = (
+    e: React.DragEvent<HTMLDivElement>,
+    item: Event,
+    rowIndex: number,
+  ) => {
     setState({
       ...state,
       itemTransfer: { item, rowIndex },
     });
   };
 
-  const onCellDragEnter = (e: React.DragEvent<HTMLTableCellElement>, elementId: number, rowIndex: number) => {
+  const onCellDragEnter = (
+    e: React.DragEvent<HTMLTableCellElement>,
+    elementId: number,
+    rowIndex: number,
+  ) => {
     e.preventDefault();
     setState({
       ...state,
@@ -92,31 +118,33 @@ const MonthModeView: FC<MonthModeViewProps> = ({
   const onCellDragEnd = (e: React.DragEvent<HTMLTableCellElement>) => {
     e.preventDefault();
     if (!state.itemTransfer && !state.transferTarget) return;
-    let transfer = state.itemTransfer as ItemTransfer;
-    let transferTarget = state.transferTarget as TransferTarget;
-    let rowsCopy = Array.from(rows);
-    let rowInd = rowsCopy.findIndex(d => d.id === transferTarget?.rowIndex);
+    const transfer = state.itemTransfer as ItemTransfer;
+    const transferTarget = state.transferTarget as TransferTarget;
+    const rowsCopy = Array.from(rows);
+    const rowInd = rowsCopy.findIndex((d) => d.id === transferTarget?.rowIndex);
 
     if (rowInd !== -1) {
-      let dayInd = rowsCopy[rowInd]
-        ?.days
-        ?.findIndex((d: Day) => d.id === transferTarget?.elementId);
+      const dayInd = rowsCopy[rowInd]?.days?.findIndex(
+        (d: Day) => d.id === transferTarget?.elementId,
+      );
       if (dayInd !== -1) {
-        let day: Day = rowsCopy[rowInd]?.days[dayInd];
+        const day: Day = rowsCopy[rowInd]?.days[dayInd];
         // Get day of the date (DD)
         if (!transfer?.item?.day)
           transfer.item.day = transfer?.item?.startDate.getDay();
         if (transfer?.item?.day !== day?.day) {
-          let itemCheck = day.events.findIndex((item: Event) => (
-            item.day === transfer.item.day && item.label === transfer.item.label
-          ));
+          const itemCheck = day.events.findIndex(
+            (item: Event) =>
+              item.day === transfer.item.day &&
+              item.label === transfer.item.label,
+          );
           if (itemCheck === -1) {
-            let prevDay = rowsCopy[transfer.rowIndex as number]
-              .days
-              .find((d: Day) => d.day === transfer.item.day);
-            let itemIndexToRemove = prevDay
-              ?.events
-              ?.findIndex((i: Event) => i.id === transfer.item.id);
+            const prevDay = rowsCopy[transfer.rowIndex as number].days.find(
+              (d: Day) => d.day === transfer.item.day,
+            );
+            const itemIndexToRemove = prevDay?.events?.findIndex(
+              (i: Event) => i.id === transfer.item.id,
+            );
             if (itemIndexToRemove === undefined || itemIndexToRemove === -1) {
               return;
             }
@@ -137,7 +165,11 @@ const MonthModeView: FC<MonthModeViewProps> = ({
     }
   };
 
-  const handleCellClick = (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, row: RowHeader, day: Day) => {
+  const handleCellClick = (
+    event: React.MouseEvent<HTMLTableCellElement, MouseEvent>,
+    row: RowHeader,
+    day: Day,
+  ) => {
     event.preventDefault();
     event.stopPropagation();
     if (day?.events?.length === 0 && onCellClick) {
@@ -145,99 +177,120 @@ const MonthModeView: FC<MonthModeViewProps> = ({
     }
   };
 
-  const renderEvents = (events: Event[] = [], rowId: number) => (
-    events?.map((event: Event) => (
-      searchResult ? (event?.groupLabel === searchResult?.groupLabel || event?.user === searchResult?.user) : !searchResult &&
-        <EventItem
-          event={ event }
-          rowId={ rowId }
-          elevation={ 0 }
-          boxSx={ { px: 0.5 } }
-          key={ `item-d-${ event?.id }-${ rowId }` }
-          onClick={ e => handleTaskClick(e, event) }
-          onDragStart={ e => onCellDragStart(e, event, rowId) }
-          sx={ {
-            width: "100%",
-            py: 0,
-            my: .3,
-            color: theme.palette.common.white,
-            backgroundColor: event?.color || theme.palette.primary.light,
-            textAlign: "left",
-          } }
-        />
-    )));
+  const renderEvents = (events: Event[] = [], rowId: number) =>
+    events?.map((event: Event) =>
+      searchResult
+        ? event?.groupLabel === searchResult?.groupLabel ||
+          event?.user === searchResult?.user
+        : !searchResult && (
+            <EventItem
+              event={event}
+              rowId={rowId}
+              elevation={0}
+              boxSx={{ px: 0.5 }}
+              key={`item-d-${event?.id}-${rowId}`}
+              onClick={(e) => handleTaskClick(e, event)}
+              onDragStart={(e) => onCellDragStart(e, event, rowId)}
+              sx={{
+                width: "100%",
+                py: 0,
+                my: 0.3,
+                color: theme.palette.common.white,
+                backgroundColor: event?.color || theme.palette.primary.light,
+                textAlign: "left",
+              }}
+            />
+          ),
+    );
 
-  const handleTaskClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, task: Event) => {
+  const handleTaskClick = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    task: Event,
+  ) => {
     event.preventDefault();
     event.stopPropagation();
     onTaskClick && onTaskClick(event, task);
   };
 
   return (
-    <TableContainer component={ Paper } sx={ { boxShadow: "none" } }>
+    <TableContainer component={Paper} sx={{ boxShadow: "none" }}>
       <Table
         size="small"
         aria-label="simple table"
-        stickyHeader sx={ { minWidth: options.minWidth || 650 } }
+        stickyHeader
+        sx={{ minWidth: options.minWidth || 650 }}
       >
-        { legacyStyle && <TableHead sx={ { height: 24 } }>
-          <TableRow>
-            { columns?.map((column, index) => (
-              <StyledTableCell
-                align="center"
-                key={ column?.headerName + "-" + index }
-              >
-                { column?.headerName }
-              </StyledTableCell>
-            )) }
-          </TableRow>
-        </TableHead> }
+        {legacyStyle && (
+          <TableHead sx={{ height: 24 }}>
+            <TableRow>
+              {columns?.map((column, index) => (
+                <StyledTableCell
+                  align="center"
+                  key={column?.headerName + "-" + index}
+                >
+                  {column?.headerName}
+                </StyledTableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+        )}
         <TableBody>
-          { rows?.map((row, index) => (
-            <TableRow key={ `row-${ row.id }-${ index }` }>
-              { row?.days?.map((day: Day, indexD: number) => {
-                const currentDay = (
-                  day.day === today.getUTCDate() && isSameMonth(day.date, today)
-                );
+          {rows?.map((row, index) => (
+            <TableRow key={`row-${row.id}-${index}`}>
+              {row?.days?.map((day: Day, indexD: number) => {
+                const currentDay =
+                  day.day === today.getUTCDate() &&
+                  isSameMonth(day.date, today);
                 return (
                   <StyledTableCell
                     scope="row"
                     component="th"
-                    sx={ { px: 0.5, position: "relative" } }
-                    key={ `day-${ day.id }` }
-                    onDragEnd={ onCellDragEnd }
-                    onDragOver={ onCellDragOver }
-                    onDragEnter={ e => onCellDragEnter(e, day.id as number, row.id) }
-                    onClick={ (event) => handleCellClick(event, row, day) }
+                    sx={{ px: 0.5, position: "relative" }}
+                    key={`day-${day.id}`}
+                    onDragEnd={onCellDragEnd}
+                    onDragOver={onCellDragOver}
+                    onDragEnter={(e) =>
+                      onCellDragEnter(e, day.id as number, row.id)
+                    }
+                    onClick={(event) => handleCellClick(event, row, day)}
                   >
-                    <Box sx={ { height: "100%", overflowY: "visible" } }>
-                      { !legacyStyle &&
-                        index === 0 && columns[indexD]?.headerName?.toUpperCase() }.
+                    <Box sx={{ height: "100%", overflowY: "visible" }}>
+                      {!legacyStyle &&
+                        index === 0 &&
+                        columns[indexD]?.headerName?.toUpperCase()}
+                      .
                       <Typography
                         variant="body2"
-                        sx={ {
-                          ...currentDaySx,
-                          background: (
-                            currentDay &&
-                            alpha(theme.palette.primary.main, 1)
-                          ),
-                          color: (currentDay && theme.palette.common.white),
-                        } as SxProps<Theme> }
+                        sx={
+                          {
+                            ...currentDaySx,
+                            background:
+                              currentDay &&
+                              alpha(theme.palette.primary.main, 1),
+                            color: currentDay && theme.palette.common.white,
+                          } as SxProps<Theme>
+                        }
                       >
-                        { day.day }
+                        {day.day}
                       </Typography>
-                      { (day?.events?.length > 0 && renderEvents(day?.events, row.id)) }
-                      { legacyStyle && day?.events?.length === 0 &&
+                      {day?.events?.length > 0 &&
+                        renderEvents(day?.events, row.id)}
+                      {legacyStyle && day?.events?.length === 0 && (
                         <EventNoteRoundedIcon
                           fontSize="small"
-                          htmlColor={ theme.palette.mode === "light" ? theme.palette.divider : lighten(theme.palette.common.white, .5) }
-                        /> }
+                          htmlColor={
+                            theme.palette.mode === "light"
+                              ? theme.palette.divider
+                              : lighten(theme.palette.common.white, 0.5)
+                          }
+                        />
+                      )}
                     </Box>
                   </StyledTableCell>
                 );
-              }) }
+              })}
             </TableRow>
-          )) }
+          ))}
         </TableBody>
       </Table>
     </TableContainer>

@@ -1,4 +1,4 @@
-import React, { FC, Fragment, JSX, useContext } from "react";
+import React, { FC, JSX, useContext } from "react";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import DateFnsLocaleContext from "../locales/dateFnsContext";
@@ -42,85 +42,125 @@ interface TimeLineModeViewProps {
   onTaskClick?: (event: React.MouseEvent<HTMLDivElement>, task: Event) => void;
 }
 
-const TimeLineModeView: FC<TimeLineModeViewProps> = ({ options, rows, searchResult, onTaskClick }): JSX.Element => {
+const TimeLineModeView: FC<TimeLineModeViewProps> = ({
+  options,
+  rows,
+  searchResult,
+  onTaskClick,
+}): JSX.Element => {
   const dateFnsLocale = useContext(DateFnsLocaleContext);
 
   const renderEvent = (event: Event, index: number) => (
     <TimelineItem
-      key={ `timeline-item-${ index }` }
-      sx={ { cursor: "pointer" } }
-      onClick={ e => handleTaskClick(e, event) }>
+      key={`timeline-item-${index}`}
+      sx={{ cursor: "pointer" }}
+      onClick={(e) => handleTaskClick(e, event)}
+    >
       <TimelineOppositeContent
-        sx={ { m: "auto 0" } }
+        sx={{ m: "auto 0" }}
         align="right"
         variant="body2"
         color="text.secondary"
       >
-        { event.startDate && format(event.startDate, "PPP", { locale: dateFnsLocale }) }
-        <br/>
+        {event.startDate &&
+          format(event.startDate, "PPP", { locale: dateFnsLocale })}
+        <br />
         <Typography variant="caption">
-          { event.startDate && format(event.startDate, "HH:mm") } - { format(event.endDate, "HH:mm") }
+          {event.startDate && format(event.startDate, "HH:mm")} -{" "}
+          {format(event.endDate, "HH:mm")}
         </Typography>
       </TimelineOppositeContent>
       <TimelineSeparator>
-        <TimelineConnector/>
-        <TimelineDot color="secondary" sx={ { backgroundColor: event.color } }>
-          { event.icon || <ScheduleIcon/> }
+        <TimelineConnector />
+        <TimelineDot color="secondary" sx={{ backgroundColor: event.color }}>
+          {event.icon || <ScheduleIcon />}
         </TimelineDot>
-        <TimelineConnector/>
+        <TimelineConnector />
       </TimelineSeparator>
-      <TimelineContent sx={ { py: "12px", px: 2 } }>
+      <TimelineContent sx={{ py: "12px", px: 2 }}>
         <Typography variant="body1" component="span">
-          { event.label }
+          {event.label}
         </Typography>
-        <Typography>{ event.groupLabel }</Typography>
+        <Typography>{event.groupLabel}</Typography>
       </TimelineContent>
     </TimelineItem>
   );
 
-  const handleTaskClick = (event: React.MouseEvent<HTMLDivElement>, task: Event) => {
+  const handleTaskClick = (
+    event: React.MouseEvent<HTMLDivElement>,
+    task: Event,
+  ) => {
     event.preventDefault();
     event.stopPropagation();
     onTaskClick && onTaskClick(event, task);
   };
 
-  let filteredEvents = options.reverseTimelineOrder ?
-    rows?.sort((a, b) => -b?.startDate?.toString()?.localeCompare(a?.startDate.toString())) :
-    rows;
+  let filteredEvents = options.reverseTimelineOrder
+    ? rows?.sort(
+        (a, b) =>
+          -b?.startDate?.toString()?.localeCompare(a?.startDate.toString()),
+      )
+    : rows;
   if (searchResult)
-    filteredEvents = filteredEvents?.filter((event: Event) => event?.groupLabel === searchResult?.groupLabel);
+    filteredEvents = filteredEvents?.filter(
+      (event: Event) => event?.groupLabel === searchResult?.groupLabel,
+    );
 
-  const groupLabels = [...new Set(filteredEvents?.map((event: Event) => event.groupLabel))];
+  const groupLabels = [
+    ...new Set(filteredEvents?.map((event: Event) => event.groupLabel)),
+  ];
 
   return (
     <StyledContainer
       component="div"
-      sx={ {
+      sx={{
         overflowY: "auto",
         minHeight: options.minHeight,
         maxHeight: options.maxHeight,
-      } }
+      }}
     >
-      { options.displayTimelineByGroupLabel && groupLabels.map((label, index) => (
-        <Grid container spacing={ 2 } key={ `timeline-${ index }` }>
-          <Grid sx={ { display: "flex", flexDirection: "column", alignItems: "center" } } xs={ 6 } sm md item>
-            <Typography fontWeight={ 700 }>{ label }</Typography>
-            <Timeline position="alternate">
-              { filteredEvents?.filter((event: Event) => label === event.groupLabel)?.map((event: Event, index) =>
-                undefined !== event.startDate ? renderEvent(event, index) : <div key={ `timeline-item-${ index }` }/>) }
-            </Timeline>
+      {options.displayTimelineByGroupLabel &&
+        groupLabels.map((label, index) => (
+          <Grid container spacing={2} key={`timeline-${index}`}>
+            <Grid
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+              xs={6}
+              sm
+              md
+              item
+            >
+              <Typography fontWeight={700}>{label}</Typography>
+              <Timeline position="alternate">
+                {filteredEvents
+                  ?.filter((event: Event) => label === event.groupLabel)
+                  ?.map((event: Event, index) =>
+                    undefined !== event.startDate ? (
+                      renderEvent(event, index)
+                    ) : (
+                      <div key={`timeline-item-${index}`} />
+                    ),
+                  )}
+              </Timeline>
+            </Grid>
           </Grid>
-        </Grid>
-      )) }
-      { !options.displayTimelineByGroupLabel && (
+        ))}
+      {!options.displayTimelineByGroupLabel && (
         <Timeline position="alternate">
-          { filteredEvents?.map((event: Event, index) =>
-            undefined !== event.startDate ? renderEvent(event, index) : <div key={ `timeline-item-${ index }` }/>) }
+          {filteredEvents?.map((event: Event, index) =>
+            undefined !== event.startDate ? (
+              renderEvent(event, index)
+            ) : (
+              <div key={`timeline-item-${index}`} />
+            ),
+          )}
         </Timeline>
-      ) }
+      )}
     </StyledContainer>
-  )
-    ;
+  );
 };
 
 export default TimeLineModeView;

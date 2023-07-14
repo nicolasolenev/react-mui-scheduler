@@ -28,15 +28,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
 const styles_1 = require("@mui/material/styles");
-const material_1 = require("@mui/material");
+const Autocomplete_1 = __importDefault(require("@mui/material/Autocomplete"));
+const Box_1 = __importDefault(require("@mui/material/Box"));
+const TextField_1 = __importDefault(require("@mui/material/TextField"));
 const react_i18next_1 = require("react-i18next");
 const date_fns_1 = require("date-fns");
 const dateFnsContext_1 = __importDefault(require("./locales/dateFnsContext"));
-const StyledAutoComplete = (0, styles_1.styled)((material_1.Autocomplete))(({ theme }) => ({
+const StyledAutoComplete = (0, styles_1.styled)((Autocomplete_1.default))(({ theme }) => ({
     color: "inherit",
     width: "94%",
     display: "inline-flex",
-    margin: theme.spacing(.5, 1.5),
+    margin: theme.spacing(0.5, 1.5),
     transition: theme.transitions.create("width"),
     [theme.breakpoints.up("sm")]: {
         width: "100%",
@@ -48,7 +50,7 @@ const StyledAutoComplete = (0, styles_1.styled)((material_1.Autocomplete))(({ th
         width: "27ch",
     },
 }));
-const ToolbarSearchBar = ({ events, onInputChange }) => {
+const ToolbarSearchBar = ({ events, onInputChange, }) => {
     const { t } = (0, react_i18next_1.useTranslation)(["common"]);
     const [value, setValue] = (0, react_1.useState)();
     const [inputValue, setInputValue] = (0, react_1.useState)("");
@@ -58,11 +60,14 @@ const ToolbarSearchBar = ({ events, onInputChange }) => {
         if (onInputChange)
             onInputChange(`${value?.groupLabel || ""} | (${(0, date_fns_1.format)(value?.startDate, "HH:mm")} - ${value?.endDate || ""})`);
     };
-    return (react_1.default.createElement(StyledAutoComplete, { value: value, id: "scheduler-autocomplete", inputValue: inputValue, sx: { mb: 0, display: "inline-flex" }, onChange: handleOnChange, options: events, groupBy: (option) => option ? option?.groupLabel : "", getOptionLabel: (option) => (option ?
-            `${option.groupLabel || ""} | ${option.startDate} | (${(0, date_fns_1.format)(option.startDate, "HH:mm") || ""} - ${(0, date_fns_1.format)(option.endDate, "HH:mm") || ""})` : ""), isOptionEqualToValue: (option, value) => option.id === value.id, onInputChange: (event, newInputValue) => {
+    return (react_1.default.createElement(StyledAutoComplete, { value: value, id: "scheduler-autocomplete", inputValue: inputValue, sx: { mb: 0, display: "inline-flex" }, onChange: handleOnChange, options: events, groupBy: (option) => (option ? option?.groupLabel : ""), getOptionLabel: (option) => option
+            ? `${option.groupLabel || ""} | ${option.startDate} | (${(0, date_fns_1.format)(option.startDate, "HH:mm") || ""} - ${(0, date_fns_1.format)(option.endDate, "HH:mm") || ""})`
+            : "", isOptionEqualToValue: (option, value) => option.id === value.id, onInputChange: (event, newInputValue) => {
             setInputValue(newInputValue);
             onInputChange(newInputValue);
-        }, renderOption: (props, option) => (react_1.default.createElement(material_1.Box, { component: "li", sx: { fontSize: 12 }, ...props }, `${(0, date_fns_1.format)(option?.startDate, "dd-MMMM-yyyy", { locale: dateFnsLocale })} (${(0, date_fns_1.format)(option?.startDate, "HH:mm") || ""} - ${(0, date_fns_1.format)(option?.endDate, "HH:mm") || ""})`)), renderInput: (params) => (react_1.default.createElement(material_1.TextField, { ...params, size: "small", label: t("search"), InputProps: { ...params.InputProps } })) }));
+        }, renderOption: (props, option) => (react_1.default.createElement(Box_1.default, { component: "li", sx: { fontSize: 12 }, ...props }, `${(0, date_fns_1.format)(option?.startDate, "dd-MMMM-yyyy", {
+            locale: dateFnsLocale,
+        })} (${(0, date_fns_1.format)(option?.startDate, "HH:mm") || ""} - ${(0, date_fns_1.format)(option?.endDate, "HH:mm") || ""})`)), renderInput: (params) => (react_1.default.createElement(TextField_1.default, { ...params, size: "small", label: t("search"), InputProps: { ...params.InputProps } })) }));
 };
 exports.default = ToolbarSearchBar;
 //# sourceMappingURL=ToolbarSearchBar.js.map

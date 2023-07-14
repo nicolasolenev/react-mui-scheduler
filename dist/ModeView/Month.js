@@ -28,6 +28,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
 const styles_1 = require("@mui/material/styles");
+const TableCell_1 = __importDefault(require("@mui/material/TableCell"));
+const TableRow_1 = __importDefault(require("@mui/material/TableRow"));
 const material_1 = require("@mui/material");
 const date_fns_1 = require("date-fns");
 const EventItem_1 = __importDefault(require("../EventItem"));
@@ -39,7 +41,7 @@ const TableBody_1 = __importDefault(require("@mui/material/TableBody"));
 const Box_1 = __importDefault(require("@mui/material/Box"));
 const Typography_1 = __importDefault(require("@mui/material/Typography"));
 const EventNoteRounded_1 = __importDefault(require("@mui/icons-material/EventNoteRounded"));
-const StyledTableCell = (0, styles_1.styled)(material_1.TableCell)(({ theme }) => ({
+const StyledTableCell = (0, styles_1.styled)(TableCell_1.default)(({ theme }) => ({
     [`&.${material_1.tableCellClasses.head}`]: {
         borderTop: `1px ${theme.palette.divider} solid !important`,
         borderBottom: `1px ${theme.palette.divider} solid !important`,
@@ -65,7 +67,7 @@ const MonthModeView = ({ rows = [], options, columns = [], legacyStyle, searchRe
     const theme = (0, styles_1.useTheme)();
     const [state, setState] = (0, react_1.useState)({});
     const today = new Date();
-    let currentDaySx = {
+    const currentDaySx = {
         width: 24,
         height: 22,
         margin: "auto",
@@ -93,28 +95,23 @@ const MonthModeView = ({ rows = [], options, columns = [], legacyStyle, searchRe
         e.preventDefault();
         if (!state.itemTransfer && !state.transferTarget)
             return;
-        let transfer = state.itemTransfer;
-        let transferTarget = state.transferTarget;
-        let rowsCopy = Array.from(rows);
-        let rowInd = rowsCopy.findIndex(d => d.id === transferTarget?.rowIndex);
+        const transfer = state.itemTransfer;
+        const transferTarget = state.transferTarget;
+        const rowsCopy = Array.from(rows);
+        const rowInd = rowsCopy.findIndex((d) => d.id === transferTarget?.rowIndex);
         if (rowInd !== -1) {
-            let dayInd = rowsCopy[rowInd]
-                ?.days
-                ?.findIndex((d) => d.id === transferTarget?.elementId);
+            const dayInd = rowsCopy[rowInd]?.days?.findIndex((d) => d.id === transferTarget?.elementId);
             if (dayInd !== -1) {
-                let day = rowsCopy[rowInd]?.days[dayInd];
+                const day = rowsCopy[rowInd]?.days[dayInd];
                 // Get day of the date (DD)
                 if (!transfer?.item?.day)
                     transfer.item.day = transfer?.item?.startDate.getDay();
                 if (transfer?.item?.day !== day?.day) {
-                    let itemCheck = day.events.findIndex((item) => (item.day === transfer.item.day && item.label === transfer.item.label));
+                    const itemCheck = day.events.findIndex((item) => item.day === transfer.item.day &&
+                        item.label === transfer.item.label);
                     if (itemCheck === -1) {
-                        let prevDay = rowsCopy[transfer.rowIndex]
-                            .days
-                            .find((d) => d.day === transfer.item.day);
-                        let itemIndexToRemove = prevDay
-                            ?.events
-                            ?.findIndex((i) => i.id === transfer.item.id);
+                        const prevDay = rowsCopy[transfer.rowIndex].days.find((d) => d.day === transfer.item.day);
+                        const itemIndexToRemove = prevDay?.events?.findIndex((i) => i.id === transfer.item.id);
                         if (itemIndexToRemove === undefined || itemIndexToRemove === -1) {
                             return;
                         }
@@ -141,15 +138,17 @@ const MonthModeView = ({ rows = [], options, columns = [], legacyStyle, searchRe
             onCellClick(event, row, day);
         }
     };
-    const renderEvents = (events = [], rowId) => (events?.map((event) => (searchResult ? (event?.groupLabel === searchResult?.groupLabel || event?.user === searchResult?.user) : !searchResult &&
-        react_1.default.createElement(EventItem_1.default, { event: event, rowId: rowId, elevation: 0, boxSx: { px: 0.5 }, key: `item-d-${event?.id}-${rowId}`, onClick: e => handleTaskClick(e, event), onDragStart: e => onCellDragStart(e, event, rowId), sx: {
+    const renderEvents = (events = [], rowId) => events?.map((event) => searchResult
+        ? event?.groupLabel === searchResult?.groupLabel ||
+            event?.user === searchResult?.user
+        : !searchResult && (react_1.default.createElement(EventItem_1.default, { event: event, rowId: rowId, elevation: 0, boxSx: { px: 0.5 }, key: `item-d-${event?.id}-${rowId}`, onClick: (e) => handleTaskClick(e, event), onDragStart: (e) => onCellDragStart(e, event, rowId), sx: {
                 width: "100%",
                 py: 0,
-                my: .3,
+                my: 0.3,
                 color: theme.palette.common.white,
                 backgroundColor: event?.color || theme.palette.primary.light,
                 textAlign: "left",
-            } }))));
+            } })));
     const handleTaskClick = (event, task) => {
         event.preventDefault();
         event.stopPropagation();
@@ -157,24 +156,28 @@ const MonthModeView = ({ rows = [], options, columns = [], legacyStyle, searchRe
     };
     return (react_1.default.createElement(TableContainer_1.default, { component: Paper_1.default, sx: { boxShadow: "none" } },
         react_1.default.createElement(Table_1.default, { size: "small", "aria-label": "simple table", stickyHeader: true, sx: { minWidth: options.minWidth || 650 } },
-            legacyStyle && react_1.default.createElement(TableHead_1.default, { sx: { height: 24 } },
-                react_1.default.createElement(material_1.TableRow, null, columns?.map((column, index) => (react_1.default.createElement(StyledTableCell, { align: "center", key: column?.headerName + "-" + index }, column?.headerName))))),
-            react_1.default.createElement(TableBody_1.default, null, rows?.map((row, index) => (react_1.default.createElement(material_1.TableRow, { key: `row-${row.id}-${index}` }, row?.days?.map((day, indexD) => {
-                const currentDay = (day.day === today.getUTCDate() && (0, date_fns_1.isSameMonth)(day.date, today));
-                return (react_1.default.createElement(StyledTableCell, { scope: "row", component: "th", sx: { px: 0.5, position: "relative" }, key: `day-${day.id}`, onDragEnd: onCellDragEnd, onDragOver: onCellDragOver, onDragEnter: e => onCellDragEnter(e, day.id, row.id), onClick: (event) => handleCellClick(event, row, day) },
+            legacyStyle && (react_1.default.createElement(TableHead_1.default, { sx: { height: 24 } },
+                react_1.default.createElement(TableRow_1.default, null, columns?.map((column, index) => (react_1.default.createElement(StyledTableCell, { align: "center", key: column?.headerName + "-" + index }, column?.headerName)))))),
+            react_1.default.createElement(TableBody_1.default, null, rows?.map((row, index) => (react_1.default.createElement(TableRow_1.default, { key: `row-${row.id}-${index}` }, row?.days?.map((day, indexD) => {
+                const currentDay = day.day === today.getUTCDate() &&
+                    (0, date_fns_1.isSameMonth)(day.date, today);
+                return (react_1.default.createElement(StyledTableCell, { scope: "row", component: "th", sx: { px: 0.5, position: "relative" }, key: `day-${day.id}`, onDragEnd: onCellDragEnd, onDragOver: onCellDragOver, onDragEnter: (e) => onCellDragEnter(e, day.id, row.id), onClick: (event) => handleCellClick(event, row, day) },
                     react_1.default.createElement(Box_1.default, { sx: { height: "100%", overflowY: "visible" } },
                         !legacyStyle &&
-                            index === 0 && columns[indexD]?.headerName?.toUpperCase(),
+                            index === 0 &&
+                            columns[indexD]?.headerName?.toUpperCase(),
                         ".",
                         react_1.default.createElement(Typography_1.default, { variant: "body2", sx: {
                                 ...currentDaySx,
-                                background: (currentDay &&
-                                    (0, styles_1.alpha)(theme.palette.primary.main, 1)),
-                                color: (currentDay && theme.palette.common.white),
+                                background: currentDay &&
+                                    (0, styles_1.alpha)(theme.palette.primary.main, 1),
+                                color: currentDay && theme.palette.common.white,
                             } }, day.day),
-                        (day?.events?.length > 0 && renderEvents(day?.events, row.id)),
-                        legacyStyle && day?.events?.length === 0 &&
-                            react_1.default.createElement(EventNoteRounded_1.default, { fontSize: "small", htmlColor: theme.palette.mode === "light" ? theme.palette.divider : (0, styles_1.lighten)(theme.palette.common.white, .5) }))));
+                        day?.events?.length > 0 &&
+                            renderEvents(day?.events, row.id),
+                        legacyStyle && day?.events?.length === 0 && (react_1.default.createElement(EventNoteRounded_1.default, { fontSize: "small", htmlColor: theme.palette.mode === "light"
+                                ? theme.palette.divider
+                                : (0, styles_1.lighten)(theme.palette.common.white, 0.5) })))));
             }))))))));
 };
 exports.default = MonthModeView;

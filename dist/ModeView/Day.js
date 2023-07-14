@@ -105,13 +105,13 @@ const DayModeView = ({ options, columns, rows, searchResult, onTaskClick, onCell
         e.preventDefault();
         if (!state?.itemTransfer || !state?.transferTarget)
             return;
-        let transfer = state?.itemTransfer;
-        let transferTarget = state?.transferTarget;
-        let rowsData = Array.from(rows);
-        let day = rowsData[transferTarget?.rowIndex]?.days[transferTarget?.dayIndex];
+        const transfer = state?.itemTransfer;
+        const transferTarget = state?.transferTarget;
+        const rowsData = Array.from(rows);
+        const day = rowsData[transferTarget?.rowIndex]?.days[transferTarget?.dayIndex];
         if (day) {
-            let hourRegExp = /[0-9]{2}:[0-9]{2}/;
-            let foundEventIndex = day.events.findIndex((e) => e.id === transfer.item.id &&
+            const hourRegExp = /[0-9]{2}:[0-9]{2}/;
+            const foundEventIndex = day.events.findIndex((e) => e.id === transfer.item.id &&
                 e.startDate === transfer.item.startDate &&
                 e.endDate === transfer.item.endDate);
             // Task already exists in the events array of the chosen cell
@@ -119,26 +119,19 @@ const DayModeView = ({ options, columns, rows, searchResult, onTaskClick, onCell
                 return;
             }
             // Event cell item to transfer
-            let prevEventCell = rowsData[transfer.rowIndex].days[transfer.dayIndex];
+            const prevEventCell = rowsData[transfer.rowIndex].days[transfer.dayIndex];
             // Timeline label (00:00 am, 01:00 am, etc.)
-            let label = transferTarget.rowLabel?.toUpperCase();
-            let hourLabel = hourRegExp.exec(label)?.[0];
+            const label = transferTarget.rowLabel?.toUpperCase();
+            const hourLabel = hourRegExp.exec(label)?.[0];
             // Event's end hour
-            let endHourDate = transfer.item.endDate;
+            const endHourDate = transfer.item.endDate;
             // Event start hour
             let startHourDate = transfer.item.startDate;
             // Minutes difference between end and start event hours
             let minutesDiff = (0, date_fns_1.differenceInMinutes)(endHourDate, startHourDate);
             // New event end hour according to it new cell
             let newEndHour = (0, date_fns_1.add)((0, date_fns_1.parse)(hourLabel, "HH:mm", day.date), { minutes: minutesDiff });
-            if (!(0, date_fns_1.isValid)(startHourDate)) {
-                startHourDate = day.date;
-                minutesDiff = (0, date_fns_1.differenceInMinutes)(endHourDate, startHourDate);
-                newEndHour = (0, date_fns_1.add)((0, date_fns_1.parse)(hourLabel, "HH:mm", day.date), { minutes: minutesDiff });
-            }
             prevEventCell?.events?.splice(transfer.item?.itemIndex, 1);
-            // transfer.item.startHour = label as string;
-            // transfer.item.endHour = format(newEndHour, "HH:mm aaa");
             transfer.item.startDate = day.date;
             day.events.push(transfer.item);
             setState({ ...state, rows: rowsData });
@@ -150,9 +143,13 @@ const DayModeView = ({ options, columns, rows, searchResult, onTaskClick, onCell
         event.stopPropagation();
         onCellClick && onCellClick(event, row, day);
     };
-    const renderEvents = (events, rowLabel, rowIndex, dayIndex) => (react_1.default.createElement(Box_1.default, { display: "flex" }, events?.map((event, itemIndex) => (searchResult ? (event?.groupLabel === searchResult?.groupLabel || event?.user === searchResult?.user) : !searchResult &&
-        react_1.default.createElement(EventItem_1.default, { rowId: itemIndex, event: event, elevation: 0, boxSx: { px: 0.3 }, onClick: e => handleTaskClick(e, event), key: `iti18nem_id-${itemIndex}_r-${rowIndex}_d-${dayIndex}`, onDragStart: e => onCellDragStart(e, { ...event, itemIndex }, rowLabel, rowIndex, dayIndex), sx: {
-                py: 0, mb: .5, color: theme.palette.common.white,
+    const renderEvents = (events, rowLabel, rowIndex, dayIndex) => (react_1.default.createElement(Box_1.default, { display: "flex" }, events?.map((event, itemIndex) => searchResult
+        ? event?.groupLabel === searchResult?.groupLabel ||
+            event?.user === searchResult?.user
+        : !searchResult && (react_1.default.createElement(EventItem_1.default, { rowId: itemIndex, event: event, elevation: 0, boxSx: { px: 0.3 }, onClick: (e) => handleTaskClick(e, event), key: `iti18nem_id-${itemIndex}_r-${rowIndex}_d-${dayIndex}`, onDragStart: (e) => onCellDragStart(e, { ...event, itemIndex }, rowLabel, rowIndex, dayIndex), sx: {
+                py: 0,
+                mb: 0.5,
+                color: theme.palette.common.white,
                 backgroundColor: event?.color || theme.palette.primary.light,
             } })))));
     const handleTaskClick = (event, task) => {
@@ -172,11 +169,15 @@ const DayModeView = ({ options, columns, rows, searchResult, onTaskClick, onCell
                         "/",
                         column?.day))))),
             react_1.default.createElement(TableBody_1.default, null, rows?.map((row, rowIndex) => (react_1.default.createElement(TableRow_1.default, { key: `timeline-${rowIndex}` },
-                react_1.default.createElement(Tooltip_1.default, { placement: "right", title: t("eventDayTimelineCount", { count: row.days?.reduce((prev, curr) => prev + curr?.events?.length, 0) }) },
+                react_1.default.createElement(Tooltip_1.default, { placement: "right", title: t("eventDayTimelineCount", {
+                        count: row.days?.reduce((prev, curr) => prev + curr?.events?.length, 0),
+                    }) },
                     react_1.default.createElement(StyledTableCell, { scope: "row", align: "center", component: "th", sx: { px: 1 }, onClick: (event) => handleCellClick(event, row) },
                         react_1.default.createElement(Typography_1.default, { variant: "body2" }, row?.label),
-                        Number(row?.data?.length) > 0 && renderEvents(row?.data, row.id))),
-                row?.days?.map((day, dayIndex) => (react_1.default.createElement(StyledTableCell, { key: day?.id, scope: "row", component: "th", colSpan: 2, sx: { px: .3, py: .5 }, onDragEnd: onCellDragEnd, onDragOver: onCellDragOver, onDragEnter: e => onCellDragEnter(e, row?.label, rowIndex, dayIndex), onClick: (event) => handleCellClick(event, { rowIndex, ...row }, { dayIndex, ...day }) }, day?.events?.length > 0 && renderEvents(day?.events, row?.label, rowIndex, dayIndex)))))))))));
+                        Number(row?.data?.length) > 0 &&
+                            renderEvents(row?.data, row.id))),
+                row?.days?.map((day, dayIndex) => (react_1.default.createElement(StyledTableCell, { key: day?.id, scope: "row", component: "th", colSpan: 2, sx: { px: 0.3, py: 0.5 }, onDragEnd: onCellDragEnd, onDragOver: onCellDragOver, onDragEnter: (e) => onCellDragEnter(e, row?.label, rowIndex, dayIndex), onClick: (event) => handleCellClick(event, { rowIndex, ...row }, { dayIndex, ...day }) }, day?.events?.length > 0 &&
+                    renderEvents(day?.events, row?.label, rowIndex, dayIndex)))))))))));
 };
 exports.default = DayModeView;
 //# sourceMappingURL=Day.js.map

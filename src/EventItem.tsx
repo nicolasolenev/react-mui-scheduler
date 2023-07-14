@@ -27,19 +27,19 @@ const EventItem: FC<EventItemProps> = ({
   onDragStart,
 }): JSX.Element => (
   <Paper
-    sx={ sx }
+    sx={sx}
     draggable
-    onClick={ onClick }
-    onDragStart={ onDragStart }
-    elevation={ elevation || 0 }
-    key={ `item-d-${ event?.id }-${ rowId }` }
+    onClick={onClick}
+    onDragStart={onDragStart}
+    elevation={elevation || 0}
+    key={`item-d-${event?.id}-${rowId}`}
   >
-    <Box sx={ boxSx }>
-      <Typography variant="body2" sx={ { fontSize: 11 } }>
-        { event?.label }
+    <Box sx={boxSx}>
+      <Typography variant="body2" sx={{ fontSize: 11 }}>
+        {event?.label}
       </Typography>
-      <Typography variant="caption" sx={ { fontSize: 8 } }>
-        { format(event?.startDate, "HH:mm") } - { format(event?.endDate, "HH:mm") }
+      <Typography variant="caption" sx={{ fontSize: 8 }}>
+        {format(event?.startDate, "HH:mm")} - {format(event?.endDate, "HH:mm")}
       </Typography>
     </Box>
   </Paper>
