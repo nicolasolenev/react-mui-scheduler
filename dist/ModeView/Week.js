@@ -188,7 +188,7 @@ const WeekModeView = ({ options, columns, rows, searchResult, onTaskClick, onCel
                         react_1.default.createElement(Typography_1.default, { variant: "body2" }, row?.label),
                         Number(row?.data?.length) > 0 &&
                             renderEvents(row?.data, row.id))),
-                row?.days?.map((day, dayIndex) => (react_1.default.createElement(StyledTableCell, { key: day?.id, scope: "row", component: "th", sx: { px: 0.3, py: 0.5 }, onDragEnd: onCellDragEnd, onDragOver: onCellDragOver, onDragEnter: (e) => onCellDragEnter(e, row?.label, rowIndex, dayIndex), onClick: (event) => handleCellClick(event, { rowIndex, ...row }, { dayIndex, ...day }) }, day?.events?.length > 0 &&
+                row?.days?.map((day, dayIndex) => (react_1.default.createElement(StyledTableCell, { key: day?.id, scope: "row", component: "th", sx: { px: 0.3, py: 0.5, verticalAlign: "top" }, onDragEnd: onCellDragEnd, onDragOver: onCellDragOver, onDragEnter: (e) => onCellDragEnter(e, row?.label, rowIndex, dayIndex), onClick: (event) => handleCellClick(event, { rowIndex, ...row }, { dayIndex, ...day }) }, day?.events?.length > 0 &&
                     renderEvents(day?.events, row?.label, rowIndex, dayIndex)))))))))));
 };
 exports.default = WeekModeView;

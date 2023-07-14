@@ -300,7 +300,7 @@ const WeekModeView: FC<WeekModeViewProps> = ({
                   key={day?.id}
                   scope="row"
                   component="th"
-                  sx={{ px: 0.3, py: 0.5 }}
+                  sx={{ px: 0.3, py: 0.5, verticalAlign: "top" }}
                   onDragEnd={onCellDragEnd}
                   onDragOver={onCellDragOver}
                   onDragEnter={(e) =>
