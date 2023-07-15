@@ -68,10 +68,11 @@ const TimeLineModeView = ({ options, rows, searchResult, onTaskClick, }) => {
                 (0, date_fns_1.format)(event.startDate, "PPP", { locale: dateFnsLocale }),
             react_1.default.createElement("br", null),
             react_1.default.createElement(Typography_1.default, { variant: "caption" },
-                event.startDate && (0, date_fns_1.format)(event.startDate, "HH:mm"),
-                " -",
-                " ",
-                (0, date_fns_1.format)(event.endDate, "HH:mm"))),
+                event.startDate &&
+                    (0, date_fns_1.format)(event.startDate, "p", { locale: dateFnsLocale }),
+                " - ",
+                event.endDate &&
+                    (0, date_fns_1.format)(event.endDate, "p", { locale: dateFnsLocale }))),
         react_1.default.createElement(TimelineSeparator_1.default, null,
             react_1.default.createElement(TimelineConnector_1.default, null),
             react_1.default.createElement(TimelineDot_1.default, { color: "secondary", sx: { backgroundColor: event.color } }, event.icon || react_1.default.createElement(Schedule_1.default, null)),

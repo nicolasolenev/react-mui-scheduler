@@ -333,7 +333,7 @@ const Scheduler: FC<SchedulerProps> = ({
 
     for (let i = 0; i <= HOURS; i++) {
       const id = `line_${i}`;
-      const label = format(dayStartHour, "HH:mm");
+      const label = format(dayStartHour, "p", { locale: dateFnsLocale });
 
       //TODO Add everyday event capability
       //if (i === 0) {
@@ -351,8 +351,9 @@ const Scheduler: FC<SchedulerProps> = ({
           const data = events.filter(
             (event) =>
               isSameDay(column?.date, event?.startDate) &&
-              format(event?.startDate, "HH:mm")?.toUpperCase() ===
-                label?.toUpperCase(),
+              format(event?.startDate, "p", {
+                locale: dateFnsLocale,
+              })?.toUpperCase() === label?.toUpperCase(),
           );
           obj.days.push({
             id: `column-${index}_m-${column.month}_d-${column.day}_${id}`,
@@ -387,7 +388,7 @@ const Scheduler: FC<SchedulerProps> = ({
 
     for (let i = 0; i <= HOURS; i++) {
       const id = `line_${i}`;
-      const label = format(dayStartHour, "HH:mm");
+      const label = format(dayStartHour, "p", { locale: dateFnsLocale });
 
       if (i > 0) {
         const obj: Row = { id, label, days: [] };
@@ -396,8 +397,9 @@ const Scheduler: FC<SchedulerProps> = ({
         const matchedEvents = events.filter(
           (event) =>
             isSameDay(column?.date, event?.startDate) &&
-            format(event?.startDate, "HH:mm")?.toUpperCase() ===
-              label?.toUpperCase(),
+            format(event?.startDate, "p", {
+              locale: dateFnsLocale,
+            })?.toUpperCase() === label?.toUpperCase(),
         );
         obj.days.push({
           id: `column-_m-${column?.month}_d-${column?.day}_${id}`,

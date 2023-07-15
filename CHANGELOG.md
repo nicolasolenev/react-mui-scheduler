@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Rename properties `startHour` and `endHour` to `startDate` and `endDate`
 - Change type from `string` to `Date` for `startDate` and `endDate`
 - Update `toolbarProps.showSwitchModeButtons` from `boolean` to `object`
+- Change time format from `HH:mm` to `p` to display localized time
 
 ### Removed
 

@@ -66,8 +66,11 @@ const TimeLineModeView: FC<TimeLineModeViewProps> = ({
           format(event.startDate, "PPP", { locale: dateFnsLocale })}
         <br />
         <Typography variant="caption">
-          {event.startDate && format(event.startDate, "HH:mm")} -{" "}
-          {format(event.endDate, "HH:mm")}
+          {event.startDate &&
+            format(event.startDate, "p", { locale: dateFnsLocale })}
+          {" - "}
+          {event.endDate &&
+            format(event.endDate, "p", { locale: dateFnsLocale })}
         </Typography>
       </TimelineOppositeContent>
       <TimelineSeparator>

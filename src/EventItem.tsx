@@ -1,4 +1,4 @@
-import React, { FC, JSX } from "react";
+import React, { FC, JSX, useContext } from "react";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -6,6 +6,7 @@ import { SxProps } from "@mui/system";
 import { Theme } from "@mui/material/styles";
 import { Event } from "./types";
 import { format } from "date-fns";
+import DateFnsLocaleContext from "./locales/dateFnsContext";
 
 interface EventItemProps {
   event: Event;
@@ -25,24 +26,30 @@ const EventItem: FC<EventItemProps> = ({
   elevation,
   onClick,
   onDragStart,
-}): JSX.Element => (
-  <Paper
-    sx={sx}
-    draggable
-    onClick={onClick}
-    onDragStart={onDragStart}
-    elevation={elevation || 0}
-    key={`item-d-${event?.id}-${rowId}`}
-  >
-    <Box sx={boxSx}>
-      <Typography variant="body2" sx={{ fontSize: 11 }}>
-        {event?.label}
-      </Typography>
-      <Typography variant="caption" sx={{ fontSize: 8 }}>
-        {format(event?.startDate, "HH:mm")} - {format(event?.endDate, "HH:mm")}
-      </Typography>
-    </Box>
-  </Paper>
-);
+}): JSX.Element => {
+  const dateFnsLocale = useContext(DateFnsLocaleContext);
+
+  return (
+    <Paper
+      sx={sx}
+      draggable
+      onClick={onClick}
+      onDragStart={onDragStart}
+      elevation={elevation || 0}
+      key={`item-d-${event?.id}-${rowId}`}
+    >
+      <Box sx={boxSx}>
+        <Typography variant="body2" sx={{ fontSize: 11 }}>
+          {event?.label}
+        </Typography>
+        <Typography variant="caption" sx={{ fontSize: 8 }}>
+          {format(event?.startDate, "p", { locale: dateFnsLocale })}
+          {" - "}
+          {format(event?.endDate, "p", { locale: dateFnsLocale })}
+        </Typography>
+      </Box>
+    </Paper>
+  );
+};
 
 export default EventItem;

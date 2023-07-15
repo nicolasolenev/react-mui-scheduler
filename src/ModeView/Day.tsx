@@ -161,15 +161,14 @@ const DayModeView: FC<DayModeViewProps> = ({
       // Event's end hour
       const endHourDate = transfer.item.endDate;
       // Event start hour
-      let startHourDate = transfer.item.startDate;
+      const startHourDate = transfer.item.startDate;
       // Minutes difference between end and start event hours
-      let minutesDiff = differenceInMinutes(endHourDate, startHourDate);
+      const minutesDiff = differenceInMinutes(endHourDate, startHourDate);
       // New event end hour according to it new cell
-      let newEndHour = add(
+      const newEndHour = add(
         parse(hourLabel as string, "HH:mm", day.date as Date),
         { minutes: minutesDiff },
       );
-
       prevEventCell?.events?.splice(transfer.item?.itemIndex, 1);
       transfer.item.startDate = day.date;
       day.events.push(transfer.item);

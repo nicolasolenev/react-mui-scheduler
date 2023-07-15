@@ -256,7 +256,7 @@ const Scheduler = ({ events, locale = "en", options, alertProps, onCellClick, le
         let dayStartHour = (0, date_fns_1.startOfDay)(selectedDay);
         for (let i = 0; i <= HOURS; i++) {
             const id = `line_${i}`;
-            const label = (0, date_fns_1.format)(dayStartHour, "HH:mm");
+            const label = (0, date_fns_1.format)(dayStartHour, "p", { locale: dateFnsLocale });
             //TODO Add everyday event capability
             //if (i === 0) {
             //id = `line_everyday`; label = 'Everyday'
@@ -270,8 +270,9 @@ const Scheduler = ({ events, locale = "en", options, alertProps, onCellClick, le
                 // eslint-disable-next-line
                 columns.map((column, index) => {
                     const data = events.filter((event) => (0, date_fns_1.isSameDay)(column?.date, event?.startDate) &&
-                        (0, date_fns_1.format)(event?.startDate, "HH:mm")?.toUpperCase() ===
-                            label?.toUpperCase());
+                        (0, date_fns_1.format)(event?.startDate, "p", {
+                            locale: dateFnsLocale,
+                        })?.toUpperCase() === label?.toUpperCase());
                     obj.days.push({
                         id: `column-${index}_m-${column.month}_d-${column.day}_${id}`,
                         date: column?.date,
@@ -302,14 +303,15 @@ const Scheduler = ({ events, locale = "en", options, alertProps, onCellClick, le
         let dayStartHour = (0, date_fns_1.startOfDay)(selectedDay);
         for (let i = 0; i <= HOURS; i++) {
             const id = `line_${i}`;
-            const label = (0, date_fns_1.format)(dayStartHour, "HH:mm");
+            const label = (0, date_fns_1.format)(dayStartHour, "p", { locale: dateFnsLocale });
             if (i > 0) {
                 const obj = { id, label, days: [] };
                 const columns = getDayHeader();
                 const column = columns[0];
                 const matchedEvents = events.filter((event) => (0, date_fns_1.isSameDay)(column?.date, event?.startDate) &&
-                    (0, date_fns_1.format)(event?.startDate, "HH:mm")?.toUpperCase() ===
-                        label?.toUpperCase());
+                    (0, date_fns_1.format)(event?.startDate, "p", {
+                        locale: dateFnsLocale,
+                    })?.toUpperCase() === label?.toUpperCase());
                 obj.days.push({
                     id: `column-_m-${column?.month}_d-${column?.day}_${id}`,
                     date: column?.date,
