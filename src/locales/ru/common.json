@@ -1,0 +1,18 @@
+{
+  "day": "день",
+  "week": "неделя",
+  "month": "месяц",
+  "timeline": "временная шкала",
+  "mon": "пн",
+  "tue": "вт",
+  "wed": "ср",
+  "thu": "чт",
+  "fri": "пт",
+  "sat": "сб",
+  "sun": "вс",
+  "search": "поиск...",
+  "eventDayTimelineCount_one": "{{count}} event on this day timeline",
+  "eventDayTimelineCount_other": "{{count}} events on this day timeline",
+  "eventWeekTimelineCount_one": "{{count}} event on this week timeline",
+  "eventWeekTimelineCount_other": "{{count}} events on this week timeline"
+}

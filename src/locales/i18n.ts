@@ -2,6 +2,7 @@ import { createInstance, Resource } from "i18next";
 import { initReactI18next } from "react-i18next";
 
 import trEN from "./en/common.json";
+import trRU from "./ru/common.json";
 import trFR from "./fr/common.json";
 import trKO from "./ko/common.json";
 import trDE from "./de/common.json";
@@ -13,6 +14,7 @@ import trBR from "./pt-br/common.json";
 
 const resources = {
   en: { common: trEN },
+  ru: { common: trRU },
   fr: { common: trFR },
   ko: { common: trKO },
   de: { common: trDE },
